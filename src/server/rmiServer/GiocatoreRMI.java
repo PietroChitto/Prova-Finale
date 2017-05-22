@@ -57,9 +57,7 @@ public class GiocatoreRMI extends GiocatoreRemoto implements Serializable{
             getPartita().getCampoDaGioco().getTabellone().getTorre(numeroTorre).getPiano(numeroPiano).getCampoAzione().setFamiliare(familiareSelezionato);
             //se non va a buon fine lancia un eccezione
             prendiCarta(numeroTorre,numeroPiano);
-
-            getPartita().ripristinaForzaTabellone();
-            getPartita().passaTurno(this);
+            getPartita().passaMossa(this);//ripristina il tabellone e fa i controlli di turno e periodo
         } catch (TurnoException e) {
             //avvisa che non è il suo turno
             e.printStackTrace();

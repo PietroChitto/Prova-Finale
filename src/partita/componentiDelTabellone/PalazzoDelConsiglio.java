@@ -8,12 +8,10 @@ import java.util.ArrayList;
 public class PalazzoDelConsiglio {
     private final int costo=1;
     private ArrayList<Giocatore> ordineArrivoGiocatori;
-    private ArrayList<Giocatore> ordineTurnoCorrente;
     private String effetto;
 
     public PalazzoDelConsiglio(int numeroGiocatori){
         ordineArrivoGiocatori= new ArrayList<Giocatore>();
-        ordineTurnoCorrente= new ArrayList<Giocatore>();
         effetto="incrementa1moneta&&1pergamena";
     }
 
@@ -24,7 +22,7 @@ public class PalazzoDelConsiglio {
         la scelta dello scambio della pergamena è gestita nel ciclo while del server
          */
     }
-    public void calcoaTurnoSuccessivo(){
+    public ArrayList<Giocatore> calcoaTurnoSuccessivo(ArrayList<Giocatore> ordineTurnoCorrente){
         for (int i=0;i<ordineTurnoCorrente.size() && i<ordineArrivoGiocatori.size();i++){
            if(ordineArrivoGiocatori.get(i)!=null){
             ordineTurnoCorrente.add(i, ordineArrivoGiocatori.get(i));
@@ -36,19 +34,19 @@ public class PalazzoDelConsiglio {
            }
         }
 
-        setTurnoCorrente();
+        //setTurnoCorrente();
         svuotaOrdineArrivo();
-
+        return ordineTurnoCorrente;
     }
 
     /*
     i turni partono da 1
      */
-    private void setTurnoCorrente(){
+    /*private void setTurnoCorrente(){
         for (int i=0; i<ordineTurnoCorrente.size(); i++){
             ordineTurnoCorrente.get(i).setTurno(i+1);
         }
-    }
+    }*/
 
     private  void svuotaOrdineArrivo(){
         ordineArrivoGiocatori.clear();

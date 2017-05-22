@@ -115,9 +115,65 @@ public class Partita {
         this.periodo = periodo;
     }
 
-    public void fineTurno(){}
-    public void finePeriodo(){}
+    private void settaProssimoGiocatore() {
 
-    public void passaTurno(GiocatoreRMI giocatoreRMI) {
+    }
+
+    public void passaMossa(GiocatoreRMI giocatoreRMI) {
+        fineMossa();
+        numeroMosseTurno++;
+        if(numeroMosseTurno==giocatori.size()*4){
+            passaTurno();
+            numeroMosseTurno=0;
+        }
+
+        settaProssimoGiocatore();
+
+    }
+
+    public void passaTurno() {
+
+        fineTurno();
+        turno++;
+        if(turno==3){
+            passaPeriodo();
+            turno=1;
+            ordineTurno=campoDaGioco.getTabellone().getPalazzoDelConsiglio().calcoaTurnoSuccessivo(ordineTurno);
+        }
+
+    }
+
+    private void passaPeriodo() {
+
+        finePeriodo();
+        periodo ++;
+        if (periodo==4){
+            finePartita();
+        }
+    }
+
+    private void fineMossa() {
+        //ripristina i costi
+    }
+
+    public void fineTurno(){
+        //togle le carte e i familiari
+    }
+    public void finePeriodo(){
+        //si occupa delle scomuniche
+    }
+
+    private void finePartita() {
+
+        //calcola i punti vittoria
+            //punti fede
+            //quello che ha più punti militari
+            //carte impresa
+            //carte personaggio
+            //risorse
     }
 }
+
+/**
+ * https://github.com/PietroChitto/Prova-Finale/invitations
+ */
