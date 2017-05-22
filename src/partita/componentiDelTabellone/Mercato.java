@@ -60,8 +60,13 @@ public class Mercato {
         }
     }
 
+    public void svuotaMercato() throws ZonaOccupataExcepion, ForzaInsufficienteException{
 
+        for (int i=0;i<campiAzione.length;i++){
+            campiAzione[i].svuotaCampoAzione();
+            campiAzione[i].setOccupato(false);
+        }
 
-
+    }
 
 }

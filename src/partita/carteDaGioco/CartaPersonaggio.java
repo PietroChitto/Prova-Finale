@@ -59,4 +59,11 @@ public class CartaPersonaggio extends CartaSviluppo {
 
     }
 
+    public Effetto getEffettoP() {
+        return effettoPermanente;
+    }
+
+    public String getCodEffP() {
+        return codiceEffP;
+    }
 }

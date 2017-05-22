@@ -1,8 +1,13 @@
 package partita;
 
-import partita.componentiDelTabellone.Giocatore;
-import partita.componentiDelTabellone.Tabellone;
+import partita.carteDaGioco.CartaEdificio;
+import partita.carteDaGioco.CartaPersonaggio;
+import partita.carteDaGioco.CartaTerritorio;
+import partita.carteDaGioco.effetti.EffettoAumentaForza;
+import partita.componentiDelTabellone.*;
+import partita.eccezioniPartita.ForzaInsufficienteException;
 import partita.eccezioniPartita.TurnoException;
+import partita.eccezioniPartita.ZonaOccupataExcepion;
 import server.GiocatoreRemoto;
 import server.rmiServer.GiocatoreRMI;
 
@@ -119,8 +124,8 @@ public class Partita {
 
     }
 
-    public void passaMossa(GiocatoreRMI giocatoreRMI) {
-        fineMossa();
+    public void passaMossa(GiocatoreRMI giocatoreRMI) throws ZonaOccupataExcepion, ForzaInsufficienteException {
+        ripristinaForzaTabellone();
         numeroMosseTurno++;
         if(numeroMosseTurno==giocatori.size()*4){
             passaTurno();
@@ -131,9 +136,9 @@ public class Partita {
 
     }
 
-    public void passaTurno() {
+    public void passaTurno() throws ForzaInsufficienteException, ZonaOccupataExcepion {
 
-        fineTurno();
+        pulisciTabellone();
         turno++;
         if(turno==3){
             passaPeriodo();
@@ -143,7 +148,7 @@ public class Partita {
 
     }
 
-    private void passaPeriodo() {
+    private void passaPeriodo() throws ForzaInsufficienteException, ZonaOccupataExcepion {
 
         finePeriodo();
         periodo ++;
@@ -159,9 +164,8 @@ public class Partita {
     public void fineTurno(){
         //togle le carte e i familiari
     }
-    public void finePeriodo(){
-        //si occupa delle scomuniche
-    }
+
+
 
     private void finePartita() {
 
@@ -172,6 +176,101 @@ public class Partita {
             //carte personaggio
             //risorse
     }
+
+    public void ripristinaForzaTabellone(){
+
+        String codice;
+        int [] zone=new int[6];
+        ArrayList<CartaPersonaggio> cartePersonaggio= new ArrayList<CartaPersonaggio>();
+
+        //Ripristino la condizioni iniziali sulla forza a livello del tabellone
+        cartePersonaggio=giocatoreCorrente.getCartePersonaggio();
+        Tabellone tab = getCampoDaGioco().getTabellone();
+
+        for (CartaPersonaggio cp : cartePersonaggio){
+
+            if (cp.getEffettoP() instanceof EffettoAumentaForza){
+
+                codice=cp.getCodEffP();
+
+                int forza=codice.charAt(0);
+
+                for (int i=0; i<6; i++){
+                    zone[i]=(int) codice.charAt((i+1)*2);
+                }
+
+                if(zone[0]==1){
+                    for (Piano p:tab.getTorre(1).getPiani()){
+                        p.getCampoAzione().setCosto(p.getCampoAzione().getCosto()+forza);
+                    }
+                }
+                if(zone[1]==1){
+                    for (Piano p:tab.getTorre(2).getPiani()){
+                        p.getCampoAzione().setCosto(p.getCampoAzione().getCosto()+forza);
+                    }
+                }
+                if(zone[2]==1){
+                    for (Piano p:tab.getTorre(3).getPiani()){
+                        p.getCampoAzione().setCosto(p.getCampoAzione().getCosto()+forza);
+                    }
+                }
+                if(zone[3]==1){
+                    for (Piano p:tab.getTorre(4).getPiani()){
+                        p.getCampoAzione().setCosto(p.getCampoAzione().getCosto()+forza);
+                    }
+
+                }
+                if(zone[4]==1){
+                    for (CartaEdificio cs: giocatoreCorrente.getCarteEdificio()){
+                        cs.setCostoAttivazioneEffettoPermanente(cs.getCostoAttivazioneEffettoPermanente()+forza);
+                    }
+                }if(zone[5]==1){
+                    for (CartaTerritorio cs: giocatoreCorrente.getCarteTerritorio()){
+                        cs.setCostoAttivazioneEffettoPermanente(cs.getCostoAttivazioneEffettoPermanente()+forza);
+                    }
+                }
+
+
+            }
+        }
+    }
+
+    public void pulisciTabellone() throws ZonaOccupataExcepion, ForzaInsufficienteException {
+
+        //pulisco il tabellone per il turno successivo
+        Torre[] torri = new Torre[4];
+        torri=getCampoDaGioco().getTabellone().getTorri();
+
+        int posizione=0;
+
+        for (int i=0;i<4;i++){
+            for (int j=0;j<4;j++){
+                torri[i].pulisciCarte();
+                torri[i].getPiano(j).getCampoAzione().svuotaCampoAzione();
+                torri[i].getPiano(j).getCampoAzione().setOccupato(false);
+                torri[i].setOccupata(false);
+            }
+        }
+
+        getCampoDaGioco().getTabellone().getZonaProduzione().svuotaZona();
+        getCampoDaGioco().getTabellone().getZonaRaccolto().svuotaZona();
+        getCampoDaGioco().getTabellone().getMercato().svuotaMercato();
+    }
+
+    public void finePeriodo() throws ZonaOccupataExcepion, ForzaInsufficienteException{
+
+        //pulisco il tabellone per il periodo successivo
+        Vaticano vat = getCampoDaGioco().getTabellone().getVaticano();
+
+        for (int i=0;i<giocatori.size();i++){
+
+            if (vat.controlloPuntiFede(giocatori.get(i).getGiocatore(), periodo)){
+                //implementa scelta gestione punti fede
+            }
+        }
+    }
+
+
 }
 
 /**

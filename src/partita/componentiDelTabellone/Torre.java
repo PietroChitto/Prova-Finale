@@ -47,4 +47,14 @@ public class Torre {
     public Piano getPiano(int i) {
         return piani[i];
     }
+
+    public void setOccupata(boolean bool){
+        occupata=bool;
+    }
+
+    public void pulisciCarte(){
+        for (int i=0;i<4;i++){
+            piani[i].togliCarta();
+        }
+    }
 }
