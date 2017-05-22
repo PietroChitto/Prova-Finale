@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>partita.componentiDelTabellone</OriginalElement>
+  <nodes>
+    <node x="434.75767543859644" y="2046.0">partita.componentiDelTabellone.Mercato</node>
+    <node x="1260.2576754385964" y="2358.0">partita.componentiDelTabellone.PalazzoDelConsiglio</node>
+    <node x="840.7576754385964" y="1991.0">partita.componentiDelTabellone.Piano</node>
+    <node x="449.79166666666663" y="1570.0">partita.componentiDelTabellone.CampoAzioneSingolo</node>
+    <node x="260.33333333333337" y="1159.0">partita.componentiDelTabellone.Familiare</node>
+    <node x="1555.2576754385964" y="2391.0">partita.componentiDelTabellone.Vaticano</node>
+    <node x="37.69517543859638" y="2046.0">partita.componentiDelTabellone.CampoAzioneMultiplo</node>
+    <node x="948.7576754385964" y="2358.0">partita.componentiDelTabellone.Torre</node>
+    <node x="0.0" y="0.0">partita.componentiDelTabellone.Giocatore</node>
+    <node x="866.0208333333333" y="2667.0">partita.componentiDelTabellone.Tabellone</node>
+    <node x="145.3048245614035" y="2358.0">partita.componentiDelTabellone.Zona</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="partita.componentiDelTabellone.Tabellone" target="partita.componentiDelTabellone.Vaticano">
+      <point x="143.5" y="-180.5" />
+      <point x="1214.5208333333333" y="2637.0" />
+      <point x="1643.2576754385964" y="2637.0" />
+      <point x="-88.0" y="81.5" />
+    </edge>
+    <edge source="partita.componentiDelTabellone.Mercato" target="partita.componentiDelTabellone.CampoAzioneSingolo">
+      <point x="-96.5" y="-103.5" />
+      <point x="531.2576754385964" y="1971.0" />
+      <point x="614.375" y="1971.0" />
+      <point x="-32.91666666666663" y="180.5" />
+    </edge>
+    <edge source="partita.componentiDelTabellone.CampoAzioneMultiplo" target="partita.componentiDelTabellone.Familiare">
+      <point x="0.0" y="-103.5" />
+      <point x="220.19517543859638" y="1545.0" />
+      <point x="367.83333333333337" y="1545.0" />
+      <point x="-107.5" y="180.5" />
+    </edge>
+    <edge source="partita.componentiDelTabellone.Familiare" target="partita.componentiDelTabellone.Giocatore">
+      <point x="-143.33333333333337" y="-180.5" />
+      <point x="332.0" y="1134.0" />
+      <point x="136.75" y="1134.0" />
+      <point x="-410.25" y="554.5" />
+    </edge>
+    <edge source="partita.componentiDelTabellone.CampoAzioneSingolo" target="partita.componentiDelTabellone.Familiare">
+      <point x="0.0" y="-180.5" />
+      <point x="647.2916666666666" y="1545.0" />
+      <point x="582.8333333333334" y="1545.0" />
+      <point x="107.5" y="180.5" />
+    </edge>
+    <edge source="partita.componentiDelTabellone.Tabellone" target="partita.componentiDelTabellone.PalazzoDelConsiglio">
+      <point x="102.5" y="-180.5" />
+      <point x="1173.5208333333333" y="2627.0" />
+      <point x="1466.5076754385964" y="2627.0" />
+      <point x="68.75" y="114.5" />
+    </edge>
+    <edge source="partita.componentiDelTabellone.Piano" target="partita.componentiDelTabellone.CampoAzioneSingolo">
+      <point x="125.0" y="-158.5" />
+      <point x="1215.7576754385964" y="1961.0" />
+      <point x="811.875" y="1961.0" />
+      <point x="164.58333333333337" y="180.5" />
+    </edge>
+    <edge source="partita.componentiDelTabellone.Giocatore" target="partita.componentiDelTabellone.Familiare">
+      <point x="136.75" y="554.5" />
+      <point x="683.75" y="1134.0" />
+      <point x="618.6666666666667" y="1134.0" />
+      <point x="143.33333333333337" y="-180.5" />
+    </edge>
+    <edge source="partita.componentiDelTabellone.Tabellone" target="partita.componentiDelTabellone.Torre">
+      <point x="-20.5" y="-180.5" />
+      <point x="1050.5208333333333" y="2647.0" />
+      <point x="1019.7576754385964" y="2647.0" />
+      <point x="-71.0" y="114.5" />
+    </edge>
+    <edge source="partita.componentiDelTabellone.PalazzoDelConsiglio" target="partita.componentiDelTabellone.Giocatore">
+      <point x="0.0" y="-114.5" />
+      <point x="1397.7576754385964" y="1134.0" />
+      <point x="957.25" y="1134.0" />
+      <point x="410.25" y="554.5" />
+    </edge>
+    <edge source="partita.componentiDelTabellone.Tabellone" target="partita.componentiDelTabellone.Zona">
+      <point x="-143.5" y="-180.5" />
+      <point x="927.5208333333333" y="2637.0" />
+      <point x="396.5548245614035" y="2637.0" />
+      <point x="83.75" y="114.5" />
+    </edge>
+    <edge source="partita.componentiDelTabellone.Torre" target="partita.componentiDelTabellone.Piano">
+      <point x="-71.0" y="-114.5" />
+      <point x="1019.7576754385964" y="2333.0" />
+      <point x="965.7576754385964" y="2333.0" />
+      <point x="-125.0" y="158.5" />
+    </edge>
+    <edge source="partita.componentiDelTabellone.Tabellone" target="partita.componentiDelTabellone.Mercato">
+      <point x="-102.5" y="-180.5" />
+      <point x="968.5208333333333" y="2627.0" />
+      <point x="622.0548245614035" y="2627.0" />
+      <point x="622.0548245614035" y="2333.0" />
+      <point x="531.2576754385964" y="2333.0" />
+      <point x="-96.5" y="103.5" />
+    </edge>
+    <edge source="partita.componentiDelTabellone.Zona" target="partita.componentiDelTabellone.CampoAzioneMultiplo">
+      <point x="-41.875" y="-114.5" />
+      <point x="270.9298245614035" y="2333.0" />
+      <point x="311.4451754385964" y="2333.0" />
+      <point x="91.25" y="103.5" />
+    </edge>
+    <edge source="partita.componentiDelTabellone.Zona" target="partita.componentiDelTabellone.CampoAzioneSingolo">
+      <point x="41.875" y="-114.5" />
+      <point x="354.6798245614035" y="2333.0" />
+      <point x="413.19517543859644" y="2333.0" />
+      <point x="413.19517543859644" y="1951.0" />
+      <point x="482.7083333333333" y="1951.0" />
+      <point x="-164.58333333333331" y="180.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.9748687664041996" x="725.0399811536648" y="2428.3701285589286" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Constructors</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
