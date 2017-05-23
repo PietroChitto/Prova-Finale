@@ -14,11 +14,11 @@ public class CampoDaGioco {
     private Tabellone tabellone;
     private ArrayList<Giocatore> giocatori;
     private CreatoreMazzi creatoreMazzi;
-    private ArrayList<CartaTerritorio> mazzoTerritorio;
-    private ArrayList<CartaEdificio> mazzoEdificio;
-    private ArrayList<CartaPersonaggio> mazzoPersonaggi;
-    private ArrayList<CartaImpresa> mazzoImprese;
-    public final int NUMEROGIOCATORI;//final ??
+    private ArrayList<CartaSviluppo> mazzoTerritorio;
+    private ArrayList<CartaSviluppo> mazzoEdificio;
+    private ArrayList<CartaSviluppo> mazzoPersonaggi;
+    private ArrayList<CartaSviluppo> mazzoImprese;
+    public final int NUMEROGIOCATORI;
 
     public CampoDaGioco(ArrayList<Giocatore> giocatori, boolean treGiocatori, boolean quattroGiocatori){
         this.giocatori=giocatori;
@@ -43,7 +43,7 @@ public class CampoDaGioco {
     }
 
     private void creaMazzoTerritorio() {
-        mazzoTerritorio=new ArrayList<CartaTerritorio>();
+        mazzoTerritorio=new ArrayList<CartaSviluppo>();
         try {
             mazzoTerritorio = creatoreMazzi.terzoPeriodoTerreni();
             mazzoTerritorio.addAll(creatoreMazzi.secondoPeriodoTerreni());
@@ -55,7 +55,7 @@ public class CampoDaGioco {
     }
 
     private void creaMazzoEdifici() {
-        mazzoEdificio=new ArrayList<CartaEdificio>();
+        mazzoEdificio=new ArrayList<CartaSviluppo>();
         try {
             mazzoEdificio = creatoreMazzi.terzoPeriodoEdificio();
             mazzoEdificio.addAll(creatoreMazzi.secondoPeriodoEdificio());
@@ -67,7 +67,7 @@ public class CampoDaGioco {
     }
 
     private void creaMazzoPersonaggio() {
-        mazzoPersonaggi=new ArrayList<CartaPersonaggio>();
+        mazzoPersonaggi=new ArrayList<CartaSviluppo>();
         try {
             mazzoPersonaggi = creatoreMazzi.terzoPeriodoPersonaggio();
             mazzoPersonaggi.addAll(creatoreMazzi.secondoPeriodoPersonaggio());
@@ -79,7 +79,7 @@ public class CampoDaGioco {
     }
 
     private void creaMazzoImprese() {
-        mazzoImprese=new ArrayList<CartaImpresa>();
+        mazzoImprese=new ArrayList<CartaSviluppo>();
         try {
             mazzoImprese = creatoreMazzi.terzoPeriodoImpresa();
             mazzoImprese.addAll(creatoreMazzi.secondoPeriodoImpresa());
@@ -90,19 +90,19 @@ public class CampoDaGioco {
         }
     }
 
-    public ArrayList<CartaEdificio> getMazzoEdificio() {
+    public ArrayList<CartaSviluppo> getMazzoEdificio() {
         return mazzoEdificio;
     }
 
-    public ArrayList<CartaImpresa> getMazzoImprese() {
+    public ArrayList<CartaSviluppo> getMazzoImprese() {
         return mazzoImprese;
     }
 
-    public ArrayList<CartaPersonaggio> getMazzoPersonaggi() {
+    public ArrayList<CartaSviluppo> getMazzoPersonaggi() {
         return mazzoPersonaggi;
     }
 
-    public ArrayList<CartaTerritorio> getMazzoTerritorio() {
+    public ArrayList<CartaSviluppo> getMazzoTerritorio() {
         return mazzoTerritorio;
     }
 

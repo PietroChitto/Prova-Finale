@@ -26,115 +26,115 @@ public class CreatoreMazzi {
 
     }
 
-    public ArrayList<CartaTerritorio> primoPeriodoTerreni() throws SQLException {
-        ArrayList<CartaTerritorio> carte=new ArrayList<CartaTerritorio>();
+    public ArrayList<CartaSviluppo> primoPeriodoTerreni() throws SQLException {
+        ArrayList<CartaSviluppo> carte=new ArrayList<CartaSviluppo>();
         carte=generaMazzoCarteTerritorio("1");
-        carte=mischiaMazzoTerritorio(carte);
+        carte=mischiaMazzo(carte);
 
         return carte;
 
     }
 
-    public ArrayList<CartaTerritorio> secondoPeriodoTerreni() throws SQLException {
-        ArrayList<CartaTerritorio> carte=new ArrayList<CartaTerritorio>();
+    public ArrayList<CartaSviluppo> secondoPeriodoTerreni() throws SQLException {
+        ArrayList<CartaSviluppo> carte=new ArrayList<CartaSviluppo>();
         carte=generaMazzoCarteTerritorio("2");
-        carte=mischiaMazzoTerritorio(carte);
+        carte=mischiaMazzo(carte);
 
         return carte;
 
     }
 
-    public ArrayList<CartaTerritorio> terzoPeriodoTerreni() throws SQLException {
+    public ArrayList<CartaSviluppo> terzoPeriodoTerreni() throws SQLException {
 
-        ArrayList<CartaTerritorio> carte=new ArrayList<CartaTerritorio>();
+        ArrayList<CartaSviluppo> carte=new ArrayList<CartaSviluppo>();
         carte=generaMazzoCarteTerritorio("3");
-        carte=mischiaMazzoTerritorio(carte);
+        carte=mischiaMazzo(carte);
         return carte;
     }
 
-    public ArrayList<CartaEdificio> primoPeriodoEdificio() throws SQLException {
-        ArrayList<CartaEdificio> carte=new ArrayList<CartaEdificio>();
+    public ArrayList<CartaSviluppo> primoPeriodoEdificio() throws SQLException {
+        ArrayList<CartaSviluppo> carte=new ArrayList<CartaSviluppo>();
         carte=generaMazzoCarteEdificio("1");
-        carte=mischiaMazzoEdificio(carte);
+        carte=mischiaMazzo(carte);
 
         return carte;
 
     }
 
-    public ArrayList<CartaEdificio> secondoPeriodoEdificio() throws SQLException {
-        ArrayList<CartaEdificio> carte=new ArrayList<CartaEdificio>();
+    public ArrayList<CartaSviluppo> secondoPeriodoEdificio() throws SQLException {
+        ArrayList<CartaSviluppo> carte=new ArrayList<CartaSviluppo>();
         carte=generaMazzoCarteEdificio("2");
-        carte=mischiaMazzoEdificio(carte);
+        carte=mischiaMazzo(carte);
 
         return carte;
 
     }
 
-    public ArrayList<CartaEdificio> terzoPeriodoEdificio() throws SQLException {
-        ArrayList<CartaEdificio> carte=new ArrayList<CartaEdificio>();
+    public ArrayList<CartaSviluppo> terzoPeriodoEdificio() throws SQLException {
+        ArrayList<CartaSviluppo> carte=new ArrayList<CartaSviluppo>();
         carte=generaMazzoCarteEdificio("3");
-        carte=mischiaMazzoEdificio(carte);
+        carte=mischiaMazzo(carte);
 
         return carte;
 
     }
 
-    public ArrayList<CartaImpresa> primoPeriodoImpresa() throws SQLException {
-        ArrayList<CartaImpresa> carte=new ArrayList<CartaImpresa>();
+    public ArrayList<CartaSviluppo> primoPeriodoImpresa() throws SQLException {
+        ArrayList<CartaSviluppo> carte=new ArrayList<CartaSviluppo>();
         carte=generaMazzoCarteImpresa("1");
-        carte=mischiaMazzoImpresa(carte);
+        carte=mischiaMazzo(carte);
 
         return carte;
 
     }
 
-    public ArrayList<CartaImpresa> secondoPeriodoImpresa() throws SQLException {
-        ArrayList<CartaImpresa> carte=new ArrayList<CartaImpresa>();
+    public ArrayList<CartaSviluppo> secondoPeriodoImpresa() throws SQLException {
+        ArrayList<CartaSviluppo> carte=new ArrayList<CartaSviluppo>();
         carte=generaMazzoCarteImpresa("2");
-        carte=mischiaMazzoImpresa(carte);
+        carte=mischiaMazzo(carte);
 
         return carte;
 
     }
 
-    public ArrayList<CartaImpresa> terzoPeriodoImpresa() throws SQLException {
-        ArrayList<CartaImpresa> carte=new ArrayList<CartaImpresa>();
+    public ArrayList<CartaSviluppo> terzoPeriodoImpresa() throws SQLException {
+        ArrayList<CartaSviluppo> carte=new ArrayList<CartaSviluppo>();
         carte=generaMazzoCarteImpresa("3");
-        carte=mischiaMazzoImpresa(carte);
+        carte=mischiaMazzo(carte);
 
         return carte;
 
     }
 
-    public ArrayList<CartaPersonaggio> primoPeriodoPersonaggio() throws SQLException {
-        ArrayList<CartaPersonaggio> carte=new ArrayList<CartaPersonaggio>();
+    public ArrayList<CartaSviluppo> primoPeriodoPersonaggio() throws SQLException {
+        ArrayList<CartaSviluppo> carte=new ArrayList<CartaSviluppo>();
         carte=generaMazzoCartePersonaggio("1");
-        carte=mischiaMazzoPersonaggio(carte);
+        carte=mischiaMazzo(carte);
 
         return carte;
 
     }
 
-    public ArrayList<CartaPersonaggio> secondoPeriodoPersonaggio() throws SQLException {
-        ArrayList<CartaPersonaggio> carte=new ArrayList<CartaPersonaggio>();
+    public ArrayList<CartaSviluppo> secondoPeriodoPersonaggio() throws SQLException {
+        ArrayList<CartaSviluppo> carte=new ArrayList<CartaSviluppo>();
         carte=generaMazzoCartePersonaggio("2");
-        carte=mischiaMazzoPersonaggio(carte);
+        carte=mischiaMazzo(carte);
 
         return carte;
 
     }
 
-    public ArrayList<CartaPersonaggio> terzoPeriodoPersonaggio() throws SQLException {
-        ArrayList<CartaPersonaggio> carte=new ArrayList<CartaPersonaggio>();
+    public ArrayList<CartaSviluppo> terzoPeriodoPersonaggio() throws SQLException {
+        ArrayList<CartaSviluppo> carte=new ArrayList<CartaSviluppo>();
         carte=generaMazzoCartePersonaggio("3");
-        carte=mischiaMazzoPersonaggio(carte);
+        carte=mischiaMazzo(carte);
 
         return carte;
 
     }
 
 
-    private ArrayList<CartaTerritorio> mischiaMazzoTerritorio(ArrayList<CartaTerritorio> mazzettoNonMischiato) {
+    private ArrayList<CartaSviluppo> mischiaMazzo(ArrayList<CartaSviluppo> mazzettoNonMischiato) {
 
         for(int i=0; i<mazzettoNonMischiato.size(); i++){
             //temp=mazzettoNonMischiato.get(i);
@@ -149,50 +149,10 @@ public class CreatoreMazzi {
         return mazzettoNonMischiato;
     }
 
-    private ArrayList<CartaEdificio> mischiaMazzoEdificio(ArrayList<CartaEdificio> mazzettoNonMischiato) {
 
-        for(int i=0; i<mazzettoNonMischiato.size(); i++){
-            double ran=(Math.random()*100);
-            int r=(int)ran%mazzettoNonMischiato.size();
-            if(i<r) {
-                mazzettoNonMischiato.add(i, mazzettoNonMischiato.get(r));
-                mazzettoNonMischiato.remove(r + 1);
-            }
-        }
 
-        return mazzettoNonMischiato;
-    }
-
-    private ArrayList<CartaPersonaggio> mischiaMazzoPersonaggio(ArrayList<CartaPersonaggio> mazzettoNonMischiato) {
-
-        for(int i=0; i<mazzettoNonMischiato.size(); i++){
-            double ran=(Math.random()*100);
-            int r=(int)ran%mazzettoNonMischiato.size();
-            if(i<r) {
-                mazzettoNonMischiato.add(i, mazzettoNonMischiato.get(r));
-                mazzettoNonMischiato.remove(r + 1);
-            }
-        }
-
-        return mazzettoNonMischiato;
-    }
-
-    private ArrayList<CartaImpresa> mischiaMazzoImpresa(ArrayList<CartaImpresa> mazzettoNonMischiato) {
-
-        for(int i=0; i<mazzettoNonMischiato.size(); i++){
-            double ran=(Math.random()*100);
-            int r=(int)ran%mazzettoNonMischiato.size();
-            if(i<r) {
-                mazzettoNonMischiato.add(i, mazzettoNonMischiato.get(r));
-                mazzettoNonMischiato.remove(r + 1);
-            }
-        }
-
-        return mazzettoNonMischiato;
-    }
-
-    private ArrayList<CartaTerritorio> generaMazzoCarteTerritorio(String periodo) throws SQLException {
-        ArrayList<CartaTerritorio> carte= new ArrayList<CartaTerritorio>();
+    private ArrayList<CartaSviluppo> generaMazzoCarteTerritorio(String periodo) throws SQLException {
+        ArrayList<CartaSviluppo> carte= new ArrayList<CartaSviluppo>();
         rs=s.executeQuery("SELECT* FROM carte.carte WHERE periodo="+periodo+" AND tipo='territorio'");
 
         while(rs.next()){
@@ -215,8 +175,8 @@ public class CreatoreMazzi {
         return carte;
     }
 
-    private ArrayList<CartaEdificio> generaMazzoCarteEdificio(String periodo) throws SQLException {
-        ArrayList<CartaEdificio> carte= new ArrayList<CartaEdificio>();
+    private ArrayList<CartaSviluppo> generaMazzoCarteEdificio(String periodo) throws SQLException {
+        ArrayList<CartaSviluppo> carte= new ArrayList<CartaSviluppo>();
         rs=s.executeQuery("SELECT* FROM carte.carte WHERE periodo="+periodo+" AND tipo='edificio'");
 
         while(rs.next()){
@@ -239,8 +199,8 @@ public class CreatoreMazzi {
 
         return carte;
     }
-    private ArrayList<CartaPersonaggio> generaMazzoCartePersonaggio(String periodo) throws SQLException {
-        ArrayList<CartaPersonaggio> carte= new ArrayList<CartaPersonaggio>();
+    private ArrayList<CartaSviluppo> generaMazzoCartePersonaggio(String periodo) throws SQLException {
+        ArrayList<CartaSviluppo> carte= new ArrayList<CartaSviluppo>();
         rs=s.executeQuery("SELECT* FROM carte.carte WHERE periodo="+periodo+" AND tipo='personaggio'");
 
         while(rs.next()){
@@ -290,8 +250,8 @@ public class CreatoreMazzi {
         return null;
     }
 
-    private ArrayList<CartaImpresa> generaMazzoCarteImpresa(String periodo) throws SQLException {
-        ArrayList<CartaImpresa> carte= new ArrayList<CartaImpresa>();
+    private ArrayList<CartaSviluppo> generaMazzoCarteImpresa(String periodo) throws SQLException {
+        ArrayList<CartaSviluppo> carte= new ArrayList<CartaSviluppo>();
         rs=s.executeQuery("SELECT* FROM carte.carte WHERE periodo="+periodo+" AND tipo='impresa'");
 
         while(rs.next()){
