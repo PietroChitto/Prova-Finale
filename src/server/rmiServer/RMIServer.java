@@ -1,5 +1,6 @@
 package server.rmiServer;
 
+import Client.InterfacciaClient;
 import partita.Partita;
 import partita.componentiDelTabellone.Giocatore;
 import server.GiocatoreRemoto;
@@ -43,9 +44,10 @@ public class RMIServer extends UnicastRemoteObject implements ServerInterface{
     }
 
     @Override
-    public InterfaciaRemotaRMI partecipaAPartita(String username) throws RemoteException {
+    public InterfaciaRemotaRMI partecipaAPartita(String username, InterfacciaClient controller) throws RemoteException {
         GiocatoreRMI giocatore=new GiocatoreRMI();
         giocatore.setUsername(username);
+        giocatore.setControllerClientRMI(controller);
         Server.giocatori.add(giocatore);
 
         stampaListaGiocatori();

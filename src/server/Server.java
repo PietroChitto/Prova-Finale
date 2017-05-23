@@ -1,5 +1,6 @@
 package server;
 
+import Client.InterfacciaClient;
 import partita.Partita;
 import partita.componentiDelTabellone.Familiare;
 import server.rmiServer.InterfaciaRemotaRMI;
@@ -47,7 +48,7 @@ public class Server implements ServerInterface {
     }
 
     @Override
-    public InterfaciaRemotaRMI partecipaAPartita(String username) throws RemoteException {
+    public InterfaciaRemotaRMI partecipaAPartita(String username, InterfacciaClient controller) throws RemoteException {
         return null;
     }
 /*

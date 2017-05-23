@@ -1,5 +1,6 @@
 package server.socketServer;
 
+import Client.InterfacciaClient;
 import server.*;
 import server.rmiServer.InterfaciaRemotaRMI;
 
@@ -31,7 +32,7 @@ public class SocketServer implements ServerInterface{
     }
 
     @Override
-    public InterfaciaRemotaRMI partecipaAPartita(String username) throws RemoteException {
+    public InterfaciaRemotaRMI partecipaAPartita(String username, InterfacciaClient controller) throws RemoteException {
         return null;
     }
 

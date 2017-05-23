@@ -11,6 +11,7 @@ import partita.eccezioniPartita.ZonaOccupataExcepion;
 import server.GiocatoreRemoto;
 import server.rmiServer.GiocatoreRMI;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 /**
@@ -18,6 +19,7 @@ import java.util.ArrayList;
  */
 public class Partita {
     private ArrayList<GiocatoreRemoto> giocatori;
+    private ArrayList<Giocatore> giocatoriGioco;
     private CampoDaGioco campoDaGioco;
     private ArrayList<Giocatore> ordineTurno;
     private Giocatore giocatoreCorrente;
@@ -30,6 +32,7 @@ public class Partita {
 
     public Partita() {
         giocatori=new ArrayList<>();
+        giocatoriGioco= new ArrayList<Giocatore>();
         ordineTurno = new ArrayList<Giocatore>();
     }
 
@@ -45,7 +48,16 @@ public class Partita {
         giocatori.add(giocatoreRemoto);
     }
 
-    public void iniziaPartita(){
+    public void creaGiocatoriGioco(){
+        for(GiocatoreRemoto gr: giocatori){
+            giocatoriGioco.add(gr.getGiocatore());
+        }
+    }
+
+    public void iniziaPartita() throws RemoteException {
+        creaGiocatoriGioco();
+        //avvisa i client che la partita è iniziata e possono fare le mosse
+        avvisoInizioPartita();
         ordineTurnoIniziale();
         creaCampoDaGioco();
         periodo=1;
@@ -55,7 +67,11 @@ public class Partita {
         //avvisa il client delle carte delle torri;
     }
 
-
+    private void avvisoInizioPartita() throws RemoteException {
+        for(GiocatoreRemoto g: giocatori){
+            g.iniziaPartita(g.getGiocatore().getId());
+        }
+    }
 
 
     public CampoDaGioco getCampoDaGioco() {
@@ -120,11 +136,11 @@ public class Partita {
         this.periodo = periodo;
     }
 
-    private void settaProssimoGiocatore() {
+    private void settaProssimoGiocatore(GiocatoreRemoto giocatoreRemoto) {
 
     }
 
-    public void passaMossa(GiocatoreRMI giocatoreRMI) throws ZonaOccupataExcepion, ForzaInsufficienteException {
+    public void passaMossa(GiocatoreRemoto giocatoreRemoto) throws ZonaOccupataExcepion, ForzaInsufficienteException {
         ripristinaForzaTabellone();
         numeroMosseTurno++;
         if(numeroMosseTurno==giocatori.size()*4){
@@ -132,7 +148,7 @@ public class Partita {
             numeroMosseTurno=0;
         }
 
-        settaProssimoGiocatore();
+        settaProssimoGiocatore(giocatoreRemoto);
 
     }
 
@@ -266,6 +282,8 @@ public class Partita {
 
             if (vat.controlloPuntiFede(giocatori.get(i).getGiocatore(), periodo)){
                 //implementa scelta gestione punti fede
+                //invia al client la possibilità di secglere
+
             }
         }
     }

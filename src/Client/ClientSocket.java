@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.rmi.RemoteException;
 import java.util.Scanner;
 
 /**
@@ -45,5 +46,15 @@ public class ClientSocket implements InterfacciaClient {
 
         //messaggio inizia partita
         //while true
+    }
+
+    @Override
+    public void iniziaPartita(int mioId) throws RemoteException {
+
+    }
+
+    @Override
+    public void SpostatoFamiliarePiano(int numeroTorre, int numeroPiano, String coloreDado, int idGiocatore) throws RemoteException {
+
     }
 }

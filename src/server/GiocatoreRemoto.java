@@ -1,5 +1,6 @@
 package server;
 
+import Client.InterfacciaClient;
 import partita.Partita;
 import partita.componentiDelTabellone.Giocatore;
 import server.rmiServer.InterfaciaRemotaRMI;
@@ -7,7 +8,7 @@ import server.rmiServer.InterfaciaRemotaRMI;
 /**
  * Created by Pietro on 16/05/2017.
  */
-public abstract class GiocatoreRemoto implements InterfaciaRemotaRMI{
+public abstract class GiocatoreRemoto implements InterfaciaRemotaRMI, InterfacciaClient{
 
 
     private transient Giocatore giocatore;

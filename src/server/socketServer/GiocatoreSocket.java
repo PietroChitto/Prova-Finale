@@ -1,9 +1,11 @@
 package server.socketServer;
 
+import Client.InterfacciaClient;
 import Client.Messaggio;
 import partita.Partita;
 import partita.componentiDelTabellone.Giocatore;
 import server.GiocatoreRemoto;
+import server.MosseGiocatore;
 import server.Server;
 import server.ServerInterface;
 import server.rmiServer.InterfaciaRemotaRMI;
@@ -17,17 +19,19 @@ import java.rmi.RemoteException;
 /**
  * Created by Pietro on 16/05/2017.
  */
- class GiocatoreSocket extends GiocatoreRemoto implements Runnable, InterfaciaRemotaRMI, ServerInterface {
+ class GiocatoreSocket extends GiocatoreRemoto implements Runnable, ServerInterface{
 
     private Socket socket;
     private ObjectOutputStream out;
     private ObjectInputStream in;
-    private Partita partita;
     private String nickName;
+    private MosseGiocatore mosseGiocatore;
+
 
     public GiocatoreSocket(Socket socket)
     {
       this.socket=socket;
+      mosseGiocatore=new MosseGiocatore(this);
     }
 
     @Override
@@ -45,7 +49,7 @@ import java.rmi.RemoteException;
              messaggio= (Messaggio) in.readObject();
              nickName=messaggio.getMessasggio();
              System.out.println(nickName+" connesso");
-             partecipaAPartita(nickName);
+             partecipaAPartita(nickName, null);
           }
 
        } catch (IOException e) {
@@ -60,7 +64,7 @@ import java.rmi.RemoteException;
 
 
    @Override
-   public InterfaciaRemotaRMI partecipaAPartita(String username) throws RemoteException {
+   public InterfaciaRemotaRMI partecipaAPartita(String username, InterfacciaClient controller) throws RemoteException {
       Server.giocatori.add(this);
       this.setUsername(nickName);
       System.out.println("dentro metodo sk "+Server.giocatori.size()+" connessi");
@@ -124,5 +128,61 @@ import java.rmi.RemoteException;
     @Override
     public void scegliScomunica(boolean appoggiaChiesa) throws RemoteException {
 
+    }
+
+    @Override
+    public void iniziaPartita(int mioId) {
+        Messaggio messaggio=new Messaggio("INIZIOPARTITA");
+        try {
+            out.writeObject(messaggio);
+            out.writeInt(mioId);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public void SpostatoFamiliarePiano(int numeroTorre, int numeroPiano, String coloreDado, int idGiocatore) throws RemoteException {
+
+    }
+
+    class SocketHandler implements Runnable{
+
+        private Messaggio messaggio;
+
+        @Override
+        public void run() {
+
+
+            String comando;
+            String tempString1;
+            String tempString2;
+            int tempInt1;
+
+            while(true){
+                try {
+                    messaggio= (Messaggio) in.readObject();
+                    comando=messaggio.getMessasggio();
+                    if(comando.startsWith("SELEZIONA")){
+                        messaggio=(Messaggio) in.readObject();
+                        tempString1=messaggio.getMessasggio();
+                        tempInt1=in.readInt();
+                        mosseGiocatore.selezionaFamiliare(tempString1, tempInt1);
+                    }
+                    else if(comando.startsWith("DESELEZIONA")){
+
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+
+
+            }
+
+        }
     }
 }
