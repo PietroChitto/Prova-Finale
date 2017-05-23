@@ -11,11 +11,16 @@ import java.util.Scanner;
  * Created by Pietro on 16/05/2017.
  */
 public class ClientSocket implements InterfacciaClient {
-    Socket socket;
-    String nickName;
-    Scanner stdin;
-    ObjectInputStream in;
-    ObjectOutputStream out;
+    private Socket socket;
+    private String nickName;
+    private Scanner stdin;
+    private ObjectInputStream in;
+    private ObjectOutputStream out;
+    private Messaggio messaggio;
+    private String comando;
+    private int id;
+    private boolean partitatInCorso;
+
     public ClientSocket() throws IOException {
         try {
             socket=new Socket("localhost", 8001);
@@ -43,18 +48,41 @@ public class ClientSocket implements InterfacciaClient {
         out.writeObject(new Messaggio(nickName));
         out.flush();
 
+        //attendo il messaggio di inzio partita
+        try {
+            messaggio=(Messaggio) in.readObject();
+            comando=messaggio.getMessasggio();
+            System.out.println("messaggio ricevuto: "+comando);
+            int mioId;
+            mioId=in.readInt();
+            iniziaPartita(mioId);
 
-        //messaggio inizia partita
-        //while true
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void iniziaPartita(int mioId) throws RemoteException {
-
+        this.id=mioId;
+        partitatInCorso=true;
+        System.out.println("sono "+nickName+" con id "+id);
+        //faccio partire il thread cherimane in ascolto delle risposte del server
+        new Thread(new ClientHandler()).start();
     }
 
     @Override
     public void SpostatoFamiliarePiano(int numeroTorre, int numeroPiano, String coloreDado, int idGiocatore) throws RemoteException {
 
+    }
+
+    class ClientHandler implements Runnable{
+
+        @Override
+        public void run() {
+
+
+        }
     }
 }

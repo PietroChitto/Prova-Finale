@@ -135,7 +135,9 @@ import java.rmi.RemoteException;
         Messaggio messaggio=new Messaggio("INIZIOPARTITA");
         try {
             out.writeObject(messaggio);
+            out.flush();
             out.writeInt(mioId);
+            out.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }

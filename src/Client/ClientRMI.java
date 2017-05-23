@@ -30,7 +30,16 @@ public class ClientRMI implements InterfacciaClient, Serializable {
         ServerInterface inizio = (ServerInterface) registry.lookup("InterfaciaRemotaRMI");
         System.out.println("Oggetto scaricato");
         System.out.println("Inserici un nickName");
-        metodiPartita=(InterfaciaRemotaRMI) inizio.partecipaAPartita(in.next(), this);
+        nickname=in.next();
+        metodiPartita=(InterfaciaRemotaRMI) inizio.partecipaAPartita(nickname, this);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true){
+                    System.out.print("");
+                }
+            }
+        }).start();
     }
 
     private void startClient() {
@@ -45,9 +54,10 @@ public class ClientRMI implements InterfacciaClient, Serializable {
 
     @Override
     public void iniziaPartita(int mioId) throws RemoteException {
+        System.out.println("sono dentro");
         this.id=mioId;
         partitaIncorso=true;
-        startClient();
+        System.out.println("sono "+nickname+" con id "+ id+" e sono RMI");
     }
 
     @Override

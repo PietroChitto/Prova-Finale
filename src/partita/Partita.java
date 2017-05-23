@@ -56,8 +56,10 @@ public class Partita {
 
     public void iniziaPartita() throws RemoteException {
         creaGiocatoriGioco();
+        System.out.println("creatiGiocatoriGioco");
         //avvisa i client che la partita è iniziata e possono fare le mosse
         avvisoInizioPartita();
+        System.out.println("GiocatoriAvvisati");
         ordineTurnoIniziale();
         creaCampoDaGioco();
         periodo=1;
@@ -69,7 +71,9 @@ public class Partita {
 
     private void avvisoInizioPartita() throws RemoteException {
         for(GiocatoreRemoto g: giocatori){
+            System.out.println("provo avviso...");
             g.iniziaPartita(g.getGiocatore().getId());
+            System.out.println("avvisato");
         }
     }
 
