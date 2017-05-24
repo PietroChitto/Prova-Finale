@@ -61,7 +61,7 @@ public class ClientRMI implements InterfacciaClient, Serializable {
     }
 
     @Override
-    public void SpostatoFamiliarePiano(int numeroTorre, int numeroPiano, String coloreDado, int idGiocatore) throws RemoteException {
+    public void spostatoFamiliarePiano(int numeroTorre, int numeroPiano, String coloreDado, int idGiocatore) throws RemoteException {
 
     }
 }

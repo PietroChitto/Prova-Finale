@@ -17,6 +17,7 @@ import java.rmi.RemoteException;
 /**
  * Created by Pietro on 23/05/2017.
  */
+
 public class MosseGiocatore implements InterfaciaRemotaRMI {
     Familiare familiareSelezionato;
     GiocatoreRemoto giocatore;
