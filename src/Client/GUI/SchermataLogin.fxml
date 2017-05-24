@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="296.0" prefWidth="505.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.GUI.ControllerLogin">
+   <children>
+      <ImageView fitHeight="296.0" fitWidth="505.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@image/ImageLogin.jpg" />
+         </image>
+      </ImageView>
+      <Button fx:id="txtStartRMI" layoutY="202.0" mnemonicParsing="false" onAction="#login" prefHeight="40.0" prefWidth="163.0" text="Start! (RMI)">
+         <textFill>
+            <LinearGradient endX="1.0" endY="0.8" startX="1.0" startY="0.6047619047619047">
+               <stops>
+                  <Stop color="#17e51e" />
+                  <Stop color="#fff309" offset="1.0" />
+               </stops>
+            </LinearGradient>
+         </textFill>
+         <font>
+            <Font name="System Bold Italic" size="18.0" />
+         </font>
+      </Button>
+      <TextField fx:id="txtUsername" layoutX="178.0" layoutY="40.0" promptText="User Name" />
+      <Label layoutX="-28.0" layoutY="118.0" text="Label" />
+      <Button fx:id="txtExit" layoutX="395.0" layoutY="242.0" mnemonicParsing="false" onAction="#exit" prefHeight="40.0" prefWidth="96.0" text="Exit">
+         <font>
+            <Font name="System Bold Italic" size="18.0" />
+         </font>
+         <textFill>
+            <LinearGradient cycleMethod="REFLECT" endX="0.14761904761904762" endY="0.8190476190476191" startX="1.0" startY="0.6047619047619047">
+               <stops>
+                  <Stop color="#e31919" />
+                  <Stop color="#e31919" offset="0.007662835249042145" />
+                  <Stop color="#f7bb16" offset="1.0" />
+               </stops>
+            </LinearGradient>
+         </textFill>
+      </Button>
+      <Button fx:id="txtStartSocket" layoutY="242.0" mnemonicParsing="false" onAction="#login" prefHeight="40.0" prefWidth="163.0" text="Start! (SOCKET)">
+         <textFill>
+            <LinearGradient endX="1.0" endY="0.8" startX="1.0" startY="0.7904761904761904">
+               <stops>
+                  <Stop color="#17e51e" />
+                  <Stop color="#fff309" offset="1.0" />
+               </stops>
+            </LinearGradient>
+         </textFill>
+         <font>
+            <Font name="System Bold Italic" size="18.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

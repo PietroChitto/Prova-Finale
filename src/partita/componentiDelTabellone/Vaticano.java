@@ -36,9 +36,7 @@ public class Vaticano {
             scomunica(g,periodo);
             return false;
         }
-
         return true;
-
     }
 
     public synchronized void scomunica(Giocatore g,int periodo){

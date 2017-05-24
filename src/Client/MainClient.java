@@ -1,31 +1,37 @@
 package Client;
 
+import Client.GUI.ControllerLogin;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
-import java.util.Scanner;
 
 /**
  * Created by Pietro on 16/05/2017.
  */
-public class MainClient {
+public class MainClient extends Application {
+    public static Stage  stage;
     public static void main(String[] args) throws IOException, NotBoundException {
-        Scanner in=new Scanner(System.in);
-        System.out.println("Come vuoi connetterti:\n1-Socket\n2-RMI");
-        InterfacciaClient client;
-        int scelta=in.nextInt();
 
-        switch (scelta){
-            case 1:
-                try {
-                    client=new ClientSocket();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                break;
-            case 2:client=new ClientRMI();
-                break;
+        launch(args);
 
-        }
     }
+
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        stage=primaryStage;
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("GUI/SchermataLogin.fxml"));
+        Parent root = fxmlLoader.load();
+        primaryStage.setTitle("Lorenzo il magnifico");
+        primaryStage.setScene(new Scene(root));
+        primaryStage.show();
+
+    }
+
+
 }

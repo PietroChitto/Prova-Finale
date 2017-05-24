@@ -1,5 +1,7 @@
 package Client;
 
+import Client.GUI.ControllerLogin;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -10,7 +12,7 @@ import java.util.Scanner;
 /**
  * Created by Pietro on 16/05/2017.
  */
-public class ClientSocket implements InterfacciaClient {
+public class ClientSocket implements InterfacciaClient, ClientGenerico{
     private Socket socket;
     private String nickName;
     private Scanner stdin;
@@ -21,7 +23,8 @@ public class ClientSocket implements InterfacciaClient {
     private int id;
     private boolean partitatInCorso;
 
-    public ClientSocket() throws IOException {
+    public ClientSocket(String userName) throws IOException {
+        nickName=userName;
         try {
             socket=new Socket("localhost", 8001);
         } catch (IOException e) {
@@ -29,27 +32,27 @@ public class ClientSocket implements InterfacciaClient {
         }
         stdin = new Scanner(System.in);
         System.out.println("Client connesso alla porta 8001 attraverso socket1");
-        startClient();
+        startClient(nickName);
     }
 
-    private void startClient() throws IOException {
-        //CreaInterfaccia
+    private void startClient(String userName) throws IOException {
+
         try {
             out = new ObjectOutputStream(socket.getOutputStream());
-            in= new ObjectInputStream(socket.getInputStream());
+            in = new ObjectInputStream(socket.getInputStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        System.out.println("Segli un nickname");
-        nickName=stdin.next();
         out.writeObject(new Messaggio("PARTECIPA"));
         out.flush();
         out.writeObject(new Messaggio(nickName));
         out.flush();
+    }
+
+
 
         //attendo il messaggio di inzio partita
-        try {
+        /*try {
             messaggio=(Messaggio) in.readObject();
             comando=messaggio.getMessasggio();
             System.out.println("messaggio ricevuto: "+comando);
@@ -61,7 +64,7 @@ public class ClientSocket implements InterfacciaClient {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     @Override
     public void iniziaPartita(int mioId) throws RemoteException {
@@ -73,11 +76,12 @@ public class ClientSocket implements InterfacciaClient {
     }
 
     @Override
-    public void SpostatoFamiliarePiano(int numeroTorre, int numeroPiano, String coloreDado, int idGiocatore) throws RemoteException {
+    public void spostatoFamiliarePiano(int numeroTorre, int numeroPiano, String coloreDado, int idGiocatore) throws RemoteException {
 
     }
 
     class ClientHandler implements Runnable{
+
 
         @Override
         public void run() {
