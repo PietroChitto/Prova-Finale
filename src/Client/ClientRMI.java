@@ -15,31 +15,20 @@ import java.util.Scanner;
 /**
  * Created by Pietro on 16/05/2017.
  */
-public class ClientRMI implements InterfacciaClient, Serializable {
-    private transient Scanner in;
+public class ClientRMI implements InterfacciaClient, Serializable, ClientGenerico {
     private String nickname;
     private int id;
     boolean partitaIncorso;
     private InterfaciaRemotaRMI metodiPartita;
 
-    public ClientRMI() throws RemoteException, NotBoundException {
-        in=new Scanner(System.in);
+    public ClientRMI(String text) throws RemoteException, NotBoundException {
+        nickname=text;
         partitaIncorso=false;
         Registry registry = LocateRegistry.getRegistry(8000);
         System.out.println("Registry caricato");
         ServerInterface inizio = (ServerInterface) registry.lookup("InterfaciaRemotaRMI");
         System.out.println("Oggetto scaricato");
-        System.out.println("Inserici un nickName");
-        nickname=in.next();
         metodiPartita=(InterfaciaRemotaRMI) inizio.partecipaAPartita(nickname, this);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true){
-                    System.out.print("");
-                }
-            }
-        }).start();
     }
 
     private void startClient() {
