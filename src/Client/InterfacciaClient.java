@@ -8,7 +8,7 @@ import java.rmi.RemoteException;
  */
  public interface InterfacciaClient extends Remote{
       public void iniziaPartita(int mioId) throws RemoteException;
-      public void SpostatoFamiliarePiano(int numeroTorre, int numeroPiano, String coloreDado, int idGiocatore) throws RemoteException;
+      public void spostatoFamiliarePiano(int numeroTorre, int numeroPiano, String coloreDado, int idGiocatore) throws RemoteException;
       //public void spostaFamiliareMercato(int zonaMercato) throws RemoteException;
       //public void spostaFamiliarePalazzoDelConsiglio() throws RemoteException;
       //public void spostaFamiliareZonaProduzione(int zona) throws RemoteException;

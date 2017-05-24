@@ -87,7 +87,7 @@ public class GiocatoreRMI extends GiocatoreRemoto implements Serializable{
     }
 
     @Override
-    public void SpostatoFamiliarePiano(int numeroTorre, int numeroPiano, String coloreDado, int idGiocatore) throws RemoteException {
-
+    public void spostatoFamiliarePiano(int numeroTorre, int numeroPiano, String coloreDado, int idGiocatore) throws RemoteException {
+        controllerClient.spostatoFamiliarePiano(numeroTorre,numeroPiano,coloreDado,idGiocatore);
     }
 }

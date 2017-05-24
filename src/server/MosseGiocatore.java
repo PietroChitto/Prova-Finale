@@ -59,6 +59,11 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
             giocatore.getPartita().getCampoDaGioco().getTabellone().getTorre(numeroTorre).getPiano(numeroPiano).getCampoAzione().setFamiliare(familiareSelezionato);
             //se non va a buon fine lancia un eccezione
             prendiCarta(numeroTorre,numeroPiano);
+            //avviso i giocatori della mossa
+            for (GiocatoreRemoto g: giocatore.getPartita().getGiocatori()){
+                giocatore.spostatoFamiliarePiano(numeroTorre,numeroPiano,familiareSelezionato.getColoreDado(), familiareSelezionato.getIdGiocatore());
+            }
+
             giocatore.getPartita().passaMossa(giocatore);//ripristina il tabellone e fa i controlli di turno e periodo
         } catch (TurnoException e) {
             //avvisa che non è il suo turno

@@ -36,6 +36,10 @@ public class Partita {
         ordineTurno = new ArrayList<Giocatore>();
     }
 
+    public ArrayList<GiocatoreRemoto> getGiocatori() {
+        return giocatori;
+    }
+
     private void ordineTurnoIniziale() {
         for(GiocatoreRemoto gr: giocatori){
             ordineTurno.add(gr.getGiocatore());
