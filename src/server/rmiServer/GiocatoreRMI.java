@@ -6,6 +6,7 @@ import partita.carteDaGioco.CartaImpresa;
 import partita.carteDaGioco.CartaPersonaggio;
 import partita.carteDaGioco.CartaTerritorio;
 import partita.componentiDelTabellone.Familiare;
+import partita.componentiDelTabellone.Giocatore;
 import partita.eccezioniPartita.ForzaInsufficienteException;
 import partita.eccezioniPartita.RisorseInsufficientiException;
 import partita.eccezioniPartita.TurnoException;
@@ -15,6 +16,7 @@ import server.MosseGiocatore;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 /**
  * Created by Pietro on 16/05/2017.
@@ -82,8 +84,8 @@ public class GiocatoreRMI extends GiocatoreRemoto implements Serializable{
     }
 
     @Override
-    public void iniziaPartita(int mioId) throws RemoteException {
-        controllerClient.iniziaPartita(mioId);
+    public void iniziaPartita(int mioId, ArrayList<String> carte, ArrayList<String> giocatori) throws RemoteException {
+        controllerClient.iniziaPartita(mioId, carte, giocatori);
     }
 
     @Override

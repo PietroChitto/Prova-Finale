@@ -29,6 +29,7 @@ public class Partita {
     private int valoreDadoNero;
     private int valoreDadoArancio;
     private int valoreDadoBianco;
+    private ArrayList<String> nomiCarte;
 
     public Partita() {
         giocatori=new ArrayList<>();
@@ -61,23 +62,26 @@ public class Partita {
     public void iniziaPartita() throws RemoteException {
         creaGiocatoriGioco();
         System.out.println("creatiGiocatoriGioco");
-        //avvisa i client che la partita è iniziata e possono fare le mosse
-        avvisoInizioPartita();
-        System.out.println("GiocatoriAvvisati");
         ordineTurnoIniziale();
         creaCampoDaGioco();
         periodo=1;
         turno=1;
         numeroMosseTurno=0;
         getCampoDaGioco().mettiCarteNelleTorri();
-        //avvisa il client delle carte delle torri;
+        nomiCarte=getCampoDaGioco().getNomiCarteTorri();
+        //avvisa i client che la partita è iniziata e possono fare le mosse
+        avvisoInizioPartita();
+        System.out.println("giocatori avvisati");
     }
 
     private void avvisoInizioPartita() throws RemoteException {
+        ArrayList<String> nomiGiocatori=new ArrayList<String>();
+        for (GiocatoreRemoto g: giocatori){
+            nomiGiocatori.add(g.getUsername());
+        }
+        System.out.print("giocatori remoti: "+giocatori.size());
         for(GiocatoreRemoto g: giocatori){
-            System.out.println("provo avviso...");
-            g.iniziaPartita(g.getGiocatore().getId());
-            System.out.println("avvisato");
+            g.iniziaPartita(g.getGiocatore().getId(), nomiCarte, nomiGiocatori);
         }
     }
 

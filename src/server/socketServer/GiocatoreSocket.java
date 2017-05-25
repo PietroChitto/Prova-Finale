@@ -3,6 +3,7 @@ package server.socketServer;
 import Client.InterfacciaClient;
 import Client.Messaggio;
 import partita.Partita;
+import partita.carteDaGioco.CartaSviluppo;
 import partita.componentiDelTabellone.Giocatore;
 import server.GiocatoreRemoto;
 import server.MosseGiocatore;
@@ -15,6 +16,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 /**
  * Created by Pietro on 16/05/2017.
@@ -81,6 +83,7 @@ import java.rmi.RemoteException;
             }
             p.iniziaPartita();
             Server.giocatori.clear();
+            System.out.print("svuoto lista giocatori");
       }
          return null;
    }
@@ -131,13 +134,30 @@ import java.rmi.RemoteException;
     }
 
     @Override
-    public void iniziaPartita(int mioId) {
+    public void iniziaPartita(int mioId, ArrayList<String> carte, ArrayList<String> giocatori) {
         Messaggio messaggio=new Messaggio("INIZIOPARTITA");
         try {
             out.writeObject(messaggio);
             out.flush();
             out.writeInt(mioId);
             out.flush();
+            System.out.println("messaggio inviato: "+mioId);
+            for(String nomeCarta: carte){
+                messaggio.setMessasggio(nomeCarta);
+                System.out.println("messaggio inviato: "+nomeCarta);
+                out.writeObject(messaggio);
+                out.flush();
+            }
+            /*for (String giocatore: giocatori){
+                messaggio.setMessasggio(giocatore);
+                out.writeObject(messaggio);
+                out.flush();
+            }*/
+
+            System.out.println("situazione iniziale inviata");
+
+            //passare lista giocatori
+            //passare lista carte
         } catch (IOException e) {
             e.printStackTrace();
         }

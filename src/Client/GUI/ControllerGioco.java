@@ -1,57 +1,131 @@
 package Client.GUI;
 
+import Client.ClientGenerico;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ControllerGioco {
-    private ImageView imgprova;
-    private ImageView imgprova1;
-    private ImageView imgprova2;
-    private ImageView imgprova3;
+    private ClientGenerico clientGenerico;
+    private ArrayList<ImageView> immagini;
+    private HashMap<Integer,String> giocatori;
+    private int mioId;
 
 
-    public void inizializza(){
-        imgprova=new ImageView();
-        imgprova.setFitWidth(gridCarteTorre1.getWidth());
-        imgprova.setFitHeight(gridCarteTorre1.getHeight()/4);
-        Image borgo = new Image("Client/GUI/img/Carte/Territori/Borgo.jpg");
-        imgprova.setImage(borgo);
-        gridCarteTorre1.add(imgprova, 0,0);
-
-        imgprova1=new ImageView();
-        imgprova1.setFitWidth(gridCarteTorre1.getWidth());
-        imgprova1.setFitHeight(gridCarteTorre1.getHeight()/4);
-        Image borgo1 = new Image("Client/GUI/img/Carte/Territori/Borgo.jpg");
-        imgprova1.setImage(borgo1);
-        gridCarteTorre1.add(imgprova1, 0,1);
-
-        imgprova2=new ImageView();
-        imgprova2.setFitWidth(gridCarteTorre1.getWidth());
-        imgprova2.setFitHeight(gridCarteTorre1.getHeight()/4);
-        Image borgo2 = new Image("Client/GUI/img/Carte/Territori/Borgo.jpg");
-        imgprova2.setImage(borgo2);
-        this.gridCarteTorre1.add(imgprova2, 0,2);
-
-        imgprova3=new ImageView();
-        imgprova3.setFitWidth(gridCarteTorre1.getWidth());
-        imgprova3.setFitHeight(gridCarteTorre1.getHeight()/4);
-        Image borgo3 = new Image("Client/GUI/img/Carte/Territori/Citta.jpg");
-        imgprova3.setImage(borgo3);
-        this.gridCarteTorre1.add(imgprova3,0,3);
+    public void inizializza(HashMap<Integer, String> giocatori, ArrayList<String> carte, int mioId){
+        this.giocatori=giocatori;
+        this.mioId=mioId;
+        mettiCarteNelleTorri(carte);
     }
+
+    public void mettiCarteNelleTorri(ArrayList<String> nomiCarte){
+        immagini=new ArrayList<>();
+        Image tempImg;
+        ImageView tempImageView;
+        int i=0;
+        for(String nomeCarta: nomiCarte){
+
+            tempImageView =new ImageView();
+            tempImg = new Image("Client/GUI/img/Carte/Territori/"+nomeCarta+".jpg");
+            tempImageView.setImage(tempImg);
+            immagini.add(tempImageView);
+
+            if(i<4){
+                gridCarteTorre0.add(tempImageView,0,i%4);
+            }
+            else if(i<8){
+                gridCarteTorre1.add(tempImageView, 0, i%4);
+            }else if(i<12){
+                gridCarteTorre2.add(tempImageView, 0, i%4);
+            }else if(i<16){
+                gridCarteTorre3.add(tempImageView, 0, i%4);
+            }
+
+
+        }
+        settaEventiCarta(immagini);
+    }
+
+    public void settaEventiCarta(ArrayList<ImageView> carte){
+
+        for (ImageView iv: carte){
+
+            iv.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    imageCarta.setImage(iv.getImage());
+                }
+            });
+
+            iv.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    imageCarta.setImage(null);
+                }
+            });
+        }
+    }
+
+    @FXML
+    private Pane paneDadoNero;
+
+    @FXML
+    private Pane paneCasZonaRaccolto;
+
+    @FXML
+    private GridPane gridCampiAzioneTorre4;
+
+    @FXML
+    private GridPane gridCampiAzioneTorre2;
+
+    @FXML
+    private Pane paneCasZonaProd;
+
+    @FXML
+    private ImageView imageCarta;
+
+    @FXML
+    private Pane paneCamZonaProduzione;
 
     @FXML
     private GridPane gridCarteTorre3;
 
     @FXML
-    private GridPane gridCarteTorre2;
+    private GridPane gridCampiAzioneTorre0;
+
+    @FXML
+    private GridPane gridCampiAzioneTorre1;
+
+    @FXML
+    private GridPane gridCarteTorre0;
 
     @FXML
     private GridPane gridCarteTorre1;
 
     @FXML
-    private GridPane gridCarteTorre0;
+    private GridPane gridCarteTorre2;
+
+    @FXML
+    private Pane paneDadoBianco;
+
+    @FXML
+    private Pane campoAzionePalazzoDelConsiglio;
+
+    @FXML
+    private Pane paneCarta;
+
+    @FXML
+    private Pane paneDadoArancio;
+
+
+
+
 
 }

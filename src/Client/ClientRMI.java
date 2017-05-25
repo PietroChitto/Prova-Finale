@@ -1,5 +1,7 @@
 package Client;
 
+import Client.GUI.ControllerGioco;
+import partita.componentiDelTabellone.Giocatore;
 import server.GiocatoreRemoto;
 import server.ServerInterface;
 import server.rmiServer.GiocatoreRMI;
@@ -10,6 +12,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -20,9 +23,11 @@ public class ClientRMI implements InterfacciaClient, Serializable, ClientGeneric
     private int id;
     boolean partitaIncorso;
     private InterfaciaRemotaRMI metodiPartita;
+    private transient ControllerGioco controllerGioco;
 
-    public ClientRMI(String text) throws RemoteException, NotBoundException {
+    public ClientRMI(String text, ControllerGioco controllerGioco) throws RemoteException, NotBoundException {
         nickname=text;
+        this.controllerGioco=controllerGioco;
         partitaIncorso=false;
         Registry registry = LocateRegistry.getRegistry(8000);
         System.out.println("Registry caricato");
@@ -42,7 +47,7 @@ public class ClientRMI implements InterfacciaClient, Serializable, ClientGeneric
 
 
     @Override
-    public void iniziaPartita(int mioId) throws RemoteException {
+    public void iniziaPartita(int mioId, ArrayList<String> carte, ArrayList<String> giocatori) throws RemoteException {
         System.out.println("sono dentro");
         this.id=mioId;
         partitaIncorso=true;

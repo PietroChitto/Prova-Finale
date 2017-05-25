@@ -135,6 +135,18 @@ public class CampoDaGioco {
             //System.out.println("torre 3, piano "+i+" : "+ tabellone.getTorre(3).getPiano(i).getCartaSviluppo().getNome()+ " periodo " +tabellone.getTorre(3).getPiano(i).getCartaSviluppo().getPeriodo());
             mazzoImprese.remove(0);
         }
+
+    }
+
+    public ArrayList<String> getNomiCarteTorri(){
+        ArrayList<String> nomiCarte=new ArrayList<>();
+        for(int i=0; i<4; i++){
+            nomiCarte.add(tabellone.getTorre(i).getPiano(0).getCartaSviluppo().getNome());
+            nomiCarte.add(tabellone.getTorre(i).getPiano(1).getCartaSviluppo().getNome());
+            nomiCarte.add(tabellone.getTorre(i).getPiano(2).getCartaSviluppo().getNome());
+            nomiCarte.add(tabellone.getTorre(i).getPiano(3).getCartaSviluppo().getNome());
+        }
+        return nomiCarte;
     }
 
 }

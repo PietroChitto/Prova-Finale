@@ -48,24 +48,26 @@ public class ControllerLogin {
 
         }else{
 
-                if (txtStartSocket.isFocused()){
-
-                    client = new ClientSocket(txtUsername.getText());
-
-                }else{
-
-                    client=new ClientRMI(txtUsername.getText());
-
-                }
-
-                //FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("SchermataDiGioco.fxml"));
-                Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("Client/GUI/SchermataDiGioco.fxml"));
-                Platform.runLater(()->{
-                    MainClient.stage.setTitle("Lorenzo il magnifico");
-                    MainClient.stage.setScene(new Scene(root));
-                });
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("Client/GUI/SchermataDiGioco.fxml"));
+            Parent root = (Parent) fxmlLoader.load();
+            //Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("Client/GUI/SchermataDiGioco.fxml"));
+            Platform.runLater(()->{
+                MainClient.stage.setTitle("Lorenzo il magnifico");
+                MainClient.stage.setScene(new Scene(root));
+            });
+            ControllerGioco controllerGioco=(ControllerGioco) fxmlLoader.getController();
 
 
+            if (txtStartSocket.isFocused()){
+
+                client = new ClientSocket(txtUsername.getText(), controllerGioco);
+
+
+            }else{
+
+                client=new ClientRMI(txtUsername.getText(), controllerGioco);
+
+            }
 
         }
 
