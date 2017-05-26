@@ -1,7 +1,6 @@
 package Client.GUI;
 
 import Client.ClientGenerico;
-import javafx.beans.property.IntegerProperty;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -13,13 +12,15 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ControllerGioco{
     private ClientGenerico clientGenerico;
-    private ArrayList<ImageView> immagini;
+    private ArrayList<ImageView> immaginiCarte;
+    private ImageView[] immaginiDadoNero;
+    private ImageView[] immaginiDadoBianco;
+    private ImageView[] immaginiDadoArancio;
     private HashMap<Integer,String> giocatori;
     private int mioId;
     private ArrayList<FamiliareGrafico> familiari;
@@ -99,7 +100,7 @@ public class ControllerGioco{
     }
 
     public void mettiCarteNelleTorri(ArrayList<String> nomiCarte){
-        immagini=new ArrayList<>();
+        immaginiCarte =new ArrayList<>();
         Image tempImg;
         ImageView tempImageView;
         int i=0;
@@ -112,7 +113,7 @@ public class ControllerGioco{
                 tempImageView.setImage(tempImg);
                 tempImageView.setFitWidth(gridCarteTorre1.getWidth());
                 tempImageView.setFitHeight(gridCarteTorre1.getHeight()/4);
-                immagini.add(tempImageView);
+                immaginiCarte.add(tempImageView);
                 j=i%4;
                 gridCarteTorre0.add(tempImageView,0,j);
             }
@@ -122,7 +123,7 @@ public class ControllerGioco{
                 tempImageView.setImage(tempImg);
                 tempImageView.setFitWidth(gridCarteTorre1.getWidth());
                 tempImageView.setFitHeight(gridCarteTorre1.getHeight()/4);
-                immagini.add(tempImageView);
+                immaginiCarte.add(tempImageView);
                 j=i%4;
                 gridCarteTorre1.add(tempImageView, 0, i%4);
             }else if(i<12){
@@ -131,7 +132,7 @@ public class ControllerGioco{
                 tempImageView.setImage(tempImg);
                 tempImageView.setFitWidth(gridCarteTorre1.getWidth());
                 tempImageView.setFitHeight(gridCarteTorre1.getHeight()/4);
-                immagini.add(tempImageView);
+                immaginiCarte.add(tempImageView);
                 j=i%4;
                 gridCarteTorre2.add(tempImageView, 0, i%4);
             }else if(i<16){
@@ -140,7 +141,7 @@ public class ControllerGioco{
                 tempImageView.setImage(tempImg);
                 tempImageView.setFitWidth(gridCarteTorre1.getWidth());
                 tempImageView.setFitHeight(gridCarteTorre1.getHeight()/4);
-                immagini.add(tempImageView);
+                immaginiCarte.add(tempImageView);
                 j=i%4;
                 gridCarteTorre3.add(tempImageView, 0, i%4);
             }
@@ -148,7 +149,7 @@ public class ControllerGioco{
             i++;
             j++;
         }
-        settaEventiCarta(immagini);
+        settaEventiCarta(immaginiCarte);
     }
 
     public void settaEventiCarta(ArrayList<ImageView> carte){
