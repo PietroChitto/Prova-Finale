@@ -9,6 +9,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -19,13 +21,20 @@ public class ControllerGioco{
     private transient ArrayList<ImageView> immagini;
     private transient HashMap<Integer,String> giocatori;
     private int mioId;
+    private ArrayList<FamiliareGrafico> familiari;
 
 
     public void inizializza(HashMap<Integer, String> giocatori, ArrayList<String> carte, int mioId){
-        this.giocatori=giocatori;
+        familiari=new ArrayList<>();
+        FamiliareGrafico tempFam;
+        for(int i=0; i<4; i++){
+            tempFam=new FamiliareGrafico((double) 20,Color.BLUE, Color.BLACK);
+            gridFamiliari.add(tempFam,i,0);
+        }
+        /*this.giocatori=giocatori;
         this.mioId=mioId;
         settaLabelGiocatori(this.giocatori);
-        mettiCarteNelleTorri(carte);
+        mettiCarteNelleTorri(carte);*/
     }
 
     private void settaLabelGiocatori(HashMap<Integer, String> giocatori) {
@@ -179,6 +188,9 @@ public class ControllerGioco{
 
     @FXML
     private Label labelGiocatore4;
+
+    @FXML
+    private GridPane gridFamiliari;
 
 
 

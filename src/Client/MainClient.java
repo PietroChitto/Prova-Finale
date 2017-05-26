@@ -26,15 +26,15 @@ public class MainClient extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         stage=primaryStage;
-        //FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("GUI/SchermataDiGioco.fxml"));
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("GUI/SchermataLogin.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("GUI/SchermataDiGioco.fxml"));
+        //FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("GUI/SchermataLogin.fxml"));
         Parent root = fxmlLoader.load();
         primaryStage.setTitle("Lorenzo il magnifico");
-        //ControllerGioco controller= (ControllerGioco)fxmlLoader.getController();
+        ControllerGioco controller= (ControllerGioco)fxmlLoader.getController();
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
 
-        //controller.inizializza();
+        controller.inizializza(null,null,0);
 
     }
 
