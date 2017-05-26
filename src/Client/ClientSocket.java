@@ -2,6 +2,7 @@ package Client;
 
 import Client.GUI.ControllerGioco;
 import Client.GUI.ControllerLogin;
+import javafx.application.Platform;
 import partita.componentiDelTabellone.Giocatore;
 
 import java.io.IOException;
@@ -58,13 +59,17 @@ public class ClientSocket implements InterfacciaClient, ClientGenerico{
 
     @Override
     public void iniziaPartita(int mioId, ArrayList<String> carte, ArrayList<String> giocatori) throws RemoteException {
+
         HashMap<Integer,String > mappaGiocatori=new HashMap<>();
         int i=0;
         for (String g: giocatori){
             mappaGiocatori.put(i,g);
             i++;
         }
-        controllerGioco.inizializza(mappaGiocatori, carte,mioId);
+        Platform.runLater(()->{
+            controllerGioco.inizializza(mappaGiocatori, carte,mioId);
+        });
+
     }
 
     @Override
@@ -75,6 +80,7 @@ public class ClientSocket implements InterfacciaClient, ClientGenerico{
     class ClientHandler implements Runnable{
         private Messaggio messaggio;
         private String comando;
+        private Messaggio m;
 
 
         @Override
@@ -87,22 +93,17 @@ public class ClientSocket implements InterfacciaClient, ClientGenerico{
 
                     if(messaggio.getMessasggio().equals("INIZIOPARTITA")){
                         System.out.println("messaggio ricevuto: INIZIOPARTITA");
-                        messaggio.setMessasggio("");
-                        ArrayList<String> carte=new ArrayList<String>();
+                        ArrayList<String> carte;
+                        ArrayList<String> giocatori;
                         id=in.readInt();
                         System.out.println("il mio id: "+ id);
-                        for(int i=0; i<16; i++){
-                            messaggio=(Messaggio) in.readObject();
-                            carte.add(messaggio.getMessasggio());
-                            System.out.println("messaggio ricevuto: "+messaggio.getMessasggio());
-                        }
-                        /*for (String giocatore: giocatori){
-                            messaggio.setMessasggio(giocatore);
-                            out.writeObject(messaggio);
-                            out.flush();
-                        }*/
+                        carte=(ArrayList<String>) in.readObject();
+                        giocatori=(ArrayList<String>) in.readObject();
 
                         System.out.println("situazione iniziale inviata");
+
+                        iniziaPartita(id,carte,giocatori);
+
 
 
                     }

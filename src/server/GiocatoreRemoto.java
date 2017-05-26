@@ -5,17 +5,21 @@ import partita.Partita;
 import partita.componentiDelTabellone.Giocatore;
 import server.rmiServer.InterfaciaRemotaRMI;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+
 /**
  * Created by Pietro on 16/05/2017.
  */
-public abstract class GiocatoreRemoto implements InterfaciaRemotaRMI, InterfacciaClient{
+public abstract class GiocatoreRemoto extends UnicastRemoteObject implements InterfaciaRemotaRMI, InterfacciaClient{
 
 
     private transient Giocatore giocatore;
     private String username;
     private transient Partita partita;
 
-    public GiocatoreRemoto(){
+    public GiocatoreRemoto() throws RemoteException {
+        super();
     }
 
     public void setPartita(Partita partita){

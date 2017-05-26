@@ -16,17 +16,19 @@ import server.MosseGiocatore;
 
 import java.io.Serializable;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
 /**
  * Created by Pietro on 16/05/2017.
  */
-public class GiocatoreRMI extends GiocatoreRemoto implements Serializable{
+public class GiocatoreRMI extends GiocatoreRemoto{
     private InterfacciaClient controllerClient;
     private transient MosseGiocatore mosseGiocatore;
 
-    GiocatoreRMI (){
-       mosseGiocatore=new MosseGiocatore(this);
+    GiocatoreRMI () throws RemoteException {
+        super();
+        mosseGiocatore=new MosseGiocatore(this);
     }
 
     public void setControllerClientRMI(InterfacciaClient controllerClientRMI){

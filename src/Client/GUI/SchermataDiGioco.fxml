@@ -150,5 +150,9 @@
             <Font name="Papyrus" size="18.0" />
          </font>
       </Label>
+      <Label fx:id="labelGiocatore1" layoutX="633.0" layoutY="482.0" />
+      <Label fx:id="labelGiocatore2" layoutX="633.0" layoutY="515.0" />
+      <Label fx:id="labelGiocatore3" layoutX="633.0" layoutY="552.0" />
+      <Label fx:id="labelGiocatore4" layoutX="633.0" layoutY="592.0" />
    </children>
 </AnchorPane>

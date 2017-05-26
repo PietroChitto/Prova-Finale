@@ -30,9 +30,9 @@ import java.util.ArrayList;
     private MosseGiocatore mosseGiocatore;
 
 
-    public GiocatoreSocket(Socket socket)
-    {
-      this.socket=socket;
+    public GiocatoreSocket(Socket socket) throws RemoteException {
+        super();
+        this.socket=socket;
       mosseGiocatore=new MosseGiocatore(this);
     }
 
@@ -142,22 +142,11 @@ import java.util.ArrayList;
             out.writeInt(mioId);
             out.flush();
             System.out.println("messaggio inviato: "+mioId);
-            for(String nomeCarta: carte){
-                messaggio.setMessasggio(nomeCarta);
-                System.out.println("messaggio inviato: "+nomeCarta);
-                out.writeObject(messaggio);
-                out.flush();
-            }
-            /*for (String giocatore: giocatori){
-                messaggio.setMessasggio(giocatore);
-                out.writeObject(messaggio);
-                out.flush();
-            }*/
-
+            out.writeObject(carte);
+            out.flush();
+            out.writeObject(giocatori);
+            out.flush();
             System.out.println("situazione iniziale inviata");
-
-            //passare lista giocatori
-            //passare lista carte
         } catch (IOException e) {
             e.printStackTrace();
         }
