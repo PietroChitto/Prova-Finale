@@ -12,7 +12,9 @@ import partita.eccezioniPartita.TurnoException;
 import partita.eccezioniPartita.ZonaOccupataExcepion;
 import server.rmiServer.InterfaciaRemotaRMI;
 
+import java.io.IOException;
 import java.rmi.RemoteException;
+import java.util.Random;
 
 /**
  * Created by Pietro on 23/05/2017.
@@ -150,8 +152,17 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
     }
 
     @Override
-    public void tiraIDadi() throws RemoteException {
-
+    public void tiraIDadi() throws IOException {
+            giocatore.getPartita().setValoreDadoArancio((int) ((Math.random() * 100) % 6) + 1);
+            giocatore.getPartita().setValoreDadoNero((int) ((Math.random() * 100) % 6) + 1);
+            giocatore.getPartita().setValoreDadoBianco((int) ((Math.random() * 100) % 6) + 1);
+            System.out.println("valore ar: "+giocatore.getPartita().getValoreDadoArancio());
+            System.out.println("valore ne: "+giocatore.getPartita().getValoreDadoNero());
+            System.out.println("valore bi: "+giocatore.getPartita().getValoreDadoBianco());
+            for (GiocatoreRemoto g: giocatore.getPartita().getGiocatori()){
+                g.dadiTirati(giocatore.getPartita().getValoreDadoArancio(), giocatore.getPartita().getValoreDadoNero(), giocatore.getPartita().getValoreDadoBianco());
+            }
+            giocatore.getPartita().setDadiTirati(true);
     }
 
     @Override

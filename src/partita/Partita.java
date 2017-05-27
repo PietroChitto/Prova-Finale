@@ -30,11 +30,13 @@ public class Partita {
     private int valoreDadoArancio;
     private int valoreDadoBianco;
     private ArrayList<String> nomiCarte;
+    private boolean dadiTirati;
 
     public Partita() {
         giocatori=new ArrayList<>();
         giocatoriGioco= new ArrayList<Giocatore>();
         ordineTurno = new ArrayList<Giocatore>();
+        dadiTirati=false;
     }
 
     public ArrayList<GiocatoreRemoto> getGiocatori() {
@@ -301,6 +303,21 @@ public class Partita {
     }
 
 
+    public void setValoreDadoArancio(int i) {
+        this.valoreDadoArancio=i;
+    }
+
+    public void setValoreDadoBianco(int valoreDadoBianco) {
+        this.valoreDadoBianco = valoreDadoBianco;
+    }
+
+    public void setValoreDadoNero(int valoreDadoNero) {
+        this.valoreDadoNero = valoreDadoNero;
+    }
+
+    public void setDadiTirati(boolean dadiTirati) {
+        this.dadiTirati = dadiTirati;
+    }
 }
 
 /**

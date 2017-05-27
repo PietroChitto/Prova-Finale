@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
@@ -59,6 +60,8 @@ import java.util.ArrayList;
        } catch (ClassNotFoundException e) {
           e.printStackTrace();
        }
+
+       new Thread(new SocketHandler()).start();
 
 
     }
@@ -125,7 +128,11 @@ import java.util.ArrayList;
 
     @Override
     public void tiraIDadi() throws RemoteException {
-
+        try {
+            mosseGiocatore.tiraIDadi();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -133,11 +140,11 @@ import java.util.ArrayList;
 
     }
 
+//-----------------------------------------------------------------------------------------------------------------------------------------
     @Override
     public void iniziaPartita(int mioId, ArrayList<String> carte, ArrayList<String> giocatori) {
-        Messaggio messaggio=new Messaggio("INIZIOPARTITA");
         try {
-            out.writeObject(messaggio);
+            out.writeObject("INIZIOPARTITA");
             out.flush();
             out.writeInt(mioId);
             out.flush();
@@ -158,24 +165,40 @@ import java.util.ArrayList;
 
     }
 
+    @Override
+    public void dadiTirati(int ar, int ne, int bi) throws IOException {
+
+        out.writeObject("DADITIRATI");
+        out.flush();
+        out.writeObject(ar);
+        out.flush();
+        out.writeObject(ne);
+        out.flush();
+        out.writeObject(bi);
+        out.flush();
+    }
+
     class SocketHandler implements Runnable{
 
         private Messaggio messaggio;
+        boolean run=true;
 
         @Override
         public void run() {
 
-
+            System.out.println("thread socket partito");
             String comando;
             String tempString1;
-            String tempString2;
             int tempInt1;
 
-            while(true){
+            while(run){
                 try {
-                    messaggio= (Messaggio) in.readObject();
-                    comando=messaggio.getMessasggio();
-                    if(comando.startsWith("SELEZIONA")){
+                    comando=(String) in.readObject();
+                    if(comando.startsWith("TIRADADI")){
+                        System.out.println("messaggio ricevuto: TIRADADI");
+                       tiraIDadi();
+                    }
+                    else if(comando.startsWith("SELEZIONA")){
                         messaggio=(Messaggio) in.readObject();
                         tempString1=messaggio.getMessasggio();
                         tempInt1=in.readInt();
@@ -184,16 +207,29 @@ import java.util.ArrayList;
                     else if(comando.startsWith("DESELEZIONA")){
 
                     }
+                } catch (SocketException e){
+                    try {
+                        in.close();
+                        out.close();
+                        System.out.println("chiudo gli stream");
+                        stop();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
                 } catch (IOException e) {
+
                     e.printStackTrace();
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }
 
 
-
             }
 
+        }
+
+        private void stop() {
+            run=false;
         }
     }
 }

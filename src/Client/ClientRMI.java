@@ -8,6 +8,7 @@ import server.ServerInterface;
 import server.rmiServer.GiocatoreRMI;
 import server.rmiServer.InterfaciaRemotaRMI;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -21,7 +22,7 @@ import java.util.Scanner;
 /**
  * Created by Pietro on 16/05/2017.
  */
-public class ClientRMI extends UnicastRemoteObject implements InterfacciaClient, ClientGenerico {
+public class ClientRMI extends UnicastRemoteObject implements InterfacciaClient, InterfaciaRemotaRMI {
     private String nickname;
     private int id;
     boolean partitaIncorso;
@@ -31,8 +32,7 @@ public class ClientRMI extends UnicastRemoteObject implements InterfacciaClient,
     public ClientRMI(String text, ControllerGioco controllerGioco) throws RemoteException, NotBoundException {
         nickname=text;
         this.controllerGioco=controllerGioco;
-        System.out.println("lancio metodo prova");
-        controllerGioco.prova();
+        this.controllerGioco.setClientGenerico(this);
         partitaIncorso=false;
         Registry registry = LocateRegistry.getRegistry(8000);
         System.out.println("Registry caricato");
@@ -71,6 +71,66 @@ public class ClientRMI extends UnicastRemoteObject implements InterfacciaClient,
 
     @Override
     public void spostatoFamiliarePiano(int numeroTorre, int numeroPiano, String coloreDado, int idGiocatore) throws RemoteException {
+
+    }
+
+    @Override
+    public void dadiTirati(int ar, int ne, int bi) {
+        Platform.runLater(()-> {
+            try {
+                controllerGioco.dadiTirati(ar, ne, bi);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @Override
+    public void selezionaFamiliare(String colore, int idGiocatore) throws RemoteException {
+
+    }
+
+    @Override
+    public void deselezionaFamiliare() throws RemoteException {
+
+    }
+
+    @Override
+    public void spostaFamiliarePiano(int numeroTorre, int numeroPiano) throws RemoteException {
+
+    }
+
+    @Override
+    public void spostaFamiliareMercato(int zonaMercato) throws RemoteException {
+
+    }
+
+    @Override
+    public void spostaFamiliarePalazzoDelConsiglio() throws RemoteException {
+
+    }
+
+    @Override
+    public void spostaFamiliareZonaProduzione(int zona) throws RemoteException {
+
+    }
+
+    @Override
+    public void spostaFamiliareZonaRaccolto(int zona) throws RemoteException {
+
+    }
+
+    @Override
+    public void tiraIDadi() throws RemoteException {
+        try {
+            metodiPartita.tiraIDadi();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void scegliScomunica(boolean appoggiaChiesa) throws RemoteException {
 
     }
 }

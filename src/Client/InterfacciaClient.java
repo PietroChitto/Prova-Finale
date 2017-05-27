@@ -2,6 +2,7 @@ package Client;
 
 import partita.componentiDelTabellone.Giocatore;
 
+import java.io.IOException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
  public interface InterfacciaClient extends Remote{
       public void iniziaPartita(int mioId, ArrayList<String> carte, ArrayList<String> giocatori) throws RemoteException;
       public void spostatoFamiliarePiano(int numeroTorre, int numeroPiano, String coloreDado, int idGiocatore) throws RemoteException;
+      public void dadiTirati(int ar, int ne, int bi) throws IOException;
       //public void spostaFamiliareMercato(int zonaMercato) throws RemoteException;
       //public void spostaFamiliarePalazzoDelConsiglio() throws RemoteException;
       //public void spostaFamiliareZonaProduzione(int zona) throws RemoteException;

@@ -1,6 +1,7 @@
 package Client.GUI;
 
 import Client.ClientGenerico;
+import Client.InterfacciaClient;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -11,12 +12,15 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import server.rmiServer.InterfaciaRemotaRMI;
 
+import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class ControllerGioco{
-    private ClientGenerico clientGenerico;
+public class ControllerGioco implements InterfacciaClient{
+    private InterfaciaRemotaRMI clientGenerico;
     private ArrayList<ImageView> immaginiCarte;
     private ImageView[] immaginiDadoNero;
     private ImageView[] immaginiDadoBianco;
@@ -24,6 +28,10 @@ public class ControllerGioco{
     private HashMap<Integer,String> giocatori;
     private int mioId;
     private ArrayList<FamiliareGrafico> familiari;
+
+    public void setClientGenerico(InterfaciaRemotaRMI clientGenerico){
+        this.clientGenerico=clientGenerico;
+    }
 
 
 
@@ -34,6 +42,73 @@ public class ControllerGioco{
         settaLabelGiocatori(this.giocatori);
         mettiCarteNelleTorri(carte);
         creaFamiliari(mioColore());
+        creaDadi();
+    }
+
+    private void creaDadi() {
+        immaginiDadoArancio=new ImageView[6];
+        immaginiDadoBianco=new ImageView[6];
+        immaginiDadoNero=new ImageView[6];
+        ImageView da;
+        Image facciaDado;
+        for(int i=1; i<7; i++){
+            da=new ImageView();
+            facciaDado=new Image("Client/GUI/img/dadi/dadoArancio/a"+i+".png");
+            da.setImage(facciaDado);
+            da.setFitHeight(30);
+            da.setFitWidth(30);
+            immaginiDadoArancio[i-1]=da;
+            da=new ImageView();
+            facciaDado=new Image("Client/GUI/img/dadi/dadoNero/n"+i+".png");
+            da.setImage(facciaDado);
+            da.setFitHeight(30);
+            da.setFitWidth(30);
+            immaginiDadoNero[i-1]=da;
+            da=new ImageView();
+            facciaDado=new Image("Client/GUI/img/dadi/dadoBianco/b"+i+".png");
+            da.setImage(facciaDado);
+            da.setFitHeight(30);
+            da.setFitWidth(30);
+            immaginiDadoBianco[i-1]=da;
+        }
+
+        if(mioId==0){
+            paneDadoArancio.getChildren().add(immaginiDadoArancio[0]);
+            paneDadoBianco.getChildren().add(immaginiDadoBianco[0]);
+            paneDadoNero.getChildren().add(immaginiDadoNero[0]);
+        }
+
+        aggiungiEventoDadi();
+    }
+
+    private void aggiungiEventoDadi() {
+        paneDadoNero.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            try {
+                clientGenerico.tiraIDadi();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        paneDadoBianco.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            try {
+                clientGenerico.tiraIDadi();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        paneDadoArancio.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            try {
+                clientGenerico.tiraIDadi();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     private Color mioColore() {
@@ -172,9 +247,6 @@ public class ControllerGioco{
         }
     }
 
-    public void prova(){
-        labelGiocatore1.setText("met pova va");
-    }
 
     @FXML
     private Pane paneDadoNero;
@@ -243,7 +315,23 @@ public class ControllerGioco{
     private GridPane gridFamiliari;
 
 
+    @Override
+    public void iniziaPartita(int mioId, ArrayList<String> carte, ArrayList<String> giocatori) throws RemoteException {
 
+    }
 
+    @Override
+    public void spostatoFamiliarePiano(int numeroTorre, int numeroPiano, String coloreDado, int idGiocatore) throws RemoteException {
 
+    }
+
+    @Override
+    public void dadiTirati(int ar, int ne, int bi) throws RemoteException {
+        paneDadoArancio.getChildren().removeAll(paneDadoArancio.getChildren());
+        paneDadoBianco.getChildren().removeAll(paneDadoBianco.getChildren());
+        paneDadoNero.getChildren().removeAll(paneDadoNero.getChildren());
+        paneDadoArancio.getChildren().add(immaginiDadoArancio[ar-1]);
+        paneDadoBianco.getChildren().add(immaginiDadoBianco[bi-1]);
+        paneDadoNero.getChildren().add(immaginiDadoNero[ne-1]);
+    }
 }

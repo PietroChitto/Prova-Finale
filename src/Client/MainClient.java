@@ -34,7 +34,7 @@ public class MainClient extends Application {
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
 
-       //controller.inizializza(null,null,2);
+       //controller.inizializza(null,null,0);
 
     }
 

@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import server.rmiServer.InterfaciaRemotaRMI;
 
 import java.io.IOException;
 import java.rmi.NotBoundException;
@@ -19,7 +20,7 @@ import java.rmi.NotBoundException;
  */
 public class ControllerLogin {
 
-    ClientGenerico client;
+    InterfaciaRemotaRMI client;
 
 
     @FXML

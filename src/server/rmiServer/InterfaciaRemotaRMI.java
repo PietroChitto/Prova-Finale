@@ -2,6 +2,7 @@ package server.rmiServer;
 
 import partita.componentiDelTabellone.Familiare;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -19,7 +20,7 @@ public interface InterfaciaRemotaRMI extends Remote{
     public void spostaFamiliarePalazzoDelConsiglio() throws RemoteException;
     public void spostaFamiliareZonaProduzione(int zona) throws RemoteException;
     public void spostaFamiliareZonaRaccolto(int zona) throws RemoteException;
-    public void tiraIDadi() throws RemoteException;
+    public void tiraIDadi() throws IOException;
     public void scegliScomunica(boolean appoggiaChiesa) throws RemoteException;
 
 }
