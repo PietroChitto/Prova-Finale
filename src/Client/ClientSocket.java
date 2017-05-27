@@ -91,7 +91,12 @@ public class ClientSocket implements InterfacciaClient, InterfaciaRemotaRMI{
         });
     }
 
- //----------------------------------------------------------------------------------------------------------------------------------
+    @Override
+    public void messaggio(String s) throws RemoteException {
+
+    }
+
+    //----------------------------------------------------------------------------------------------------------------------------------
 
     @Override
     public void selezionaFamiliare(String colore, int idGiocatore) throws RemoteException {

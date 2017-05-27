@@ -165,5 +165,6 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
       </GridPane>
+      <Label fx:id="labelMessaggiServer" layoutX="604.0" layoutY="608.0" prefHeight="42.0" prefWidth="364.0" text="Label" />
    </children>
 </AnchorPane>

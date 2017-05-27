@@ -5,6 +5,7 @@ import Client.Messaggio;
 import partita.Partita;
 import partita.carteDaGioco.CartaSviluppo;
 import partita.componentiDelTabellone.Giocatore;
+import partita.eccezioniPartita.TurnoException;
 import server.GiocatoreRemoto;
 import server.MosseGiocatore;
 import server.Server;
@@ -178,6 +179,11 @@ import java.util.ArrayList;
         out.flush();
     }
 
+    @Override
+    public void messaggio(String s) throws RemoteException {
+
+    }
+
     class SocketHandler implements Runnable{
 
         private Messaggio messaggio;
@@ -220,6 +226,8 @@ import java.util.ArrayList;
 
                     e.printStackTrace();
                 } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                } catch (TurnoException e) {
                     e.printStackTrace();
                 }
 

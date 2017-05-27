@@ -3,6 +3,7 @@ package Client;
 import Client.GUI.ControllerGioco;
 import javafx.application.Platform;
 import partita.componentiDelTabellone.Giocatore;
+import partita.eccezioniPartita.TurnoException;
 import server.GiocatoreRemoto;
 import server.ServerInterface;
 import server.rmiServer.GiocatoreRMI;
@@ -86,8 +87,23 @@ public class ClientRMI extends UnicastRemoteObject implements InterfacciaClient,
     }
 
     @Override
-    public void selezionaFamiliare(String colore, int idGiocatore) throws RemoteException {
+    public void messaggio(String s) throws RemoteException {
+        Platform.runLater(()->{
+            try {
+                controllerGioco.messaggio(s);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
+    }
 
+    @Override
+    public void selezionaFamiliare(String colore, int idGiocatore) throws RemoteException {
+        try {
+            metodiPartita.selezionaFamiliare(colore, idGiocatore);
+        } catch (TurnoException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

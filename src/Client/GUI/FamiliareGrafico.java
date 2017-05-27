@@ -20,13 +20,30 @@ public class FamiliareGrafico extends Pane {
     private Circle cerchio;
     private Rectangle quadrato;
     private boolean selezionato;
+    private String nomeColoreDado;
 
     public FamiliareGrafico(double raggio,Color colore, Color coloreDado){
         selezionato=false;
         this.colore=colore;
         this.coloreDado=coloreDado;
         setRaggio(raggio);
+        setNomeColoreDado();
 
+    }
+
+    private void setNomeColoreDado() {
+        if(coloreDado.equals(Color.BLACK)){
+            nomeColoreDado="nero";
+        }
+        else if(coloreDado.equals(Color.ORANGE)){
+            nomeColoreDado="arancio";
+        }
+        else if(coloreDado.equals(Color.WHITE)){
+            nomeColoreDado="bianco";
+        }
+        else if(coloreDado.equals(Color.SILVER)){
+            nomeColoreDado="neutro";
+        }
     }
 
     public void setRaggio(double raggio){
@@ -61,6 +78,10 @@ public class FamiliareGrafico extends Pane {
 
     public void setSelezionato(boolean selezionato) {
         this.selezionato = selezionato;
+    }
+
+    public String getNomeColoreDado(){
+        return nomeColoreDado;
     }
 
     public void setEffetto(Effect effetto) {

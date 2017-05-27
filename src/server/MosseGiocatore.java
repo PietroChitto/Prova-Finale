@@ -29,19 +29,15 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
     }
 
     @Override
-    public void selezionaFamiliare(String colore, int idGiocatore) throws RemoteException {
-        try {
-            giocatore.getPartita().mioTurno(giocatore.getGiocatore());
-            for (Familiare f:giocatore.getGiocatore().getFamiliari()) {
-                if(f.isDisponibile() && f.getColoreDado().equals(colore)){
-                    familiareSelezionato=f;
-                }
+    public void selezionaFamiliare(String colore, int idGiocatore) throws RemoteException, TurnoException {
+        giocatore.getPartita().mioTurno(giocatore.getGiocatore());
+        for (Familiare f:giocatore.getGiocatore().getFamiliari()) {
+            if(f.isDisponibile() && f.getColoreDado().equals(colore)){
+                familiareSelezionato=f;
             }
-            //avvisa giocatore
-        } catch (TurnoException e) {
-            e.printStackTrace();
-            //avvisa il giocatore che non è il suo turno
         }
+        //avvisa giocatore
+
     }
 
     @Override

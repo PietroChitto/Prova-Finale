@@ -1,6 +1,7 @@
 package server.rmiServer;
 
 import partita.componentiDelTabellone.Familiare;
+import partita.eccezioniPartita.TurnoException;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -13,7 +14,7 @@ import java.rmi.RemoteException;
 public interface InterfaciaRemotaRMI extends Remote{
 
 
-    public void selezionaFamiliare(String colore, int idGiocatore) throws RemoteException;
+    public void selezionaFamiliare(String colore, int idGiocatore) throws RemoteException, TurnoException;
     public void deselezionaFamiliare() throws RemoteException;
     public void spostaFamiliarePiano(int numeroTorre, int numeroPiano) throws RemoteException;
     public void spostaFamiliareMercato(int zonaMercato) throws RemoteException;

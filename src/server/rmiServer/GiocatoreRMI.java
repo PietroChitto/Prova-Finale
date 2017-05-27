@@ -42,7 +42,11 @@ public class GiocatoreRMI extends GiocatoreRemoto{
 
     @Override
     public void selezionaFamiliare(String colore, int idGiocatore) throws RemoteException {
-        mosseGiocatore.selezionaFamiliare(colore,idGiocatore);
+        try {
+            mosseGiocatore.selezionaFamiliare(colore,idGiocatore);
+        } catch (TurnoException e) {
+            controllerClient.messaggio("Non è il tuo turno");
+        }
     }
 
     @Override
@@ -108,5 +112,10 @@ public class GiocatoreRMI extends GiocatoreRemoto{
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void messaggio(String s) throws RemoteException {
+
     }
 }

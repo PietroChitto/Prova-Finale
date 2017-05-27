@@ -12,6 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import partita.eccezioniPartita.TurnoException;
 import server.rmiServer.InterfaciaRemotaRMI;
 
 import java.io.IOException;
@@ -158,6 +159,14 @@ public class ControllerGioco implements InterfacciaClient{
             }
             tempFam.setSelezionato(true);
             tempFam.setEffetto(new Shadow());
+            try {
+                clientGenerico.selezionaFamiliare(tempFam.getNomeColoreDado(), mioId);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            } catch (TurnoException e) {
+                e.printStackTrace();
+            }
+
         }
 
     }
@@ -314,6 +323,9 @@ public class ControllerGioco implements InterfacciaClient{
     @FXML
     private GridPane gridFamiliari;
 
+    @FXML
+    private Label labelMessaggiServer;
+
 
     @Override
     public void iniziaPartita(int mioId, ArrayList<String> carte, ArrayList<String> giocatori) throws RemoteException {
@@ -333,5 +345,10 @@ public class ControllerGioco implements InterfacciaClient{
         paneDadoArancio.getChildren().add(immaginiDadoArancio[ar-1]);
         paneDadoBianco.getChildren().add(immaginiDadoBianco[bi-1]);
         paneDadoNero.getChildren().add(immaginiDadoNero[ne-1]);
+    }
+
+    @Override
+    public void messaggio(String s) throws RemoteException {
+        labelMessaggiServer.setText(s);
     }
 }
