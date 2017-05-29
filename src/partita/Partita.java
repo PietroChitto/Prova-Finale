@@ -5,6 +5,7 @@ import partita.carteDaGioco.CartaPersonaggio;
 import partita.carteDaGioco.CartaTerritorio;
 import partita.carteDaGioco.effetti.EffettoAumentaForza;
 import partita.componentiDelTabellone.*;
+import partita.eccezioniPartita.DadiNonTiratiException;
 import partita.eccezioniPartita.ForzaInsufficienteException;
 import partita.eccezioniPartita.TurnoException;
 import partita.eccezioniPartita.ZonaOccupataExcepion;
@@ -53,6 +54,15 @@ public class Partita {
 
     public void addGiocatore(GiocatoreRemoto giocatoreRemoto){
         giocatori.add(giocatoreRemoto);
+        //setta risorse giocatore
+        setRisorse(giocatoreRemoto);
+    }
+
+    private void setRisorse(GiocatoreRemoto giocatoreRemoto) {
+        giocatoreRemoto.getGiocatore().setPietra(2);
+        giocatoreRemoto.getGiocatore().setLegna(2);
+        giocatoreRemoto.getGiocatore().setServitori(3);
+        giocatoreRemoto.getGiocatore().setMonete(giocatori.size()+4);
     }
 
     public void creaGiocatoriGioco(){
@@ -83,7 +93,12 @@ public class Partita {
         }
         System.out.print("giocatori remoti: "+giocatori.size());
         for(GiocatoreRemoto g: giocatori){
-            g.iniziaPartita(g.getGiocatore().getId(), nomiCarte, nomiGiocatori);
+            int[] risorse=new int[4];
+            risorse[0]=g.getGiocatore().getPietra();
+            risorse[1]=g.getGiocatore().getLegna();
+            risorse[2]=g.getGiocatore().getServitori();
+            risorse[3]=g.getGiocatore().getMonete();
+            g.iniziaPartita(g.getGiocatore().getId(), nomiCarte, nomiGiocatori, risorse);
         }
     }
 
@@ -317,6 +332,11 @@ public class Partita {
 
     public void setDadiTirati(boolean dadiTirati) {
         this.dadiTirati = dadiTirati;
+    }
+
+    public void dadiTirati() throws DadiNonTiratiException{
+        if(!dadiTirati)
+            throw new DadiNonTiratiException();
     }
 }
 

@@ -1,6 +1,5 @@
 package Client.GUI;
 
-import Client.ClientGenerico;
 import Client.InterfacciaClient;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -12,6 +11,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import partita.eccezioniPartita.DadiNonTiratiException;
 import partita.eccezioniPartita.TurnoException;
 import server.rmiServer.InterfaciaRemotaRMI;
 
@@ -29,6 +29,7 @@ public class ControllerGioco implements InterfacciaClient{
     private HashMap<Integer,String> giocatori;
     private int mioId;
     private ArrayList<FamiliareGrafico> familiari;
+    private boolean mioTurno;
 
     public void setClientGenerico(InterfaciaRemotaRMI clientGenerico){
         this.clientGenerico=clientGenerico;
@@ -36,14 +37,25 @@ public class ControllerGioco implements InterfacciaClient{
 
 
 
-    public void inizializza(HashMap<Integer, String> giocatori, ArrayList<String> carte, int mioId){
-
+    public void inizializza(HashMap<Integer, String> giocatori, ArrayList<String> carte, int mioId, int[] risorse){
+        if(mioId==0)
+            mioTurno=true;
+        else
+            mioTurno=false;
         this.giocatori=giocatori;
         this.mioId=mioId;
         settaLabelGiocatori(this.giocatori);
         mettiCarteNelleTorri(carte);
         creaFamiliari(mioColore());
         creaDadi();
+        settaRisorse(risorse);
+    }
+
+    private void settaRisorse(int[] risorse) {
+        labelPietra.setText(risorse[0]+"");
+        labelLegna.setText(risorse[1]+"");
+        labelServitori.setText(risorse[2]+"");
+        labelMonete.setText(risorse[3]+"");
     }
 
     private void creaDadi() {
@@ -149,23 +161,37 @@ public class ControllerGioco implements InterfacciaClient{
     }
 
     private void eventoFamiliari(FamiliareGrafico tempFam) {
-        if(tempFam.isSelezionato()){
-            tempFam.setSelezionato(false);
-            tempFam.setEffetto(null);
-        }else{
-            for(FamiliareGrafico f: familiari){
-                f.setEffetto(null);
-                f.setSelezionato(false);
+        if(mioTurno) {
+            if (tempFam.isSelezionato()) {
+                tempFam.setSelezionato(false);
+                tempFam.setEffetto(null);
+                try {
+                    clientGenerico.deselezionaFamiliare();
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                } catch (TurnoException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                for (FamiliareGrafico f : familiari) {
+                    f.setEffetto(null);
+                    f.setSelezionato(false);
+                }
+                tempFam.setSelezionato(true);
+                tempFam.setEffetto(new Shadow());
+                try {
+                    clientGenerico.selezionaFamiliare(tempFam.getNomeColoreDado(), mioId);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                } catch (TurnoException e) {
+                    e.printStackTrace();
+                } catch (DadiNonTiratiException e) {
+                    e.printStackTrace();
+                }
+
             }
-            tempFam.setSelezionato(true);
-            tempFam.setEffetto(new Shadow());
-            try {
-                clientGenerico.selezionaFamiliare(tempFam.getNomeColoreDado(), mioId);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            } catch (TurnoException e) {
-                e.printStackTrace();
-            }
+        }else {
+            labelMessaggiServer.setText("non è il tuo turno");
 
         }
 
@@ -326,9 +352,33 @@ public class ControllerGioco implements InterfacciaClient{
     @FXML
     private Label labelMessaggiServer;
 
+    @FXML
+    private Label labelForzaNero;
+
+    @FXML
+    private Label labelForzaBianco;
+
+    @FXML
+    private Label labelForzaArancio;
+
+    @FXML
+    private Label labelForzaNeutro;
+
+    @FXML
+    private Label labelMonete;
+
+    @FXML
+    private Label labelServitori;
+
+    @FXML
+    private Label labelLegna;
+
+    @FXML
+    private Label labelPietra;
+
 
     @Override
-    public void iniziaPartita(int mioId, ArrayList<String> carte, ArrayList<String> giocatori) throws RemoteException {
+    public void iniziaPartita(int mioId, ArrayList<String> carte, ArrayList<String> giocatori, int[] risorse) throws RemoteException {
 
     }
 
@@ -345,6 +395,10 @@ public class ControllerGioco implements InterfacciaClient{
         paneDadoArancio.getChildren().add(immaginiDadoArancio[ar-1]);
         paneDadoBianco.getChildren().add(immaginiDadoBianco[bi-1]);
         paneDadoNero.getChildren().add(immaginiDadoNero[ne-1]);
+        labelForzaNero.setText(ne+"");
+        labelForzaBianco.setText(bi+"");
+        labelForzaArancio.setText(ar+"");
+        labelForzaNeutro.setText("0");
     }
 
     @Override

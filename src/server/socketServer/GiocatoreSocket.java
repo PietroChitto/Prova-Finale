@@ -3,8 +3,8 @@ package server.socketServer;
 import Client.InterfacciaClient;
 import Client.Messaggio;
 import partita.Partita;
-import partita.carteDaGioco.CartaSviluppo;
 import partita.componentiDelTabellone.Giocatore;
+import partita.eccezioniPartita.DadiNonTiratiException;
 import partita.eccezioniPartita.TurnoException;
 import server.GiocatoreRemoto;
 import server.MosseGiocatore;
@@ -143,7 +143,7 @@ import java.util.ArrayList;
 
 //-----------------------------------------------------------------------------------------------------------------------------------------
     @Override
-    public void iniziaPartita(int mioId, ArrayList<String> carte, ArrayList<String> giocatori) {
+    public void iniziaPartita(int mioId, ArrayList<String> carte, ArrayList<String> giocatori, int[] risorse) {
         try {
             out.writeObject("INIZIOPARTITA");
             out.flush();
@@ -153,6 +153,8 @@ import java.util.ArrayList;
             out.writeObject(carte);
             out.flush();
             out.writeObject(giocatori);
+            out.flush();
+            out.writeObject(risorse);
             out.flush();
             System.out.println("situazione iniziale inviata");
         } catch (IOException e) {
@@ -228,6 +230,8 @@ import java.util.ArrayList;
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 } catch (TurnoException e) {
+                    e.printStackTrace();
+                } catch (DadiNonTiratiException e) {
                     e.printStackTrace();
                 }
 

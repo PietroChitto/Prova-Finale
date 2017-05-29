@@ -2,15 +2,12 @@ package Client;
 
 import Client.GUI.ControllerGioco;
 import javafx.application.Platform;
-import partita.componentiDelTabellone.Giocatore;
+import partita.eccezioniPartita.DadiNonTiratiException;
 import partita.eccezioniPartita.TurnoException;
-import server.GiocatoreRemoto;
 import server.ServerInterface;
-import server.rmiServer.GiocatoreRMI;
 import server.rmiServer.InterfaciaRemotaRMI;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -18,7 +15,6 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Scanner;
 
 /**
  * Created by Pietro on 16/05/2017.
@@ -53,7 +49,7 @@ public class ClientRMI extends UnicastRemoteObject implements InterfacciaClient,
 
 
     @Override
-    public void iniziaPartita(int mioId, ArrayList<String> carte, ArrayList<String> giocatori) throws RemoteException {
+    public void iniziaPartita(int mioId, ArrayList<String> carte, ArrayList<String> giocatori, int[] risorse) throws RemoteException {
         System.out.println("sono dentro");
         this.id=mioId;
         partitaIncorso=true;
@@ -66,7 +62,7 @@ public class ClientRMI extends UnicastRemoteObject implements InterfacciaClient,
         System.out.println("inizializzo partita");
 
         Platform.runLater(()->{
-            controllerGioco.inizializza(mappaGiocatori, carte,mioId);
+            controllerGioco.inizializza(mappaGiocatori, carte,mioId, risorse);
         });
     }
 
@@ -103,12 +99,14 @@ public class ClientRMI extends UnicastRemoteObject implements InterfacciaClient,
             metodiPartita.selezionaFamiliare(colore, idGiocatore);
         } catch (TurnoException e) {
             e.printStackTrace();
+        } catch (DadiNonTiratiException e) {
+            e.printStackTrace();
         }
     }
 
     @Override
-    public void deselezionaFamiliare() throws RemoteException {
-
+    public void deselezionaFamiliare() throws RemoteException, TurnoException {
+        metodiPartita.deselezionaFamiliare();
     }
 
     @Override

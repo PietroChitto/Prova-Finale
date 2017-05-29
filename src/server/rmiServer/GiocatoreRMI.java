@@ -1,23 +1,13 @@
 package server.rmiServer;
 
 import Client.InterfacciaClient;
-import partita.carteDaGioco.CartaEdificio;
-import partita.carteDaGioco.CartaImpresa;
-import partita.carteDaGioco.CartaPersonaggio;
-import partita.carteDaGioco.CartaTerritorio;
-import partita.componentiDelTabellone.Familiare;
-import partita.componentiDelTabellone.Giocatore;
-import partita.eccezioniPartita.ForzaInsufficienteException;
-import partita.eccezioniPartita.RisorseInsufficientiException;
+import partita.eccezioniPartita.DadiNonTiratiException;
 import partita.eccezioniPartita.TurnoException;
-import partita.eccezioniPartita.ZonaOccupataExcepion;
 import server.GiocatoreRemoto;
 import server.MosseGiocatore;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
 /**
@@ -44,14 +34,22 @@ public class GiocatoreRMI extends GiocatoreRemoto{
     public void selezionaFamiliare(String colore, int idGiocatore) throws RemoteException {
         try {
             mosseGiocatore.selezionaFamiliare(colore,idGiocatore);
+            controllerClient.messaggio("Familiare selezionato");
         } catch (TurnoException e) {
             controllerClient.messaggio("Non è il tuo turno");
+        } catch (DadiNonTiratiException e) {
+            controllerClient.messaggio("Tira prima i dadi");
         }
     }
 
     @Override
     public void deselezionaFamiliare() throws RemoteException {
-        mosseGiocatore.deselezionaFamiliare();
+        try {
+            mosseGiocatore.deselezionaFamiliare();
+            controllerClient.messaggio("Familiare deselezionato");
+        } catch (TurnoException e) {
+            controllerClient.messaggio("");
+        }
     }
 
     @Override
@@ -95,8 +93,8 @@ public class GiocatoreRMI extends GiocatoreRemoto{
     }
 //-----------------------------------------------------------------------------------------------------------------------------------------
     @Override
-    public void iniziaPartita(int mioId, ArrayList<String> carte, ArrayList<String> giocatori) throws RemoteException {
-        controllerClient.iniziaPartita(mioId, carte, giocatori);
+    public void iniziaPartita(int mioId, ArrayList<String> carte, ArrayList<String> giocatori, int[] risorse) throws RemoteException {
+        controllerClient.iniziaPartita(mioId, carte, giocatori, risorse);
     }
 
     @Override
@@ -106,7 +104,6 @@ public class GiocatoreRMI extends GiocatoreRemoto{
 
     @Override
     public void dadiTirati(int ar, int ne, int bi) throws RemoteException {
-
         try {
             controllerClient.dadiTirati(ar, ne, bi);
         } catch (IOException e) {
