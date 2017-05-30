@@ -238,40 +238,34 @@ public class ControllerGioco implements InterfacciaClient{
 
 
     private void eventoFamiliari(FamiliareGrafico tempFam) {
-        //if(mioTurno) {
-            if (tempFam.isSelezionato()) {
-                tempFam.setSelezionato(false);
-                tempFam.setEffetto(null);
-                try {
-                    clientGenerico.deselezionaFamiliare();
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                } catch (TurnoException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                for (FamiliareGrafico f : familiari) {
-                    f.setEffetto(null);
-                    f.setSelezionato(false);
-                }
-                tempFam.setSelezionato(true);
-                tempFam.setEffetto(new Shadow());
-                try {
-                    clientGenerico.selezionaFamiliare(tempFam.getNomeColoreDado(), mioId);
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                } catch (TurnoException e) {
-                    e.printStackTrace();
-                } catch (DadiNonTiratiException e) {
-                    e.printStackTrace();
-                }
-
+        if (tempFam.isSelezionato()) {
+            tempFam.setSelezionato(false);
+            tempFam.setEffetto(null);
+            try {
+                clientGenerico.deselezionaFamiliare();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            } catch (TurnoException e) {
+                e.printStackTrace();
             }
-        //}else {
-         //   labelMessaggiServer.setText("non è il tuo turno");
+        } else {
+            for (FamiliareGrafico f : familiari) {
+                f.setEffetto(null);
+                f.setSelezionato(false);
+            }
+            tempFam.setSelezionato(true);
+            tempFam.setEffetto(new Shadow());
+            try {
+                clientGenerico.selezionaFamiliare(tempFam.getNomeColoreDado(), mioId);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            } catch (TurnoException e) {
+                e.printStackTrace();
+            } catch (DadiNonTiratiException e) {
+                e.printStackTrace();
+            }
 
-        //}
-
+        }
     }
 
     private void settaLabelGiocatori(HashMap<Integer, String> giocatori) {
@@ -343,19 +337,9 @@ public class ControllerGioco implements InterfacciaClient{
 
         for (ImageView iv: carte){
 
-            iv.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    imageCarta.setImage(iv.getImage());
-                }
-            });
+            iv.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> imageCarta.setImage(iv.getImage()));
 
-            iv.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    imageCarta.setImage(null);
-                }
-            });
+            iv.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imageCarta.setImage(null));
         }
     }
 
@@ -520,11 +504,13 @@ public class ControllerGioco implements InterfacciaClient{
 
     @Override
     public void spostatoFamiliarePiano(int numeroTorre, int numeroPiano, String coloreDado, int idGiocatore) throws RemoteException {
+
         FamiliareGrafico tempFam;
+        FamiliareGrafico tempFam2;
         if(idGiocatore==mioId) {
-            tempFam=prendiFamiliare(coloreDado);
-            tempFam.setRaggio(10);
-            tempFam.setEffetto(null);
+            tempFam2=prendiFamiliare(coloreDado);
+            tempFam=new FamiliareGrafico(10,tempFam2.getColore(),tempFam2.getColoreDado());
+
         }
         else{
             tempFam=creaFamiliare(coloreDado, idGiocatore);
@@ -578,6 +564,9 @@ public class ControllerGioco implements InterfacciaClient{
     }
 
     private FamiliareGrafico prendiFamiliare(String coloreDado) {
+        for (FamiliareGrafico f: familiari){
+            f.setEffetto(null);
+        }
         switch (coloreDado){
             case "nero": return familiari.get(0);
             case "bianco": return familiari.get(1);

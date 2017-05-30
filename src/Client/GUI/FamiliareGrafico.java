@@ -51,6 +51,7 @@ public class FamiliareGrafico extends Pane {
         quadrato = new Rectangle(raggio,raggio,coloreDado);
         quadrato.setX(cerchio.getCenterX()-cerchio.getRadius()/2);
         quadrato.setY(cerchio.getCenterY()-cerchio.getRadius()/2);
+        this.getChildren().removeAll();
         this.getChildren().addAll(cerchio,quadrato);
         settaEvento();
     }
