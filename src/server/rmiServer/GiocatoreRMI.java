@@ -56,15 +56,15 @@ public class GiocatoreRMI extends GiocatoreRemoto{
         try {
             mosseGiocatore.spostaFamiliarePiano(numeroTorre, numeroPiano);
         } catch (FamiliareNonSelezionatoExcepion familiareNonSelezionatoExcepion) {
-            familiareNonSelezionatoExcepion.printStackTrace();
+
         } catch (TurnoException e) {
-            e.printStackTrace();
+
         } catch (ForzaInsufficienteException e) {
-            e.printStackTrace();
+            controllerClient.messaggio("Il familiare non ha forza sufficiente");
         } catch (ZonaOccupataExcepion zonaOccupataExcepion) {
-            zonaOccupataExcepion.printStackTrace();
+            controllerClient.messaggio("la zona è già occupata");
         } catch (RisorseInsufficientiException e) {
-            e.printStackTrace();
+            controllerClient.messaggio("non hai risorse sufficienti per prendere la carta");
         }
     }
 

@@ -10,6 +10,7 @@ import javafx.scene.effect.Shadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -26,7 +27,8 @@ public class ControllerGioco implements InterfacciaClient{
 
     private InterfaciaRemotaRMI clientGenerico;
     private ArrayList<ImageView> immaginiCarte;
-    private ArrayList<Label> labelCampiAzioneTorri;
+    //i primi 4 sono della prima torre ecc
+    private ArrayList<Pane> paneCampiAzioneTorri;
     private ImageView[] immaginiDadoNero;
     private ImageView[] immaginiDadoBianco;
     private ImageView[] immaginiDadoArancio;
@@ -57,44 +59,49 @@ public class ControllerGioco implements InterfacciaClient{
     }
 
     private void creaLabelCampiAzioneTorri() {
-        labelCampiAzioneTorri=new ArrayList<>();
-        Label tempLabel;
+        Pane tempPane;
+        paneCampiAzioneTorri=new ArrayList<>();
+        FamiliareGrafico f=new FamiliareGrafico(30, Color.BLACK,Color.WHITE);
         for(int i=0; i<4; i++){
-            tempLabel=new Label();
-            tempLabel.setPrefWidth(gridCampiAzioneTorre0.getWidth());
-            tempLabel.setPrefHeight(gridCampiAzioneTorre0.getHeight());
-            labelCampiAzioneTorri.add(tempLabel);
-            gridCampiAzioneTorre0.add(tempLabel,0,i);
-            creaEventoCampiAzioneTorre(tempLabel, 0,i);
+            tempPane=new Pane();
+            tempPane.setPrefWidth(gridCampiAzioneTorre0.getWidth());
+            tempPane.setPrefHeight(gridCampiAzioneTorre0.getHeight());
+            paneCampiAzioneTorri.add(tempPane);
+            gridCampiAzioneTorre0.add(tempPane,0,i);
+            tempPane.setVisible(true);
+            creaEventoCampiAzioneTorre(tempPane, 0,i);
         }
         for(int i=0; i<4; i++){
-            tempLabel=new Label();
-            tempLabel.setPrefWidth(gridCampiAzioneTorre1.getWidth());
-            tempLabel.setPrefHeight(gridCampiAzioneTorre1.getHeight());
-            labelCampiAzioneTorri.add(tempLabel);
-            gridCampiAzioneTorre1.add(tempLabel,0,i);
-            creaEventoCampiAzioneTorre(tempLabel, 1,i);
+            tempPane=new Pane();
+            tempPane.setPrefWidth(gridCampiAzioneTorre1.getWidth());
+            tempPane.setPrefHeight(gridCampiAzioneTorre1.getHeight());
+            paneCampiAzioneTorri.add(tempPane);
+            gridCampiAzioneTorre1.add(tempPane,0,i);
+            tempPane.setVisible(true);
+            creaEventoCampiAzioneTorre(tempPane, 1,i);
         }
         for(int i=0; i<4; i++){
-            tempLabel=new Label();
-            tempLabel.setPrefWidth(gridCampiAzioneTorre2.getWidth());
-            tempLabel.setPrefHeight(gridCampiAzioneTorre2.getHeight());
-            labelCampiAzioneTorri.add(tempLabel);
-            gridCampiAzioneTorre2.add(tempLabel,0,i);
-            creaEventoCampiAzioneTorre(tempLabel, 2,i);
+            tempPane=new Pane();
+            tempPane.setPrefWidth(gridCampiAzioneTorre2.getWidth());
+            tempPane.setPrefHeight(gridCampiAzioneTorre2.getHeight());
+            paneCampiAzioneTorri.add(tempPane);
+            gridCampiAzioneTorre2.add(tempPane,0,i);
+            tempPane.setVisible(true);
+            creaEventoCampiAzioneTorre(tempPane, 2,i);
         }
         for(int i=0; i<4; i++){
-            tempLabel=new Label();
-            tempLabel.setPrefWidth(gridCampiAzioneTorre3.getWidth());
-            tempLabel.setPrefHeight(gridCampiAzioneTorre3.getHeight());
-            labelCampiAzioneTorri.add(tempLabel);
-            gridCampiAzioneTorre3.add(tempLabel,0,i);
-            creaEventoCampiAzioneTorre(tempLabel, 3,i);
+            tempPane=new Pane();
+            tempPane.setPrefWidth(gridCampiAzioneTorre3.getWidth());
+            tempPane.setPrefHeight(gridCampiAzioneTorre3.getHeight());
+            paneCampiAzioneTorri.add(tempPane);
+            gridCampiAzioneTorre3.add(tempPane,0,i);
+            tempPane.setVisible(true);
+            creaEventoCampiAzioneTorre(tempPane, 3,i);
         }
     }
 
-    private void creaEventoCampiAzioneTorre(Label tempLabel, int torre, int piano) {
-        tempLabel.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+    private void creaEventoCampiAzioneTorre(Pane tempPane, int torre, int piano) {
+        tempPane.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             eventoCampiAzioneTorre(torre, piano);
         });
     }
@@ -231,7 +238,7 @@ public class ControllerGioco implements InterfacciaClient{
 
 
     private void eventoFamiliari(FamiliareGrafico tempFam) {
-        if(mioTurno) {
+        //if(mioTurno) {
             if (tempFam.isSelezionato()) {
                 tempFam.setSelezionato(false);
                 tempFam.setEffetto(null);
@@ -260,10 +267,10 @@ public class ControllerGioco implements InterfacciaClient{
                 }
 
             }
-        }else {
-            labelMessaggiServer.setText("non è il tuo turno");
+        //}else {
+         //   labelMessaggiServer.setText("non è il tuo turno");
 
-        }
+        //}
 
     }
 
@@ -516,6 +523,8 @@ public class ControllerGioco implements InterfacciaClient{
         FamiliareGrafico tempFam;
         if(idGiocatore==mioId) {
             tempFam=prendiFamiliare(coloreDado);
+            tempFam.setRaggio(10);
+            tempFam.setEffetto(null);
         }
         else{
             tempFam=creaFamiliare(coloreDado, idGiocatore);
@@ -532,30 +541,38 @@ public class ControllerGioco implements InterfacciaClient{
         }
     }
 
-    private void spostaInTorre3(int numeroPiano, FamiliareGrafico familare) {
-        gridCampiAzioneTorre3.add(familare,0,numeroPiano);
+    private void spostaInTorre3(int numeroPiano, FamiliareGrafico familiare) {
+        paneCampiAzioneTorri.get(numeroPiano+12).getChildren().removeAll();
+        paneCampiAzioneTorri.get(numeroPiano+12).getChildren().add(familiare);
+        //gridCampiAzioneTorre3.add(familare,0,numeroPiano);
     }
 
     private void spostaInTorre2(int numeroPiano, FamiliareGrafico familiare) {
-        gridCampiAzioneTorre2.add(familiare, 0,numeroPiano);
-
+        paneCampiAzioneTorri.get(numeroPiano+8).getChildren().removeAll();
+        paneCampiAzioneTorri.get(numeroPiano+8).getChildren().add(familiare);
+       // gridCampiAzioneTorre2.add(familiare, 0,numeroPiano);
     }
 
     private void spostaInTorre1(int numeroPiano, FamiliareGrafico familiare) {
-        gridCampiAzioneTorre1.add(familiare, 0,numeroPiano);
+        paneCampiAzioneTorri.get(numeroPiano+4).getChildren().removeAll();
+        paneCampiAzioneTorri.get(numeroPiano+4).getChildren().add(familiare);
+        //gridCampiAzioneTorre1.getChildren().remove(numeroPiano);
+        //gridCampiAzioneTorre1.add(familiare, 0,numeroPiano);
     }
 
     private void spostaInTorre0(int numeroPiano, FamiliareGrafico familiare) {
-        gridCampiAzioneTorre0.add(familiare,0,numeroPiano);
+        paneCampiAzioneTorri.get(numeroPiano).getChildren().removeAll();
+        paneCampiAzioneTorri.get(numeroPiano).getChildren().add(familiare);
+        //gridCampiAzioneTorre0.add(familiare,0,numeroPiano);
     }
 
     private FamiliareGrafico creaFamiliare(String coloreDado, int idGiocatore) {
         Color color= convertiStringaColore(coloreDado);
         switch (idGiocatore){
-            case 0: return new FamiliareGrafico(5, Color.BLUE, color);
-            case 1: return new FamiliareGrafico(5, Color.YELLOW, color);
-            case 2: return new FamiliareGrafico(5,Color.RED, color);
-            case 3: return new FamiliareGrafico(5,Color.GREEN, color);
+            case 0: return new FamiliareGrafico(10, Color.BLUE, color);
+            case 1: return new FamiliareGrafico(10, Color.YELLOW, color);
+            case 2: return new FamiliareGrafico(10,Color.RED, color);
+            case 3: return new FamiliareGrafico(10,Color.GREEN, color);
         }
         return null;
     }

@@ -28,6 +28,7 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
 
     @Override
     public void selezionaFamiliare(String colore, int idGiocatore) throws RemoteException, TurnoException, DadiNonTiratiException {
+        System.out.println("seleziona familiare "+idGiocatore+"-"+giocatore.getGiocatore().getId());
         giocatore.getPartita().mioTurno(giocatore.getGiocatore());
         giocatore.getPartita().dadiTirati();
 
@@ -52,7 +53,7 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
         //se non va a buon fine lancia un eccezione
         giocatore.getPartita().mioTurno(giocatore.getGiocatore());
         //se non va a buon fine lancia un eccezione
-        if(familiareSelezionato.equals(null)){
+        if(familiareSelezionato==null){
             throw new FamiliareNonSelezionatoExcepion();
         }
         /*
@@ -64,7 +65,7 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
         //prendiCarta(numeroTorre,numeroPiano);
         //avviso i giocatori della mossa
         for (GiocatoreRemoto g: giocatore.getPartita().getGiocatori()){
-            giocatore.spostatoFamiliarePiano(numeroTorre,numeroPiano,familiareSelezionato.getColoreDado(), familiareSelezionato.getIdGiocatore());
+            g.spostatoFamiliarePiano(numeroTorre,numeroPiano,familiareSelezionato.getColoreDado(), familiareSelezionato.getIdGiocatore());
         }
         familiareSelezionato.setDisponibile(false);
         deselezionaFamiliare();

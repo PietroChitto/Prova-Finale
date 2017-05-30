@@ -19,6 +19,7 @@ import java.util.ArrayList;
  * Created by Pietro on 16/05/2017.
  */
 public class Partita {
+    public static final int N_GIOCATORI=4;
     private ArrayList<GiocatoreRemoto> giocatori;
     private ArrayList<Giocatore> giocatoriGioco;
     private CampoDaGioco campoDaGioco;
@@ -121,6 +122,7 @@ public class Partita {
 
     public synchronized void setGiocatoreCorrente(Giocatore g){
         giocatoreCorrente=g;
+        System.out.println("tocca al giocatore "+ g.getId());
     }
 
     public synchronized void mioTurno(Giocatore g) throws TurnoException{
@@ -170,13 +172,22 @@ public class Partita {
     }
 
     private void settaProssimoGiocatore(GiocatoreRemoto giocatoreRemoto) {
-
+        for (int i=0; i<N_GIOCATORI; i++){
+            if(giocatoreRemoto.getGiocatore().equals(giocatori.get(i).getGiocatore())) {
+                if (i < N_GIOCATORI - 1) {
+                    setGiocatoreCorrente(giocatori.get(i + 1).getGiocatore());
+                } else {
+                    setGiocatoreCorrente(giocatori.get(0).getGiocatore());
+                }
+            }
+        }
     }
 
     public void passaMossa(GiocatoreRemoto giocatoreRemoto) throws ZonaOccupataExcepion, ForzaInsufficienteException {
         //ripristinaForzaTabellone();
         numeroMosseTurno++;
         if(numeroMosseTurno==giocatori.size()*4){
+            System.out.println("passa Turno");
             passaTurno();
             numeroMosseTurno=0;
         }
