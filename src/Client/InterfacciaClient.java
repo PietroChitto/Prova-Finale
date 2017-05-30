@@ -13,8 +13,8 @@ import java.util.ArrayList;
       public void spostatoFamiliarePiano(int numeroTorre, int numeroPiano, String coloreDado, int idGiocatore) throws RemoteException;
       public void dadiTirati(int ar, int ne, int bi) throws IOException;
       public void messaggio(String s)throws RemoteException;
-
-
+      public void forzaAumentata(String colore, int forza) throws RemoteException;
+      public void risorseIncrementate(int pietra, int legna, int servitori, int monete, int puntiMilitari, int puntiFede, int puntiVittoria) throws RemoteException;
     //public void spostaFamiliareMercato(int zonaMercato) throws RemoteException;
       //public void spostaFamiliarePalazzoDelConsiglio() throws RemoteException;
       //public void spostaFamiliareZonaProduzione(int zona) throws RemoteException;

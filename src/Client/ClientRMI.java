@@ -2,8 +2,7 @@ package Client;
 
 import Client.GUI.ControllerGioco;
 import javafx.application.Platform;
-import partita.eccezioniPartita.DadiNonTiratiException;
-import partita.eccezioniPartita.TurnoException;
+import partita.eccezioniPartita.*;
 import server.ServerInterface;
 import server.rmiServer.InterfaciaRemotaRMI;
 
@@ -68,7 +67,13 @@ public class ClientRMI extends UnicastRemoteObject implements InterfacciaClient,
 
     @Override
     public void spostatoFamiliarePiano(int numeroTorre, int numeroPiano, String coloreDado, int idGiocatore) throws RemoteException {
-
+        Platform.runLater(()-> {
+            try {
+                controllerGioco.spostatoFamiliarePiano(numeroTorre,numeroPiano,coloreDado,idGiocatore);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @Override
@@ -94,6 +99,28 @@ public class ClientRMI extends UnicastRemoteObject implements InterfacciaClient,
     }
 
     @Override
+    public void forzaAumentata(String colore, int forza) throws RemoteException {
+        Platform.runLater(()-> {
+            try {
+                controllerGioco.forzaAumentata(colore, forza);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @Override
+    public void risorseIncrementate(int pietra, int legna, int servitori, int monete, int puntiMilitari, int puntiFede, int puntiVittoria) throws RemoteException {
+        Platform.runLater(()-> {
+            try {
+                controllerGioco.risorseIncrementate(pietra, legna, servitori, monete, puntiMilitari, puntiFede, puntiVittoria);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @Override
     public void selezionaFamiliare(String colore, int idGiocatore) throws RemoteException {
         try {
             metodiPartita.selezionaFamiliare(colore, idGiocatore);
@@ -111,7 +138,19 @@ public class ClientRMI extends UnicastRemoteObject implements InterfacciaClient,
 
     @Override
     public void spostaFamiliarePiano(int numeroTorre, int numeroPiano) throws RemoteException {
-
+        try {
+            metodiPartita.spostaFamiliarePiano(numeroTorre, numeroPiano);
+        } catch (FamiliareNonSelezionatoExcepion familiareNonSelezionatoExcepion) {
+            familiareNonSelezionatoExcepion.printStackTrace();
+        } catch (TurnoException e) {
+            e.printStackTrace();
+        } catch (ForzaInsufficienteException e) {
+            e.printStackTrace();
+        } catch (ZonaOccupataExcepion zonaOccupataExcepion) {
+            zonaOccupataExcepion.printStackTrace();
+        } catch (RisorseInsufficientiException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -146,5 +185,16 @@ public class ClientRMI extends UnicastRemoteObject implements InterfacciaClient,
     @Override
     public void scegliScomunica(boolean appoggiaChiesa) throws RemoteException {
 
+    }
+
+    @Override
+    public void aumentaForzaFamiliare(String coloreDado, int id) throws RemoteException {
+        try {
+            metodiPartita.aumentaForzaFamiliare(coloreDado,id);
+        } catch (TurnoException e) {
+            e.printStackTrace();
+        } catch (DadiNonTiratiException e) {
+            e.printStackTrace();
+        }
     }
 }

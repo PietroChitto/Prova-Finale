@@ -141,7 +141,12 @@ import java.util.ArrayList;
 
     }
 
-//-----------------------------------------------------------------------------------------------------------------------------------------
+    @Override
+    public void aumentaForzaFamiliare(String coloreDado, int id) throws RemoteException {
+
+    }
+
+    //-----------------------------------------------------------------------------------------------------------------------------------------
     @Override
     public void iniziaPartita(int mioId, ArrayList<String> carte, ArrayList<String> giocatori, int[] risorse) {
         try {
@@ -183,6 +188,16 @@ import java.util.ArrayList;
 
     @Override
     public void messaggio(String s) throws RemoteException {
+
+    }
+
+    @Override
+    public void forzaAumentata(String colore, int forza) throws RemoteException {
+
+    }
+
+    @Override
+    public void risorseIncrementate(int pietra, int legna, int servitori, int monete, int puntiMilitari, int puntiFede, int puntiVittoria) throws RemoteException {
 
     }
 

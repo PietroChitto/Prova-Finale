@@ -94,6 +94,16 @@ public class ClientSocket implements InterfacciaClient, InterfaciaRemotaRMI{
 
     }
 
+    @Override
+    public void forzaAumentata(String colore, int forza) throws RemoteException {
+
+    }
+
+    @Override
+    public void risorseIncrementate(int pietra, int legna, int servitori, int monete, int puntiMilitari, int puntiFede, int puntiVittoria) throws RemoteException {
+
+    }
+
     //----------------------------------------------------------------------------------------------------------------------------------
 
     @Override
@@ -143,6 +153,11 @@ public class ClientSocket implements InterfacciaClient, InterfaciaRemotaRMI{
 
     @Override
     public void scegliScomunica(boolean appoggiaChiesa) throws RemoteException {
+
+    }
+
+    @Override
+    public void aumentaForzaFamiliare(String coloreDado, int id) throws RemoteException {
 
     }
 

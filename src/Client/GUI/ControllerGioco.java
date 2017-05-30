@@ -1,8 +1,10 @@
 package Client.GUI;
 
 import Client.InterfacciaClient;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.Shadow;
 import javafx.scene.image.Image;
@@ -11,8 +13,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import partita.eccezioniPartita.DadiNonTiratiException;
-import partita.eccezioniPartita.TurnoException;
+import partita.componentiDelTabellone.Familiare;
+import partita.eccezioniPartita.*;
 import server.rmiServer.InterfaciaRemotaRMI;
 
 import java.io.IOException;
@@ -21,8 +23,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ControllerGioco implements InterfacciaClient{
+
     private InterfaciaRemotaRMI clientGenerico;
     private ArrayList<ImageView> immaginiCarte;
+    private ArrayList<Label> labelCampiAzioneTorri;
     private ImageView[] immaginiDadoNero;
     private ImageView[] immaginiDadoBianco;
     private ImageView[] immaginiDadoArancio;
@@ -49,6 +53,68 @@ public class ControllerGioco implements InterfacciaClient{
         creaFamiliari(mioColore());
         creaDadi();
         settaRisorse(risorse);
+        creaLabelCampiAzioneTorri();
+    }
+
+    private void creaLabelCampiAzioneTorri() {
+        labelCampiAzioneTorri=new ArrayList<>();
+        Label tempLabel;
+        for(int i=0; i<4; i++){
+            tempLabel=new Label();
+            tempLabel.setPrefWidth(gridCampiAzioneTorre0.getWidth());
+            tempLabel.setPrefHeight(gridCampiAzioneTorre0.getHeight());
+            labelCampiAzioneTorri.add(tempLabel);
+            gridCampiAzioneTorre0.add(tempLabel,0,i);
+            creaEventoCampiAzioneTorre(tempLabel, 0,i);
+        }
+        for(int i=0; i<4; i++){
+            tempLabel=new Label();
+            tempLabel.setPrefWidth(gridCampiAzioneTorre1.getWidth());
+            tempLabel.setPrefHeight(gridCampiAzioneTorre1.getHeight());
+            labelCampiAzioneTorri.add(tempLabel);
+            gridCampiAzioneTorre1.add(tempLabel,0,i);
+            creaEventoCampiAzioneTorre(tempLabel, 1,i);
+        }
+        for(int i=0; i<4; i++){
+            tempLabel=new Label();
+            tempLabel.setPrefWidth(gridCampiAzioneTorre2.getWidth());
+            tempLabel.setPrefHeight(gridCampiAzioneTorre2.getHeight());
+            labelCampiAzioneTorri.add(tempLabel);
+            gridCampiAzioneTorre2.add(tempLabel,0,i);
+            creaEventoCampiAzioneTorre(tempLabel, 2,i);
+        }
+        for(int i=0; i<4; i++){
+            tempLabel=new Label();
+            tempLabel.setPrefWidth(gridCampiAzioneTorre3.getWidth());
+            tempLabel.setPrefHeight(gridCampiAzioneTorre3.getHeight());
+            labelCampiAzioneTorri.add(tempLabel);
+            gridCampiAzioneTorre3.add(tempLabel,0,i);
+            creaEventoCampiAzioneTorre(tempLabel, 3,i);
+        }
+    }
+
+    private void creaEventoCampiAzioneTorre(Label tempLabel, int torre, int piano) {
+        tempLabel.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            eventoCampiAzioneTorre(torre, piano);
+        });
+    }
+
+    private void eventoCampiAzioneTorre(int torre, int piano){
+        try {
+            clientGenerico.spostaFamiliarePiano(torre, piano);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        } catch (FamiliareNonSelezionatoExcepion familiareNonSelezionatoExcepion) {
+            familiareNonSelezionatoExcepion.printStackTrace();
+        } catch (TurnoException e) {
+            e.printStackTrace();
+        } catch (ForzaInsufficienteException e) {
+            e.printStackTrace();
+        } catch (ZonaOccupataExcepion zonaOccupataExcepion) {
+            zonaOccupataExcepion.printStackTrace();
+        } catch (RisorseInsufficientiException e) {
+            e.printStackTrace();
+        }
     }
 
     private void settaRisorse(int[] risorse) {
@@ -159,6 +225,10 @@ public class ControllerGioco implements InterfacciaClient{
         familiari.add(tempFam);
 
     }
+
+
+
+
 
     private void eventoFamiliari(FamiliareGrafico tempFam) {
         if(mioTurno) {
@@ -282,6 +352,44 @@ public class ControllerGioco implements InterfacciaClient{
         }
     }
 
+    public void eventoAumentaForza(ActionEvent actionEvent) {
+        try {
+            if(actionEvent.getSource().equals(buttonForzaNero)){
+                clientGenerico.aumentaForzaFamiliare("nero", mioId);
+            }
+            else if(actionEvent.getSource().equals(buttonForzaBianco)){
+                clientGenerico.aumentaForzaFamiliare("bianco", mioId);
+            }
+            else if(actionEvent.getSource().equals(buttonForzaArancio)){
+                clientGenerico.aumentaForzaFamiliare("arancio", mioId);
+            }
+            else if(actionEvent.getSource().equals(buttonForzaNeutro)){
+                clientGenerico.aumentaForzaFamiliare("neutro", mioId);
+            }
+
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        } catch (TurnoException e) {
+            e.printStackTrace();
+        } catch (DadiNonTiratiException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private Color convertiStringaColore(String nomeColore){
+        switch (nomeColore){
+            case "nero": return Color.BLACK;
+            case "bianco": return Color.WHITE;
+            case "arancio": return Color.ORANGE;
+            case "neutro": return Color.SILVER;
+        }
+        return null;
+
+    }
+
+
+
 
     @FXML
     private Pane paneDadoNero;
@@ -290,7 +398,7 @@ public class ControllerGioco implements InterfacciaClient{
     private Pane paneCasZonaRaccolto;
 
     @FXML
-    private GridPane gridCampiAzioneTorre4;
+    private GridPane gridCampiAzioneTorre3;
 
     @FXML
     private GridPane gridCampiAzioneTorre2;
@@ -376,6 +484,27 @@ public class ControllerGioco implements InterfacciaClient{
     @FXML
     private Label labelPietra;
 
+    @FXML
+    private Button buttonForzaNero;
+
+    @FXML
+    private Button buttonForzaBianco;
+
+    @FXML
+    private Button buttonForzaArancio;
+
+    @FXML
+    private Button buttonForzaNeutro;
+
+    @FXML
+    private Label labelPuntiMilitari;
+
+    @FXML
+    private Label labelPuntiFede;
+
+    @FXML
+    private Label labelPuntiVittoria;
+
 
     @Override
     public void iniziaPartita(int mioId, ArrayList<String> carte, ArrayList<String> giocatori, int[] risorse) throws RemoteException {
@@ -384,7 +513,61 @@ public class ControllerGioco implements InterfacciaClient{
 
     @Override
     public void spostatoFamiliarePiano(int numeroTorre, int numeroPiano, String coloreDado, int idGiocatore) throws RemoteException {
+        FamiliareGrafico tempFam;
+        if(idGiocatore==mioId) {
+            tempFam=prendiFamiliare(coloreDado);
+        }
+        else{
+            tempFam=creaFamiliare(coloreDado, idGiocatore);
+        }
+        switch (numeroTorre){
+            case 0: spostaInTorre0(numeroPiano, tempFam);
+                break;
+            case 1: spostaInTorre1(numeroPiano, tempFam);
+                break;
+            case 2: spostaInTorre2(numeroPiano, tempFam);
+                break;
+            case 3: spostaInTorre3(numeroPiano, tempFam);
+                break;
+        }
+    }
 
+    private void spostaInTorre3(int numeroPiano, FamiliareGrafico familare) {
+        gridCampiAzioneTorre3.add(familare,0,numeroPiano);
+    }
+
+    private void spostaInTorre2(int numeroPiano, FamiliareGrafico familiare) {
+        gridCampiAzioneTorre2.add(familiare, 0,numeroPiano);
+
+    }
+
+    private void spostaInTorre1(int numeroPiano, FamiliareGrafico familiare) {
+        gridCampiAzioneTorre1.add(familiare, 0,numeroPiano);
+    }
+
+    private void spostaInTorre0(int numeroPiano, FamiliareGrafico familiare) {
+        gridCampiAzioneTorre0.add(familiare,0,numeroPiano);
+    }
+
+    private FamiliareGrafico creaFamiliare(String coloreDado, int idGiocatore) {
+        Color color= convertiStringaColore(coloreDado);
+        switch (idGiocatore){
+            case 0: return new FamiliareGrafico(5, Color.BLUE, color);
+            case 1: return new FamiliareGrafico(5, Color.YELLOW, color);
+            case 2: return new FamiliareGrafico(5,Color.RED, color);
+            case 3: return new FamiliareGrafico(5,Color.GREEN, color);
+        }
+        return null;
+    }
+
+    private FamiliareGrafico prendiFamiliare(String coloreDado) {
+        switch (coloreDado){
+            case "nero": return familiari.get(0);
+            case "bianco": return familiari.get(1);
+            case "arancio": return familiari.get(2);
+            case "neutro": return familiari.get(3);
+        }
+        return null;
     }
 
     @Override
@@ -405,4 +588,31 @@ public class ControllerGioco implements InterfacciaClient{
     public void messaggio(String s) throws RemoteException {
         labelMessaggiServer.setText(s);
     }
+
+    @Override
+    public void forzaAumentata(String colore, int forza) throws RemoteException {
+        switch (colore){
+            case "nero": labelForzaNero.setText(forza+"");
+                break;
+            case "bianco": labelForzaBianco.setText(forza+"");
+                break;
+            case "arancio": labelForzaArancio.setText(forza+"");
+                break;
+            case "neutro": labelForzaNeutro.setText(forza+"");
+                break;
+        }
+    }
+
+    @Override
+    public void risorseIncrementate(int pietra, int legna, int servitori, int monete, int puntiMilitari, int puntiFede, int puntiVittoria) throws RemoteException {
+        labelPietra.setText(pietra+"");
+        labelLegna.setText(legna+"");
+        labelServitori.setText(servitori+"");
+        labelMonete.setText(monete+"");
+        labelPuntiMilitari.setText(puntiMilitari+"");
+        labelPuntiFede.setText(puntiFede+"");
+        labelPuntiVittoria.setText(puntiVittoria+"");
+    }
+
+
 }

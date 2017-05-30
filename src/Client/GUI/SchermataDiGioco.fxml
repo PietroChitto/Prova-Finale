@@ -97,7 +97,7 @@
             <RowConstraints maxHeight="68.0" minHeight="10.0" prefHeight="67.0" vgrow="SOMETIMES" />
         </rowConstraints>
       </GridPane>
-      <GridPane fx:id="gridCampiAzioneTorre4" layoutX="439.0" layoutY="51.0" prefHeight="305.0" prefWidth="50.0">
+      <GridPane fx:id="gridCampiAzioneTorre3" layoutX="439.0" layoutY="51.0" prefHeight="305.0" prefWidth="50.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
@@ -167,10 +167,10 @@
         </rowConstraints>
       </GridPane>
       <Label fx:id="labelMessaggiServer" layoutX="1010.0" layoutY="602.0" prefHeight="42.0" prefWidth="364.0" />
-      <Button fx:id="buttonForzaNero" layoutX="629.0" layoutY="476.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="31.0" text="+1" />
-      <Button fx:id="buttonForzaBianco" layoutX="715.0" layoutY="475.0" mnemonicParsing="false" text="+1" />
-      <Button fx:id="buttonForzaArancio" layoutX="806.0" layoutY="475.0" mnemonicParsing="false" text="+1" />
-      <Button fx:id="buttonForzaNeutro" layoutX="894.0" layoutY="475.0" mnemonicParsing="false" text="+1" />
+      <Button fx:id="buttonForzaNero" layoutX="629.0" layoutY="476.0" mnemonicParsing="false" onAction="#eventoAumentaForza" prefHeight="25.0" prefWidth="31.0" text="+1" />
+      <Button fx:id="buttonForzaBianco" layoutX="715.0" layoutY="475.0" mnemonicParsing="false" onAction="#eventoAumentaForza" text="+1" />
+      <Button fx:id="buttonForzaArancio" layoutX="806.0" layoutY="475.0" mnemonicParsing="false" onAction="#eventoAumentaForza" text="+1" />
+      <Button fx:id="buttonForzaNeutro" layoutX="894.0" layoutY="475.0" mnemonicParsing="false" onAction="#eventoAumentaForza" text="+1" />
       <Label id="labelForzaNero" fx:id="labelForzaNero" layoutX="630.0" layoutY="435.0" text="Forza" />
       <Label id="labelForzaBianco" fx:id="labelForzaBianco" layoutX="716.0" layoutY="435.0" text="Forza" />
       <Label id="labelForzaArancio" fx:id="labelForzaArancio" layoutX="807.0" layoutY="435.0" text="Forza" />
@@ -230,6 +230,21 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
+      </GridPane>
+      <GridPane layoutX="1146.0" layoutY="478.0" prefHeight="42.0" prefWidth="200.0">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label fx:id="labelPuntiVittoria" />
+            <Label fx:id="labelPuntiFede" GridPane.columnIndex="1" />
+            <Label fx:id="labelPuntiMilitari" GridPane.columnIndex="2" />
+         </children>
       </GridPane>
    </children>
 </AnchorPane>

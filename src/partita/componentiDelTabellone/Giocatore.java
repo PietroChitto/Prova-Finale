@@ -52,7 +52,7 @@ public class Giocatore implements Serializable{
         familiari[0] = new Familiare(false, id, 0, "arancio", true, this);
         familiari[1] = new Familiare(false, id, 0, "bianco", true, this);
         familiari[2] = new Familiare(false, id, 0, "nero", true, this);
-        familiari[3] = new Familiare(true, id, 0, "nessuno", true, this);
+        familiari[3] = new Familiare(true, id, 0, "neutro", true, this);
     }
 
     public int getPuntiFede() {

@@ -1,8 +1,7 @@
 package server.rmiServer;
 
 import Client.InterfacciaClient;
-import partita.eccezioniPartita.DadiNonTiratiException;
-import partita.eccezioniPartita.TurnoException;
+import partita.eccezioniPartita.*;
 import server.GiocatoreRemoto;
 import server.MosseGiocatore;
 
@@ -54,7 +53,19 @@ public class GiocatoreRMI extends GiocatoreRemoto{
 
     @Override
     public void spostaFamiliarePiano(int numeroTorre, int numeroPiano) throws RemoteException {
-        mosseGiocatore.spostaFamiliarePiano(numeroTorre, numeroPiano);
+        try {
+            mosseGiocatore.spostaFamiliarePiano(numeroTorre, numeroPiano);
+        } catch (FamiliareNonSelezionatoExcepion familiareNonSelezionatoExcepion) {
+            familiareNonSelezionatoExcepion.printStackTrace();
+        } catch (TurnoException e) {
+            e.printStackTrace();
+        } catch (ForzaInsufficienteException e) {
+            e.printStackTrace();
+        } catch (ZonaOccupataExcepion zonaOccupataExcepion) {
+            zonaOccupataExcepion.printStackTrace();
+        } catch (RisorseInsufficientiException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -91,7 +102,19 @@ public class GiocatoreRMI extends GiocatoreRemoto{
     public synchronized void scegliScomunica(boolean appoggiaChiesa) throws RemoteException {
         mosseGiocatore.scegliScomunica(appoggiaChiesa);
     }
-//-----------------------------------------------------------------------------------------------------------------------------------------
+
+    @Override
+    public void aumentaForzaFamiliare(String coloreDado, int id) throws RemoteException {
+        try {
+            mosseGiocatore.aumentaForzaFamiliare(coloreDado, id);
+        } catch (TurnoException e) {
+            controllerClient.messaggio("Non è il tuo turno");
+        } catch (DadiNonTiratiException e) {
+            controllerClient.messaggio("Dadi non tirati");
+        }
+    }
+
+    //-----------------------------------------------------------------------------------------------------------------------------------------
     @Override
     public void iniziaPartita(int mioId, ArrayList<String> carte, ArrayList<String> giocatori, int[] risorse) throws RemoteException {
         controllerClient.iniziaPartita(mioId, carte, giocatori, risorse);
@@ -114,5 +137,15 @@ public class GiocatoreRMI extends GiocatoreRemoto{
     @Override
     public void messaggio(String s) throws RemoteException {
 
+    }
+
+    @Override
+    public void forzaAumentata(String colore, int forza) throws RemoteException {
+        controllerClient.forzaAumentata(colore, forza);
+    }
+
+    @Override
+    public void risorseIncrementate(int pietra, int legna, int servitori, int monete, int puntiMilitari, int puntiFede, int puntiVittoria) throws RemoteException {
+        controllerClient.risorseIncrementate(pietra, legna, servitori, monete, puntiMilitari, puntiFede, puntiVittoria);
     }
 }

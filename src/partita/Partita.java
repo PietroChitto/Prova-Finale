@@ -44,6 +44,10 @@ public class Partita {
         return giocatori;
     }
 
+    public ArrayList<Giocatore> getGiocatoriGioco() {
+        return giocatoriGioco;
+    }
+
     private void ordineTurnoIniziale() {
         for(GiocatoreRemoto gr: giocatori){
             ordineTurno.add(gr.getGiocatore());
@@ -170,7 +174,7 @@ public class Partita {
     }
 
     public void passaMossa(GiocatoreRemoto giocatoreRemoto) throws ZonaOccupataExcepion, ForzaInsufficienteException {
-        ripristinaForzaTabellone();
+        //ripristinaForzaTabellone();
         numeroMosseTurno++;
         if(numeroMosseTurno==giocatori.size()*4){
             passaTurno();
