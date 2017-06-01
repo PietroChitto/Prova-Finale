@@ -20,10 +20,10 @@ public class Tabellone {
         else numeroGiocatori=2;
         System.out.println("creo le torri");
         torri=new Torre[4];
-        torri[0]=new Torre("territori");
-        torri[1]=new Torre("personaggi");
-        torri[2]=new Torre("edifici");
-        torri[3]=new Torre("imprese");
+        torri[0]=new Torre("territori",0);
+        torri[1]=new Torre("personaggi",1);
+        torri[2]=new Torre("edifici",2);
+        torri[3]=new Torre("imprese",3);
         System.out.println("creo vaticano");
         vaticano=new Vaticano();
         System.out.println("creo mercato");

@@ -45,13 +45,21 @@ public class CartaImpresa extends CartaSviluppo {
      */
     public void attivaEffettoRapido(Giocatore g){
         if(super.getEffettoRapido()){
-            //cerca meteodo rapido
+            try {
+                effettoRapido.attivaEffetto(codiceEffR, g, null);
+            } catch (RisorseInsufficientiException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public void attivaEffettoPermanente(Giocatore g){
         if(super.getEffettoPermanente()){
-            //cerca meteodo rapido
+            try {
+                effettoPermanente.attivaEffetto(codiceEffP, g,null);
+            } catch (RisorseInsufficientiException e) {
+                e.printStackTrace();
+            }
         }
     }
 

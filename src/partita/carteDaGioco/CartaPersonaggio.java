@@ -33,7 +33,11 @@ public class CartaPersonaggio extends CartaSviluppo {
      */
     public void attivaEffettoRapido(Giocatore g){
         if(super.getEffettoRapido()){
-            //cerca meteodo rapido
+            try {
+                effettoRapido.attivaEffetto(codiceEffR, g,null);
+            } catch (RisorseInsufficientiException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -43,7 +47,11 @@ public class CartaPersonaggio extends CartaSviluppo {
      */
     public void attivaEffettoPermanente(Familiare f){
         if(super.getEffettoPermanente()){
-            //cerca metodo permanente
+            try {
+                effettoPermanente.attivaEffetto(codiceEffP,f.getGiocatore(),null);
+            } catch (RisorseInsufficientiException e) {
+                e.printStackTrace();
+            }
         }
     }
 

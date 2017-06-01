@@ -19,7 +19,7 @@ public class EffettoAumenta implements Effetto{
         int[] incr =new int[2];
 
         for(int i=0; i<2; i++){
-            incr[i]=(int)s.charAt(i*2);
+            incr[i]=(int)s.charAt(i*2)-48;
         }
 
         char tipo = s.charAt(5);

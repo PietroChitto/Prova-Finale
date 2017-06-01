@@ -16,7 +16,7 @@ public interface InterfaciaRemotaRMI extends Remote{
 
     public void selezionaFamiliare(String colore, int idGiocatore) throws RemoteException, TurnoException, DadiNonTiratiException;
     public void deselezionaFamiliare() throws RemoteException, TurnoException;
-    public void spostaFamiliarePiano(int numeroTorre, int numeroPiano) throws RemoteException, FamiliareNonSelezionatoExcepion, TurnoException, ForzaInsufficienteException, ZonaOccupataExcepion, RisorseInsufficientiException;
+    public void spostaFamiliarePiano(int numeroTorre, int numeroPiano) throws RemoteException, FamiliareNonSelezionatoExcepion, TurnoException, ForzaInsufficienteException, ZonaOccupataExcepion, RisorseInsufficientiException, TorreOccupataException;
     public void spostaFamiliareMercato(int zonaMercato) throws RemoteException;
     public void spostaFamiliarePalazzoDelConsiglio() throws RemoteException;
     public void spostaFamiliareZonaProduzione(int zona) throws RemoteException;

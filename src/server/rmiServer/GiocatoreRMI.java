@@ -65,6 +65,8 @@ public class GiocatoreRMI extends GiocatoreRemoto{
             controllerClient.messaggio("la zona è già occupata");
         } catch (RisorseInsufficientiException e) {
             controllerClient.messaggio("non hai risorse sufficienti per prendere la carta");
+        } catch (TorreOccupataException e) {
+            controllerClient.messaggio("Hai già piazzato un familiare sulla torre");
         }
     }
 

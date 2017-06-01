@@ -59,21 +59,21 @@ public class ControllerGioco implements InterfacciaClient{
         creaFamiliari(mioColore(mioId));
         creaDadi();
         settaRisorse(risorse);
-        creaLabelCampiAzioneTorri();
+        creaPaneCampiAzioneTorri();
         contaCarteE=0;
         contaCarteI=0;
         contaCarteP=0;
         contaCarteT=0;
     }
 
-    private void creaLabelCampiAzioneTorri() {
+    private void creaPaneCampiAzioneTorri() {
         Pane tempPane;
         paneCampiAzioneTorri=new ArrayList<>();
         FamiliareGrafico f=new FamiliareGrafico(30, Color.BLACK,Color.WHITE);
         for(int i=0; i<4; i++){
             tempPane=new Pane();
-            tempPane.setPrefWidth(gridCampiAzioneTorre0.getWidth());
-            tempPane.setPrefHeight(gridCampiAzioneTorre0.getHeight());
+            //tempPane.setPrefWidth(gridCampiAzioneTorre0.getWidth());
+            //tempPane.setPrefHeight(gridCampiAzioneTorre0.getHeight());
             paneCampiAzioneTorri.add(tempPane);
             gridCampiAzioneTorre0.add(tempPane,0,i);
             tempPane.setVisible(true);
@@ -130,6 +130,8 @@ public class ControllerGioco implements InterfacciaClient{
         } catch (ZonaOccupataExcepion zonaOccupataExcepion) {
             zonaOccupataExcepion.printStackTrace();
         } catch (RisorseInsufficientiException e) {
+            e.printStackTrace();
+        } catch (TorreOccupataException e) {
             e.printStackTrace();
         }
     }
@@ -643,10 +645,14 @@ public class ControllerGioco implements InterfacciaClient{
             f.setEffetto(null);
         }
         switch (coloreDado){
-            case "nero": return familiari.get(0);
-            case "bianco": return familiari.get(1);
-            case "arancio": return familiari.get(2);
-            case "neutro": return familiari.get(3);
+            case "nero": gridFamiliari.getChildren().remove(familiari.get(0));
+                        return familiari.get(0);
+            case "bianco": gridFamiliari.getChildren().remove(familiari.get(1));
+                            return familiari.get(1);
+            case "arancio": gridFamiliari.getChildren().remove(familiari.get(2));
+                            return familiari.get(2);
+            case "neutro": gridFamiliari.getChildren().remove(familiari.get(3));
+                            return familiari.get(3);
         }
         return null;
     }

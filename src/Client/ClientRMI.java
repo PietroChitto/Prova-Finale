@@ -150,6 +150,8 @@ public class ClientRMI extends UnicastRemoteObject implements InterfacciaClient,
             zonaOccupataExcepion.printStackTrace();
         } catch (RisorseInsufficientiException e) {
             e.printStackTrace();
+        } catch (TorreOccupataException e) {
+            e.printStackTrace();
         }
     }
 

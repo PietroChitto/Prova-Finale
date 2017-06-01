@@ -22,8 +22,8 @@ public class EffettoScambia implements Effetto {
         non ci ricorderemo il perchè
          */
         for(int i=0; i<14; i+=2){
-            risorseIniziali[i/2]=(int) s.charAt(i);
-            risorseFinali[i/2]=(int) s.charAt(i+15);
+            risorseIniziali[i/2]=(int) s.charAt(i)-48;
+            risorseFinali[i/2]=(int) s.charAt(i+15)-48;
         }
         try {
             //controllo se ho le risorse necessarie

@@ -19,11 +19,11 @@ public class EffettoAumentaForza implements Effetto {
     @Override
     public void attivaEffetto(String s, Giocatore giocatore, Tabellone tab) throws RisorseInsufficientiException {
 
-            int forza=s.charAt(0);
+            int forza=(int) s.charAt(0)-48;
             int [] zone=new int[6];
 
             for (int i=0; i<6; i++){
-                zone[i]=(int) s.charAt((i+1)*2);
+                zone[i]=(int) s.charAt((i+1)*2) -48;
             }
 
             if(zone[0]==1){

@@ -28,10 +28,11 @@ public class EffettoIncrementa implements Effetto{
     public void attivaEffetto(String s, Giocatore g, Tabellone tab) {
         int[] incrementi=new int[7];
         for (int i=0; i<14; i+=2){
-            incrementi[i/2]=s.charAt(i);
+            incrementi[i/2]=(int) s.charAt(i)-48;
         }
 
         g.incrementaRisorse(incrementi);
+        System.out.println("incrementate le risorse del giocatore "+g.getId()+" a causa dell'effetto");
     }
 
 

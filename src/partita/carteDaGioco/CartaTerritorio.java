@@ -4,6 +4,7 @@ import partita.carteDaGioco.effetti.Effetto;
 import partita.componentiDelTabellone.Familiare;
 import partita.componentiDelTabellone.Giocatore;
 import partita.eccezioniPartita.ForzaInsufficienteException;
+import partita.eccezioniPartita.RisorseInsufficientiException;
 
 /**
  * Created by william on 10/05/2017.
@@ -33,7 +34,11 @@ public class CartaTerritorio extends CartaSviluppo{
      */
     public void attivaEffettoRapido(Giocatore g){
         if(super.getEffettoRapido()){
-            //cerca meteodo rapido
+            try {
+                effettoRapido.attivaEffetto(codiceEffR, g,null);
+            } catch (RisorseInsufficientiException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -45,6 +50,11 @@ public class CartaTerritorio extends CartaSviluppo{
         if(super.getEffettoPermanente()){
             verificaDisponibilitàForza(f.getForza());
             //cerca metodo permanente
+            try {
+                effettoPermanente.attivaEffetto(codiceEffP,f.getGiocatore(),null);
+            } catch (RisorseInsufficientiException e) {
+                e.printStackTrace();
+            }
         }
     }
 

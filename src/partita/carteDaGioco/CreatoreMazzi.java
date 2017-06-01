@@ -314,7 +314,7 @@ public class CreatoreMazzi {
             return effetto;
         }
 
-        return null;
+        return new EffettoIncrementa();
     }
 
 }

@@ -1,5 +1,7 @@
 package partita.componentiDelTabellone;
 
+import partita.eccezioniPartita.TorreOccupataException;
+
 /**
  * Created by Pietro on 10/05/2017.
  */
@@ -7,18 +9,20 @@ public class Torre {
     private String tipo;
     private Piano[] piani;
     private boolean occupata;
+    private int numeroTorre;
 
-    public Torre(String tipo){
+    public Torre(String tipo, int numeroTorre){
         this.tipo=tipo;
+        this.numeroTorre=numeroTorre;
         piani = new Piano[4];
         //creo il primo piano che ha costo 1 e non ha effetto
-        piani[0]=new Piano(1,false, "", 1);
+        piani[0]=new Piano(1,false,  1, numeroTorre);
         //creo il secondo piano che ha costo 3 e non ha effetto
-        piani[1]=new Piano(3,false, "",2);
+        piani[1]=new Piano(3,false, 2, numeroTorre);
         //creo il terzo piano che ha costo 5 e ha effetto
-        piani[2]=new Piano(5,true, "incrementaRisorse1",3);
+        piani[2]=new Piano(5,true,3,numeroTorre);
         //creo il primo piano che ha costo 7 e ha effetto
-        piani[3]=new Piano(7,false, "IncrementaRisorse2",4);
+        piani[3]=new Piano(7,false, 4,numeroTorre);
         occupata=false;
     }
 
@@ -55,6 +59,14 @@ public class Torre {
     public void pulisciCarte(){
         for (int i=0;i<4;i++){
             piani[i].togliCarta();
+        }
+    }
+
+    public void controllaFamiliare(int id) throws TorreOccupataException{
+        for (Piano p: piani) {
+            if(p.getCampoAzione().getFamiliare()!=null && p.getCampoAzione().getFamiliare().getIdGiocatore()==id){
+                throw new TorreOccupataException();
+            }
         }
     }
 }

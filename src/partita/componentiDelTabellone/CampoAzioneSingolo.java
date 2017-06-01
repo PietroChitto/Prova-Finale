@@ -1,5 +1,7 @@
 package partita.componentiDelTabellone;
 
+import partita.carteDaGioco.effetti.Effetto;
+import partita.carteDaGioco.effetti.EffettoIncrementa;
 import partita.eccezioniPartita.ForzaInsufficienteException;
 import partita.eccezioniPartita.ZonaOccupataExcepion;
 
@@ -11,20 +13,23 @@ public class CampoAzioneSingolo {
     private boolean haEffetto;
     private Familiare familiare;
     private boolean occupato;
-    private String effetto;
+    private String codEff;
+    private EffettoIncrementa effetto;
 
-    public CampoAzioneSingolo(int costo, boolean haEffetto, String effetto){
+    public CampoAzioneSingolo(int costo, boolean haEffetto, String codEff){
         this.costo=costo;
         this.haEffetto=haEffetto;
-        this.effetto=effetto;
+        this.codEff=codEff;
         this.occupato=false;
+        effetto=new EffettoIncrementa();
     }
 
     public void setFamiliare(Familiare familiare) throws ZonaOccupataExcepion, ForzaInsufficienteException {
         verificaDisponibilitàForza(familiare.getForza());
-        if(this.familiare==null)
+        if(this.familiare==null) {
             this.familiare = familiare;
-        else
+            effetto.attivaEffetto(codEff, familiare.getGiocatore(), null);
+        }else
             throw new ZonaOccupataExcepion();
     }
 
@@ -45,7 +50,7 @@ public class CampoAzioneSingolo {
     }
 
     public String getEffetto() {
-        return effetto;
+        return codEff;
     }
 
     public void setOccupato(boolean occupato) {
