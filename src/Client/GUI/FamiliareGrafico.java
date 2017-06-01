@@ -41,7 +41,7 @@ public class FamiliareGrafico extends Pane {
         else if(coloreDado.equals(Color.WHITE)){
             nomeColoreDado="bianco";
         }
-        else if(coloreDado.equals(Color.SILVER)){
+        else if(coloreDado.equals(Color.BLUE) || coloreDado.equals(Color.YELLOW) || coloreDado.equals(Color.RED) || coloreDado.equals(Color.GREEN)){
             nomeColoreDado="neutro";
         }
     }
@@ -52,6 +52,7 @@ public class FamiliareGrafico extends Pane {
         quadrato.setX(cerchio.getCenterX()-cerchio.getRadius()/2);
         quadrato.setY(cerchio.getCenterY()-cerchio.getRadius()/2);
         this.getChildren().removeAll();
+        this.getChildren().clear();
         this.getChildren().addAll(cerchio,quadrato);
         settaEvento();
     }

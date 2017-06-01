@@ -36,6 +36,10 @@ public class ControllerGioco implements InterfacciaClient{
     private int mioId;
     private ArrayList<FamiliareGrafico> familiari;
     private boolean mioTurno;
+    private int contaCarteT;
+    private int contaCarteP;
+    private int contaCarteE;
+    private int contaCarteI;
 
     public void setClientGenerico(InterfaciaRemotaRMI clientGenerico){
         this.clientGenerico=clientGenerico;
@@ -52,10 +56,14 @@ public class ControllerGioco implements InterfacciaClient{
         this.mioId=mioId;
         settaLabelGiocatori(this.giocatori);
         mettiCarteNelleTorri(carte);
-        creaFamiliari(mioColore());
+        creaFamiliari(mioColore(mioId));
         creaDadi();
         settaRisorse(risorse);
         creaLabelCampiAzioneTorri();
+        contaCarteE=0;
+        contaCarteI=0;
+        contaCarteP=0;
+        contaCarteT=0;
     }
 
     private void creaLabelCampiAzioneTorri() {
@@ -107,6 +115,8 @@ public class ControllerGioco implements InterfacciaClient{
     }
 
     private void eventoCampiAzioneTorre(int torre, int piano){
+        piano=specchiaPiano(piano);
+        System.out.println("piano mandato: "+piano);
         try {
             clientGenerico.spostaFamiliarePiano(torre, piano);
         } catch (RemoteException e) {
@@ -197,8 +207,8 @@ public class ControllerGioco implements InterfacciaClient{
         });
     }
 
-    private Color mioColore() {
-        switch (mioId){
+    private Color mioColore(int id) {
+        switch (id){
             case 0: return Color.BLUE;
             case 1: return Color.YELLOW;
             case 2: return Color.RED;
@@ -225,7 +235,7 @@ public class ControllerGioco implements InterfacciaClient{
         tempFam.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> eventoFamiliari(finalTempFam2));
         gridFamiliari.add(tempFam,2,0);
         familiari.add(tempFam);
-        tempFam=new FamiliareGrafico((double) 20,Color.SILVER, Color.BLACK);
+        tempFam=new FamiliareGrafico((double) 20,Color.SILVER, mioColore(mioId));
         FamiliareGrafico finalTempFam3 = tempFam;
         tempFam.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> eventoFamiliari(finalTempFam3));
         gridFamiliari.add(tempFam,3,0);
@@ -256,6 +266,7 @@ public class ControllerGioco implements InterfacciaClient{
             tempFam.setSelezionato(true);
             tempFam.setEffetto(new Shadow());
             try {
+                System.out.println("colore dado familiare "+tempFam.getNomeColoreDado());
                 clientGenerico.selezionaFamiliare(tempFam.getNomeColoreDado(), mioId);
             } catch (RemoteException e) {
                 e.printStackTrace();
@@ -296,6 +307,7 @@ public class ControllerGioco implements InterfacciaClient{
                 tempImageView.setFitHeight(gridCarteTorre1.getHeight()/4);
                 immaginiCarte.add(tempImageView);
                 j=i%4;
+                j=specchiaPiano(j);
                 gridCarteTorre0.add(tempImageView,0,j);
             }
             else if(i<8){
@@ -306,7 +318,8 @@ public class ControllerGioco implements InterfacciaClient{
                 tempImageView.setFitHeight(gridCarteTorre1.getHeight()/4);
                 immaginiCarte.add(tempImageView);
                 j=i%4;
-                gridCarteTorre1.add(tempImageView, 0, i%4);
+                j=specchiaPiano(j);
+                gridCarteTorre1.add(tempImageView, 0, j);
             }else if(i<12){
                 tempImageView =new ImageView();
                 tempImg = new Image("Client/GUI/img/Carte/Edifici/"+nomeCarta+".jpg");
@@ -315,7 +328,8 @@ public class ControllerGioco implements InterfacciaClient{
                 tempImageView.setFitHeight(gridCarteTorre1.getHeight()/4);
                 immaginiCarte.add(tempImageView);
                 j=i%4;
-                gridCarteTorre2.add(tempImageView, 0, i%4);
+                j=specchiaPiano(j);
+                gridCarteTorre2.add(tempImageView, 0, j);
             }else if(i<16){
                 tempImageView =new ImageView();
                 tempImg = new Image("Client/GUI/img/Carte/Imprese/"+nomeCarta+".jpg");
@@ -324,7 +338,8 @@ public class ControllerGioco implements InterfacciaClient{
                 tempImageView.setFitHeight(gridCarteTorre1.getHeight()/4);
                 immaginiCarte.add(tempImageView);
                 j=i%4;
-                gridCarteTorre3.add(tempImageView, 0, i%4);
+                j=specchiaPiano(j);
+                gridCarteTorre3.add(tempImageView, 0, j);
             }
 
             i++;
@@ -373,10 +388,20 @@ public class ControllerGioco implements InterfacciaClient{
             case "nero": return Color.BLACK;
             case "bianco": return Color.WHITE;
             case "arancio": return Color.ORANGE;
-            case "neutro": return Color.SILVER;
+            case "neutro": return mioColore(mioId);
         }
         return null;
 
+    }
+
+    private int specchiaPiano(int numeroPiano){
+        switch (numeroPiano){
+            case 0: return 3;
+            case 1: return 2;
+            case 2: return 1;
+            case 3: return 0;
+        }
+        return 0;
     }
 
 
@@ -496,6 +521,9 @@ public class ControllerGioco implements InterfacciaClient{
     @FXML
     private Label labelPuntiVittoria;
 
+    @FXML
+    private GridPane gridPlancia;
+
 
     @Override
     public void iniziaPartita(int mioId, ArrayList<String> carte, ArrayList<String> giocatori, int[] risorse) throws RemoteException {
@@ -504,7 +532,8 @@ public class ControllerGioco implements InterfacciaClient{
 
     @Override
     public void spostatoFamiliarePiano(int numeroTorre, int numeroPiano, String coloreDado, int idGiocatore) throws RemoteException {
-
+        numeroPiano=specchiaPiano(numeroPiano);
+        System.out.println("numero piano" +numeroPiano);
         FamiliareGrafico tempFam;
         FamiliareGrafico tempFam2;
         if(idGiocatore==mioId) {
@@ -525,35 +554,81 @@ public class ControllerGioco implements InterfacciaClient{
             case 3: spostaInTorre3(numeroPiano, tempFam);
                 break;
         }
+        prendiCarta(numeroTorre, numeroPiano, idGiocatore);
+    }
+
+    private void prendiCarta(int numeroTorre, int numeroPiano, int id) {
+        //indice della carta nella lista di carte
+        int i=4*numeroTorre+specchiaPiano(numeroPiano);
+        ImageView tempImg=immaginiCarte.get(i);
+        immaginiCarte.remove(i);
+        immaginiCarte.add(i,null);
+        rimuoviCartaDallaTorre(numeroTorre, tempImg);
+        if(mioId==id) {
+            mettiCartaNellaPlancia(numeroTorre, tempImg);
+        }
+
+    }
+
+    private void rimuoviCartaDallaTorre(int numeroTorre, ImageView tempImg) {
+        switch (numeroTorre){
+            case 0: gridCarteTorre0.getChildren().remove(tempImg);
+                break;
+            case 1: gridCarteTorre1.getChildren().remove(tempImg);
+                break;
+            case 2: gridCarteTorre2.getChildren().remove(tempImg);
+                break;
+            case 3: gridCarteTorre3.getChildren().remove(tempImg);
+                break;
+        }
+    }
+
+    private void mettiCartaNellaPlancia(int numeroTorre, ImageView tempImg) {
+        tempImg.setFitHeight(gridPlancia.getHeight()/4);
+        tempImg.setFitWidth(gridPlancia.getWidth()/6);
+        switch (numeroTorre){
+            case 0: gridPlancia.add(tempImg,contaCarteT,numeroTorre);
+                contaCarteT +=1;
+                break;
+            case 1: gridPlancia.add(tempImg,contaCarteP,numeroTorre);
+                contaCarteP+=1;
+                break;
+            case 2: gridPlancia.add(tempImg,contaCarteE,numeroTorre);
+                contaCarteE+=1;
+                break;
+            case 3: gridPlancia.add(tempImg,contaCarteI,numeroTorre);
+                contaCarteI+=1;
+                break;
+        }
     }
 
     private void spostaInTorre3(int numeroPiano, FamiliareGrafico familiare) {
         paneCampiAzioneTorri.get(numeroPiano+12).getChildren().removeAll();
         paneCampiAzioneTorri.get(numeroPiano+12).getChildren().add(familiare);
-        //gridCampiAzioneTorre3.add(familare,0,numeroPiano);
     }
 
     private void spostaInTorre2(int numeroPiano, FamiliareGrafico familiare) {
         paneCampiAzioneTorri.get(numeroPiano+8).getChildren().removeAll();
         paneCampiAzioneTorri.get(numeroPiano+8).getChildren().add(familiare);
-       // gridCampiAzioneTorre2.add(familiare, 0,numeroPiano);
     }
 
     private void spostaInTorre1(int numeroPiano, FamiliareGrafico familiare) {
         paneCampiAzioneTorri.get(numeroPiano+4).getChildren().removeAll();
         paneCampiAzioneTorri.get(numeroPiano+4).getChildren().add(familiare);
-        //gridCampiAzioneTorre1.getChildren().remove(numeroPiano);
-        //gridCampiAzioneTorre1.add(familiare, 0,numeroPiano);
     }
 
     private void spostaInTorre0(int numeroPiano, FamiliareGrafico familiare) {
         paneCampiAzioneTorri.get(numeroPiano).getChildren().removeAll();
         paneCampiAzioneTorri.get(numeroPiano).getChildren().add(familiare);
-        //gridCampiAzioneTorre0.add(familiare,0,numeroPiano);
     }
 
     private FamiliareGrafico creaFamiliare(String coloreDado, int idGiocatore) {
-        Color color= convertiStringaColore(coloreDado);
+        Color color;
+        if(coloreDado.equals("neutro")){
+            return new FamiliareGrafico(10, Color.SILVER, mioColore(idGiocatore));
+
+        }
+        color= convertiStringaColore(coloreDado);
         switch (idGiocatore){
             case 0: return new FamiliareGrafico(10, Color.BLUE, color);
             case 1: return new FamiliareGrafico(10, Color.YELLOW, color);

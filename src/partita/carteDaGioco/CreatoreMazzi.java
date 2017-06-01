@@ -188,7 +188,7 @@ public class CreatoreMazzi {
             String nomeEffettoRapido=rs.getString("effettoRapido");
             String nomeEffettoPermanente=rs.getString("effettoPermanente");
             int costoAttivazione=rs.getInt("costoAttivazione");
-            CostoCarta costo=cifraCosto("costoAcquisizione");
+            CostoCarta costo=cifraCosto(costoAcquisizione);
             Effetto effR=creaEffetto(nomeEffettoRapido);
             Effetto effP=creaEffetto(nomeEffettoPermanente);
             String codiceEffR=generaCodiceEffetto(nomeEffettoRapido);
@@ -211,7 +211,7 @@ public class CreatoreMazzi {
             boolean boolPermanente=rs.getBoolean("boolPermanente");
             String nomeEffettoRapido=rs.getString("effettoRapido");
             String nomeEffettoPermanente=rs.getString("effettoPermanente");
-            CostoCarta costo=cifraCosto("costoAcquisizione");
+            CostoCarta costo=cifraCosto(costoAcquisizione);
             Effetto effR=creaEffetto(nomeEffettoRapido);
             Effetto effP=creaEffetto(nomeEffettoPermanente);
             String codiceEffR=generaCodiceEffetto(nomeEffettoRapido);
@@ -262,7 +262,7 @@ public class CreatoreMazzi {
             boolean boolPermanente=rs.getBoolean("boolPermanente");
             String nomeEffettoRapido=rs.getString("effettoRapido");
             String nomeEffettoPermanente=rs.getString("effettoPermanente");
-            CostoCarta costo=cifraCosto("costoAcquisizione");
+            CostoCarta costo=cifraCosto(costoAcquisizione);
             Effetto effR=creaEffetto(nomeEffettoRapido);
             Effetto effP=creaEffetto(nomeEffettoPermanente);
             String codiceEffR=generaCodiceEffetto(nomeEffettoRapido);
@@ -284,9 +284,9 @@ public class CreatoreMazzi {
     private CostoCarta cifraCosto(String costoDaCifrare){
         int[] costi=new int[5];
         for(int i=0; i<5;i++){
-            costi[i]=costoDaCifrare.charAt(i*2);
+            costi[i]=costoDaCifrare.charAt(i*2)-48;
         }
-        CostoCarta costo= new CostoCarta(costi[1], costi[0], costi[2], costi[3], costi[4]);
+        CostoCarta costo= new CostoCarta(costi[0], costi[1], costi[2], costi[3], costi[4]);
         return costo;
     }
 
