@@ -121,6 +121,17 @@ public class ClientRMI extends UnicastRemoteObject implements InterfacciaClient,
     }
 
     @Override
+    public void spostatoFamiliareMercato(int zonaMercato, String coloreDado, int id) throws RemoteException {
+        Platform.runLater(()->{
+            try {
+                controllerGioco.spostatoFamiliareMercato(zonaMercato,coloreDado,id);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @Override
     public void selezionaFamiliare(String colore, int idGiocatore) throws RemoteException {
         try {
             metodiPartita.selezionaFamiliare(colore, idGiocatore);
@@ -157,7 +168,15 @@ public class ClientRMI extends UnicastRemoteObject implements InterfacciaClient,
 
     @Override
     public void spostaFamiliareMercato(int zonaMercato) throws RemoteException {
-
+        try {
+            metodiPartita.spostaFamiliareMercato(zonaMercato);
+        } catch (TurnoException e) {
+            e.printStackTrace();
+        } catch (ForzaInsufficienteException e) {
+            e.printStackTrace();
+        } catch (ZonaOccupataExcepion zonaOccupataExcepion) {
+            zonaOccupataExcepion.printStackTrace();
+        }
     }
 
     @Override

@@ -17,10 +17,10 @@ public class Mercato {
     public Mercato(boolean menoDiQuattroGiocatori){
         this.menoDiQuattroGiocatori=menoDiQuattroGiocatori;
         effetti=new String[4];
-        effetti[0]="incrementa5monete";
-        effetti[1]="incrementa5servitori";
-        effetti[2]="incrementa3militari2monete";
-        effetti[3]="incrementa2pergamene";
+        effetti[0]="0P0L0S5M0E0F0V";
+        effetti[1]="0P0L5S0M0E0F0V";
+        effetti[2]="0P0L0S2M3E0F0V";
+        effetti[3]="2P2L0S0M0E0F0V";
         creaZoneMercato();
     }
 
@@ -42,23 +42,26 @@ public class Mercato {
         return true;
     }
     public void arrivaGiocatore(Familiare f, int campoAzione ) throws ZonaOccupataExcepion, ForzaInsufficienteException {
-            campiAzione[campoAzione-1].setFamiliare(f);
-            campiAzione[campoAzione-1].setOccupato(true);
-            attivaEffetto(f.getGiocatore(),campoAzione);
+            campiAzione[campoAzione].setFamiliare(f);
+            campiAzione[campoAzione].setOccupato(true);
+            //attivaEffetto(f.getGiocatore(),campoAzione);
     }
 
-    private void attivaEffetto(Giocatore g, int campoAzione){
+    /*private void attivaEffetto(Giocatore g, int campoAzione){
         switch (campoAzione){
-            case 1: g.setMonete(g.getMonete()+5);
+            case 0: System.out.println("monete attuali: "+g.getMonete());
+                    g.setMonete(g.getMonete()+5);
+                    System.out.println("monete aumentate: "+g.getMonete());
                     break;
-            case 2: g.setServitori(g.getServitori()+5);
+            case 1: g.setServitori(g.getServitori()+5);
+                    System.out.println("servi aumentate: "+g.getServitori());
                     break;
-            case 3: g.setPuntiMilitari(g.getPuntiMilitari()+3);
+            case 2: g.setPuntiMilitari(g.getPuntiMilitari()+3);
                     g.setMonete(g.getMonete()+2);
                     break;
-            case 4: //manda messaggio scelta pergamena;
+            case 3: //manda messaggio scelta pergamena;
         }
-    }
+    }*/
 
     public void svuotaMercato() throws ZonaOccupataExcepion, ForzaInsufficienteException{
 

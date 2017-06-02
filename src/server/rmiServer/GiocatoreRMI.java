@@ -72,7 +72,15 @@ public class GiocatoreRMI extends GiocatoreRemoto{
 
     @Override
     public void spostaFamiliareMercato(int zonaMercato) throws RemoteException {
-        mosseGiocatore.spostaFamiliareMercato(zonaMercato);
+        try {
+            mosseGiocatore.spostaFamiliareMercato(zonaMercato);
+        } catch (TurnoException e) {
+            controllerClient.messaggio("Non è il tuo turno");
+        } catch (ForzaInsufficienteException e) {
+            controllerClient.messaggio("Forza Insufficiente");
+        } catch (ZonaOccupataExcepion zonaOccupataExcepion) {
+            controllerClient.messaggio("La zona è già occupata");
+        }
     }
 
     @Override
@@ -149,5 +157,10 @@ public class GiocatoreRMI extends GiocatoreRemoto{
     @Override
     public void risorseIncrementate(int pietra, int legna, int servitori, int monete, int puntiMilitari, int puntiFede, int puntiVittoria) throws RemoteException {
         controllerClient.risorseIncrementate(pietra, legna, servitori, monete, puntiMilitari, puntiFede, puntiVittoria);
+    }
+
+    @Override
+    public void spostatoFamiliareMercato(int zonaMercato, String coloreDado, int id) throws RemoteException {
+        controllerClient.spostatoFamiliareMercato(zonaMercato,coloreDado,id);
     }
 }

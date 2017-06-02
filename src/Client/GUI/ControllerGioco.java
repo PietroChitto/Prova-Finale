@@ -385,6 +385,32 @@ public class ControllerGioco implements InterfacciaClient{
 
     }
 
+    public void familiareInMercato(MouseEvent mouseEvent){
+        try {
+            if (mouseEvent.getSource().equals(campoAzioneMercato0)){
+                clientGenerico.spostaFamiliareMercato(0);
+
+            }
+            else if(mouseEvent.getSource().equals(campoAzioneMercato1)){
+                clientGenerico.spostaFamiliareMercato(1);
+            }
+            else if(mouseEvent.getSource().equals(campoAzioneMercato2)){
+                clientGenerico.spostaFamiliareMercato(2);
+            }
+            else if(mouseEvent.getSource().equals(campoAzioneMercato3)){
+                clientGenerico.spostaFamiliareMercato(3);
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        } catch (ForzaInsufficienteException e) {
+            e.printStackTrace();
+        } catch (TurnoException e) {
+            e.printStackTrace();
+        } catch (ZonaOccupataExcepion zonaOccupataExcepion) {
+            zonaOccupataExcepion.printStackTrace();
+        }
+    }
+
     private Color convertiStringaColore(String nomeColore){
         switch (nomeColore){
             case "nero": return Color.BLACK;
@@ -525,6 +551,18 @@ public class ControllerGioco implements InterfacciaClient{
 
     @FXML
     private GridPane gridPlancia;
+
+    @FXML
+    private Pane campoAzioneMercato0;
+
+    @FXML
+    private Pane campoAzioneMercato1;
+
+    @FXML
+    private Pane campoAzioneMercato2;
+
+    @FXML
+    private Pane campoAzioneMercato3;
 
 
     @Override
@@ -699,6 +737,30 @@ public class ControllerGioco implements InterfacciaClient{
         labelPuntiMilitari.setText(puntiMilitari+"");
         labelPuntiFede.setText(puntiFede+"");
         labelPuntiVittoria.setText(puntiVittoria+"");
+    }
+
+    @Override
+    public void spostatoFamiliareMercato(int zonaMercato, String coloreDado, int id) throws RemoteException {
+        FamiliareGrafico tempFam;
+        FamiliareGrafico tempFam2;
+        if(id==mioId) {
+            tempFam2=prendiFamiliare(coloreDado);
+            tempFam=new FamiliareGrafico(10,tempFam2.getColore(),tempFam2.getColoreDado());
+
+        }
+        else{
+            tempFam=creaFamiliare(coloreDado, id);
+        }
+        switch (zonaMercato){
+            case 0: campoAzioneMercato0.getChildren().add(tempFam);
+                break;
+            case 1: campoAzioneMercato1.getChildren().add(tempFam);
+                break;
+            case 2: campoAzioneMercato2.getChildren().add(tempFam);
+                break;
+            case 3: campoAzioneMercato3.getChildren().add(tempFam);
+                break;
+        }
     }
 
 

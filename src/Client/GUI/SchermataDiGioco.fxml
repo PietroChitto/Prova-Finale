@@ -64,18 +64,18 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
       </GridPane>
-      <GridPane fx:id="gridCampiAzioneTorre0" alignment="CENTER" gridLinesVisible="true" layoutX="121.0" layoutY="75.0" prefHeight="305.0" prefWidth="24.0">
+      <GridPane fx:id="gridCampiAzioneTorre0" alignment="CENTER" layoutX="101.0" layoutY="42.0" prefHeight="305.0" prefWidth="50.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints maxHeight="86.0" minHeight="10.0" prefHeight="79.0" valignment="CENTER" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="83.0" minHeight="10.0" prefHeight="83.0" valignment="CENTER" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="99.0" minHeight="10.0" prefHeight="88.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="63.0" minHeight="10.0" prefHeight="48.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="86.0" minHeight="10.0" prefHeight="78.0" valignment="CENTER" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="91.0" minHeight="10.0" prefHeight="82.0" valignment="CENTER" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="99.0" minHeight="10.0" prefHeight="84.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="63.0" minHeight="10.0" prefHeight="59.0" vgrow="SOMETIMES" />
         </rowConstraints>
       </GridPane>
-      <GridPane fx:id="gridCampiAzioneTorre1" alignment="CENTER" gridLinesVisible="true" layoutX="216.0" layoutY="42.0" prefHeight="305.0" prefWidth="50.0">
+      <GridPane fx:id="gridCampiAzioneTorre1" alignment="CENTER" layoutX="216.0" layoutY="42.0" prefHeight="305.0" prefWidth="50.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
@@ -86,7 +86,7 @@
           <RowConstraints maxHeight="61.0" minHeight="10.0" prefHeight="59.0" vgrow="SOMETIMES" />
         </rowConstraints>
       </GridPane>
-      <GridPane fx:id="gridCampiAzioneTorre2" alignment="CENTER" gridLinesVisible="true" layoutX="329.0" layoutY="51.0" prefHeight="305.0" prefWidth="50.0">
+      <GridPane fx:id="gridCampiAzioneTorre2" alignment="CENTER" layoutX="329.0" layoutY="51.0" prefHeight="305.0" prefWidth="50.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
@@ -97,7 +97,7 @@
             <RowConstraints maxHeight="68.0" minHeight="10.0" prefHeight="67.0" vgrow="SOMETIMES" />
         </rowConstraints>
       </GridPane>
-      <GridPane fx:id="gridCampiAzioneTorre3" alignment="CENTER" gridLinesVisible="true" layoutX="439.0" layoutY="51.0" prefHeight="305.0" prefWidth="50.0">
+      <GridPane fx:id="gridCampiAzioneTorre3" alignment="CENTER" layoutX="439.0" layoutY="51.0" prefHeight="305.0" prefWidth="50.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
@@ -246,5 +246,9 @@
             <Label fx:id="labelPuntiMilitari" GridPane.columnIndex="2" />
          </children>
       </GridPane>
+      <Pane fx:id="campoAzioneMercato0" layoutX="320.0" layoutY="536.0" onMouseClicked="#familiareInMercato" prefHeight="31.0" prefWidth="34.0" />
+      <Pane fx:id="campoAzioneMercato1" layoutX="379.0" layoutY="536.0" onMouseClicked="#familiareInMercato" prefHeight="31.0" prefWidth="34.0" />
+      <Pane fx:id="campoAzioneMercato2" layoutX="428.0" layoutY="544.0" onMouseClicked="#familiareInMercato" prefHeight="31.0" prefWidth="34.0" />
+      <Pane fx:id="campoAzioneMercato3" layoutX="462.0" layoutY="577.0" onMouseClicked="#familiareInMercato" prefHeight="31.0" prefWidth="34.0" />
    </children>
 </AnchorPane>

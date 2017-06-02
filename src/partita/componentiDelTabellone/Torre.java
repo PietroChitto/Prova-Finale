@@ -16,13 +16,13 @@ public class Torre {
         this.numeroTorre=numeroTorre;
         piani = new Piano[4];
         //creo il primo piano che ha costo 1 e non ha effetto
-        piani[0]=new Piano(1,false,  1, numeroTorre);
+        piani[0]=new Piano(1,false,  0, numeroTorre);
         //creo il secondo piano che ha costo 3 e non ha effetto
-        piani[1]=new Piano(3,false, 2, numeroTorre);
+        piani[1]=new Piano(3,false, 1, numeroTorre);
         //creo il terzo piano che ha costo 5 e ha effetto
-        piani[2]=new Piano(5,true,3,numeroTorre);
+        piani[2]=new Piano(5,true,2,numeroTorre);
         //creo il primo piano che ha costo 7 e ha effetto
-        piani[3]=new Piano(7,false, 4,numeroTorre);
+        piani[3]=new Piano(7,false, 3,numeroTorre);
         occupata=false;
     }
 
@@ -36,7 +36,6 @@ public class Torre {
                 occupata=true;
             }
         }
-        occupata=false;
     }
 
     public boolean isOccupata(){

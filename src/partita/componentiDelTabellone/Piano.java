@@ -14,11 +14,11 @@ public class Piano {
     private int numeroPiano;
     private int numeroTorre;
 
-    public Piano(int costoMinimo, boolean effetto, int numeroPiano, int numeroTorre){
+    public Piano(int costoMinimo, boolean effetto, int numero, int numeroTorre){
         this.numeroTorre=numeroTorre;
+        this.numeroPiano=numero;
         creaEffettoPiano();
         campoAzione=new CampoAzioneSingolo(costoMinimo,effetto,effettoPiano);
-        this.numeroPiano=numeroPiano;
         cartaAssente=true;
     }
 
@@ -35,6 +35,10 @@ public class Piano {
         }
     }
 
+    /**
+     * guarda in che torre è il piano e crea il codice effetto giusto
+     * @param incremento
+     */
     private void guardaTorre(int incremento) {
         switch (numeroTorre){
             case 0:effettoPiano= "0P"+incremento+"L0S0M0E0F0V";

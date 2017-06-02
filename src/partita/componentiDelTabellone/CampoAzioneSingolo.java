@@ -29,6 +29,7 @@ public class CampoAzioneSingolo {
         if(this.familiare==null) {
             this.familiare = familiare;
             effetto.attivaEffetto(codEff, familiare.getGiocatore(), null);
+            this.occupato=true;
         }else
             throw new ZonaOccupataExcepion();
     }

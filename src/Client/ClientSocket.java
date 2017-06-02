@@ -104,6 +104,11 @@ public class ClientSocket implements InterfacciaClient, InterfaciaRemotaRMI{
 
     }
 
+    @Override
+    public void spostatoFamiliareMercato(int zonaMercato, String coloreDado, int id) throws RemoteException {
+
+    }
+
     //----------------------------------------------------------------------------------------------------------------------------------
 
     @Override

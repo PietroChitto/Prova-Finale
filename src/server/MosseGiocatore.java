@@ -49,7 +49,6 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
     //manca l'attivazione degli effetti delle carte
     @Override
     public void spostaFamiliarePiano(int numeroTorre, int numeroPiano) throws RemoteException, FamiliareNonSelezionatoExcepion, TurnoException, ForzaInsufficienteException, ZonaOccupataExcepion, RisorseInsufficientiException, TorreOccupataException {
-        System.out.println("piano ricevuto: "+numeroPiano);
         //controllo se è il mio turno, se non va a buon fine lancia un eccezione
         giocatore.getPartita().mioTurno(giocatore.getGiocatore());
 
@@ -62,9 +61,11 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
         if(!(familiareSelezionato.getColoreDado().equals("neutro")))
             giocatore.getPartita().getCampoDaGioco().getTabellone().getTorre(numeroTorre).controllaFamiliare(giocatore.getGiocatore().getId());
 
+        System.out.println("torre "+numeroTorre+" occupata "+giocatore.getPartita().getCampoDaGioco().getTabellone().getTorre(numeroTorre).isOccupata());
         //devo controllare se la torre è occupata da un altro giocatore per pagare le monete
          if(giocatore.getPartita().getCampoDaGioco().getTabellone().getTorre(numeroTorre).isOccupata()){
-            giocatore.getGiocatore().setMonete(giocatore.getGiocatore().getMonete()-3);
+            System.out.println("la torre è occupata, paga monete");
+             giocatore.getGiocatore().setMonete(giocatore.getGiocatore().getMonete()-3);
          }
         //prendo la carta dalla torre, se non va a buon fine lancia un' eccezione RisorseInsufficienti
         prendiCarta(numeroTorre,numeroPiano);
@@ -90,21 +91,32 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
     }
 
     @Override
-    public void spostaFamiliareMercato(int zonaMercato) throws RemoteException {
-        try {
-            giocatore.getPartita().mioTurno(giocatore.getGiocatore());
-            giocatore.getPartita().getCampoDaGioco().getTabellone().getMercato().arrivaGiocatore(familiareSelezionato, zonaMercato);
-        } catch (ZonaOccupataExcepion zonaOccupataExcepion) {
-            //avvisa che la zona è già occupata
-            zonaOccupataExcepion.printStackTrace();
-        } catch (TurnoException e) {
-            //avvisa che non è il mio turno
-            e.printStackTrace();
-        } catch (ForzaInsufficienteException e) {
+    public void spostaFamiliareMercato(int zonaMercato) throws RemoteException, TurnoException, ForzaInsufficienteException, ZonaOccupataExcepion {
+        //controllo se è il mio turno
+        giocatore.getPartita().mioTurno(giocatore.getGiocatore());
 
+        giocatore.risorseIncrementate(giocatore.getGiocatore().getPietra(), giocatore.getGiocatore().getLegna(), giocatore.getGiocatore().getServitori(),giocatore.getGiocatore().getMonete(), giocatore.getGiocatore().getPuntiMilitari(), giocatore.getGiocatore().getPuntiFede(), giocatore.getGiocatore().getPuntiVittoria());
 
-            e.printStackTrace();
+        /*
+        *metto il familiare nel mercato,  se la zona è già occupata o non ho forza sufficiente solleva eccezioni, se va bene attiva
+        * l'effetto del campo azione
+        */
+        giocatore.getPartita().getCampoDaGioco().getTabellone().getMercato().arrivaGiocatore(familiareSelezionato, zonaMercato);
+
+        //avviso i giocatori della mossa
+        for (GiocatoreRemoto g: giocatore.getPartita().getGiocatori()){
+            g.spostatoFamiliareMercato(zonaMercato, familiareSelezionato.getColoreDado(), familiareSelezionato.getGiocatore().getId());
         }
+
+        //avviso il giocatore dell'incremento delle risorse
+        giocatore.risorseIncrementate(giocatore.getGiocatore().getPietra(), giocatore.getGiocatore().getLegna(), giocatore.getGiocatore().getServitori(),giocatore.getGiocatore().getMonete(), giocatore.getGiocatore().getPuntiMilitari(), giocatore.getGiocatore().getPuntiFede(), giocatore.getGiocatore().getPuntiVittoria());
+
+        //deseleziono il familiare
+        familiareSelezionato.setDisponibile(false);
+        deselezionaFamiliare();
+
+        //passo al prossimo giocatore
+        giocatore.getPartita().passaMossa(giocatore);
     }
 
     @Override

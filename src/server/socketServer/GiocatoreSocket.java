@@ -201,6 +201,11 @@ import java.util.ArrayList;
 
     }
 
+    @Override
+    public void spostatoFamiliareMercato(int zonaMercato, String coloreDado, int id) throws RemoteException {
+        
+    }
+
     class SocketHandler implements Runnable{
 
         private Messaggio messaggio;
