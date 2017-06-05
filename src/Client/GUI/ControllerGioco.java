@@ -246,7 +246,7 @@ public class ControllerGioco implements InterfacciaClient{
         tempFam.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> eventoFamiliari(finalTempFam3));
         gridFamiliari.add(tempFam,3,0);
         familiari.add(tempFam);
-
+        System.out.println("familiari creati");
     }
 
 
@@ -909,15 +909,29 @@ public class ControllerGioco implements InterfacciaClient{
     public void nuovoTurno(ArrayList<String> nomiCarte) {
         pulisciTabellone();
         mettiCarteNelleTorri(nomiCarte);
+        creaFamiliari(mioColore(mioId));
     }
 
     private void pulisciTabellone() {
         pulisciFamiliariTorri();
+        pulisciCarteTorri();
         pulisciMercato();
         pulisciPalazzoConsiglio();
         pulisciZonaRaccolto();
         pulisciZonaProduzione();
-        creaFamiliari(mioColore(mioId));
+        pulisciZonaFamiliri();
+    }
+
+    private void pulisciCarteTorri() {
+        gridCarteTorre0.getChildren().clear();
+        gridCarteTorre1.getChildren().clear();
+        gridCarteTorre2.getChildren().clear();
+        gridCarteTorre3.getChildren().clear();
+    }
+
+    private void pulisciZonaFamiliri() {
+        familiari.clear();
+        gridFamiliari.getChildren().clear();
     }
 
     private void pulisciZonaProduzione() {
