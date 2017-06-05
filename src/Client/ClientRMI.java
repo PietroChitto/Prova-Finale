@@ -132,6 +132,51 @@ public class ClientRMI extends UnicastRemoteObject implements InterfacciaClient,
     }
 
     @Override
+    public void spostatoFamiliarePalazzoDelConsiglio(String coloreDado, int id) throws RemoteException {
+        Platform.runLater(()->{
+            try {
+                controllerGioco.spostatoFamiliarePalazzoDelConsiglio(coloreDado, id);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @Override
+    public void spostatoFamiliareZonaProduzione(String coloreDado, int id, int zona) throws RemoteException {
+        Platform.runLater(()->{
+            try {
+                controllerGioco.spostatoFamiliareZonaProduzione(coloreDado, id, zona);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @Override
+    public void spostatoFamiliareZonaRaccolto(String coloreDado, int id, int zona) throws RemoteException {
+        Platform.runLater(()->{
+            try {
+                controllerGioco.spostatoFamiliareZonaRaccolto(coloreDado, id, zona);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @Override
+    public void mossaSaltata(int id) {
+
+    }
+
+    @Override
+    public void avvisoInizioTurno(ArrayList<String> nomiCarte) {
+        Platform.runLater(()->{
+            controllerGioco.nuovoTurno(nomiCarte);
+        });
+    }
+
+    @Override
     public void selezionaFamiliare(String colore, int idGiocatore) throws RemoteException {
         try {
             metodiPartita.selezionaFamiliare(colore, idGiocatore);
@@ -181,17 +226,41 @@ public class ClientRMI extends UnicastRemoteObject implements InterfacciaClient,
 
     @Override
     public void spostaFamiliarePalazzoDelConsiglio() throws RemoteException {
-
+        try {
+            metodiPartita.spostaFamiliarePalazzoDelConsiglio();
+        } catch (ForzaInsufficienteException e) {
+            e.printStackTrace();
+        } catch (TurnoException e) {
+            e.printStackTrace();
+        } catch (ZonaOccupataExcepion zonaOccupataExcepion) {
+            zonaOccupataExcepion.printStackTrace();
+        }
     }
 
     @Override
     public void spostaFamiliareZonaProduzione(int zona) throws RemoteException {
+        try {
+            metodiPartita.spostaFamiliareZonaProduzione(zona);
+        } catch (ForzaInsufficienteException e) {
 
+        } catch (TurnoException e) {
+
+        } catch (ZonaOccupataExcepion zonaOccupataExcepion) {
+            zonaOccupataExcepion.printStackTrace();
+        }
     }
 
     @Override
     public void spostaFamiliareZonaRaccolto(int zona) throws RemoteException {
-
+        try {
+            metodiPartita.spostaFamiliareZonaRaccolto(zona);
+        } catch (TurnoException e) {
+            e.printStackTrace();
+        } catch (ForzaInsufficienteException e) {
+            e.printStackTrace();
+        } catch (ZonaOccupataExcepion zonaOccupataExcepion) {
+            zonaOccupataExcepion.printStackTrace();
+        }
     }
 
     @Override
@@ -212,6 +281,19 @@ public class ClientRMI extends UnicastRemoteObject implements InterfacciaClient,
     public void aumentaForzaFamiliare(String coloreDado, int id) throws RemoteException {
         try {
             metodiPartita.aumentaForzaFamiliare(coloreDado,id);
+        } catch (TurnoException e) {
+            e.printStackTrace();
+        } catch (DadiNonTiratiException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void saltaMossa(int id) {
+        try {
+            metodiPartita.saltaMossa(id);
+        } catch (RemoteException e) {
+            e.printStackTrace();
         } catch (TurnoException e) {
             e.printStackTrace();
         } catch (DadiNonTiratiException e) {

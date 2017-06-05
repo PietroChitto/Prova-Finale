@@ -146,6 +146,11 @@ import java.util.ArrayList;
 
     }
 
+    @Override
+    public void saltaMossa(int id) {
+
+    }
+
     //-----------------------------------------------------------------------------------------------------------------------------------------
     @Override
     public void iniziaPartita(int mioId, ArrayList<String> carte, ArrayList<String> giocatori, int[] risorse) {
@@ -204,6 +209,31 @@ import java.util.ArrayList;
     @Override
     public void spostatoFamiliareMercato(int zonaMercato, String coloreDado, int id) throws RemoteException {
         
+    }
+
+    @Override
+    public void spostatoFamiliarePalazzoDelConsiglio(String coloreDado, int id) throws RemoteException {
+
+    }
+
+    @Override
+    public void spostatoFamiliareZonaProduzione(String coloreDado, int id, int zona) throws RemoteException {
+
+    }
+
+    @Override
+    public void spostatoFamiliareZonaRaccolto(String coloreDado, int id, int zona) throws RemoteException {
+
+    }
+
+    @Override
+    public void mossaSaltata(int id) {
+
+    }
+
+    @Override
+    public void avvisoInizioTurno(ArrayList<String> nomiCarte) {
+
     }
 
     class SocketHandler implements Runnable{

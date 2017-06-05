@@ -99,6 +99,7 @@ public class Partita {
         System.out.print("giocatori remoti: "+giocatori.size());
         for(GiocatoreRemoto g: giocatori){
             int[] risorse=new int[4];
+            //creo l'array di risorse da passare al client
             risorse[0]=g.getGiocatore().getPietra();
             risorse[1]=g.getGiocatore().getLegna();
             risorse[2]=g.getGiocatore().getServitori();
@@ -185,27 +186,48 @@ public class Partita {
 
     public void passaMossa(GiocatoreRemoto giocatoreRemoto) throws ZonaOccupataExcepion, ForzaInsufficienteException {
         //ripristinaForzaTabellone();
+        System.out.println("sono in passa mossa");
         numeroMosseTurno++;
         if(numeroMosseTurno==giocatori.size()*4){
             System.out.println("passa Turno");
             passaTurno();
             numeroMosseTurno=0;
+            setGiocatoreCorrente(ordineTurno.get(0));
+
+        }else {
+            System.out.println("ramo else");
+            settaProssimoGiocatore(giocatoreRemoto);
         }
 
-        settaProssimoGiocatore(giocatoreRemoto);
+
 
     }
 
     public void passaTurno() throws ForzaInsufficienteException, ZonaOccupataExcepion {
 
         pulisciTabellone();
+        dadiTirati=false;
+        ordineTurno=getCampoDaGioco().getTabellone().getPalazzoDelConsiglio().calcoaTurnoSuccessivo(ordineTurno);
+        getCampoDaGioco().getTabellone().getPalazzoDelConsiglio().stampaOrdineTurno(ordineTurno);
+        getCampoDaGioco().mettiCarteNelleTorri();
+        nomiCarte=getCampoDaGioco().getNomiCarteTorri();
         turno++;
         if(turno==3){
             passaPeriodo();
             turno=1;
-            ordineTurno=campoDaGioco.getTabellone().getPalazzoDelConsiglio().calcoaTurnoSuccessivo(ordineTurno);
+        }
+        try {
+            avvisoInizioTurno();
+        } catch (RemoteException e) {
+            e.printStackTrace();
         }
 
+    }
+
+    private void avvisoInizioTurno() throws RemoteException {
+        for(GiocatoreRemoto g: giocatori){
+            g.avvisoInizioTurno(nomiCarte);
+        }
     }
 
     private void passaPeriodo() throws ForzaInsufficienteException, ZonaOccupataExcepion {
@@ -298,18 +320,13 @@ public class Partita {
     public void pulisciTabellone() throws ZonaOccupataExcepion, ForzaInsufficienteException {
 
         //pulisco il tabellone per il turno successivo
-        Torre[] torri = new Torre[4];
+        Torre[] torri;
         torri=getCampoDaGioco().getTabellone().getTorri();
 
         int posizione=0;
 
         for (int i=0;i<4;i++){
-            for (int j=0;j<4;j++){
-                torri[i].pulisciCarte();
-                torri[i].getPiano(j).getCampoAzione().svuotaCampoAzione();
-                torri[i].getPiano(j).getCampoAzione().setOccupato(false);
-                torri[i].setOccupata(false);
-            }
+            torri[i].pulisciTorre();
         }
 
         getCampoDaGioco().getTabellone().getZonaProduzione().svuotaZona();

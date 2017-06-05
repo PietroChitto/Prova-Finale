@@ -18,12 +18,13 @@ public interface InterfaciaRemotaRMI extends Remote{
     public void deselezionaFamiliare() throws RemoteException, TurnoException;
     public void spostaFamiliarePiano(int numeroTorre, int numeroPiano) throws RemoteException, FamiliareNonSelezionatoExcepion, TurnoException, ForzaInsufficienteException, ZonaOccupataExcepion, RisorseInsufficientiException, TorreOccupataException;
     public void spostaFamiliareMercato(int zonaMercato) throws RemoteException, TurnoException, ForzaInsufficienteException, ZonaOccupataExcepion;
-    public void spostaFamiliarePalazzoDelConsiglio() throws RemoteException;
-    public void spostaFamiliareZonaProduzione(int zona) throws RemoteException;
-    public void spostaFamiliareZonaRaccolto(int zona) throws RemoteException;
+    public void spostaFamiliarePalazzoDelConsiglio() throws RemoteException, ForzaInsufficienteException, TurnoException, ZonaOccupataExcepion;
+    public void spostaFamiliareZonaProduzione(int zona) throws RemoteException, ForzaInsufficienteException, TurnoException, ZonaOccupataExcepion;
+    public void spostaFamiliareZonaRaccolto(int zona) throws RemoteException, TurnoException, ForzaInsufficienteException, ZonaOccupataExcepion;
     public void tiraIDadi() throws IOException;
     public void scegliScomunica(boolean appoggiaChiesa) throws RemoteException;
     public void aumentaForzaFamiliare(String coloreDado, int id) throws RemoteException, TurnoException, DadiNonTiratiException;
+    public void saltaMossa(int id) throws RemoteException, TurnoException, DadiNonTiratiException;
 
 }
 

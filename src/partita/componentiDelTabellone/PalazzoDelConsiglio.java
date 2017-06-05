@@ -1,5 +1,9 @@
 package partita.componentiDelTabellone;
 
+import partita.carteDaGioco.effetti.Effetto;
+import partita.carteDaGioco.effetti.EffettoIncrementa;
+import partita.eccezioniPartita.ForzaInsufficienteException;
+
 import java.util.ArrayList;
 
 /**
@@ -8,35 +12,40 @@ import java.util.ArrayList;
 public class PalazzoDelConsiglio {
     private final int costo=1;
     private ArrayList<Giocatore> ordineArrivoGiocatori;
-    private String effetto;
+
 
     public PalazzoDelConsiglio(int numeroGiocatori){
         ordineArrivoGiocatori= new ArrayList<Giocatore>();
-        effetto="incrementa1moneta&&1pergamena";
     }
 
-    public void arrivaGiocatore(Giocatore g){
-        ordineArrivoGiocatori.add(g);
-        g.setMonete(g.getMonete()+1);
+    public void arrivaGiocatore(Familiare familiare) throws ForzaInsufficienteException {
+        if(familiare.getForza()<costo)
+            throw new ForzaInsufficienteException();
+        ordineArrivoGiocatori.add(familiare.getGiocatore());
+        familiare.getGiocatore().setMonete(familiare.getGiocatore().getMonete()+1);
         /*
         la scelta dello scambio della pergamena è gestita nel ciclo while del server
          */
     }
     public ArrayList<Giocatore> calcoaTurnoSuccessivo(ArrayList<Giocatore> ordineTurnoCorrente){
-        for (int i=0;i<ordineTurnoCorrente.size() && i<ordineArrivoGiocatori.size();i++){
-           if(ordineArrivoGiocatori.get(i)!=null){
-            ordineTurnoCorrente.add(i, ordineArrivoGiocatori.get(i));
-                for (int j=i+1;j<ordineTurnoCorrente.size();j++){
-                    if (ordineTurnoCorrente.get(j)==ordineArrivoGiocatori.get(i)){
-                        ordineTurnoCorrente.remove(j);
-                    }
-                }
-           }
-        }
+        ArrayList<Giocatore> nuovoTurno=new ArrayList<>();
+
+        nuovoTurno.addAll(ordineArrivoGiocatori);
+        ordineTurnoCorrente.removeAll(ordineArrivoGiocatori);
+        nuovoTurno.addAll(ordineTurnoCorrente);
 
         //setTurnoCorrente();
         svuotaOrdineArrivo();
-        return ordineTurnoCorrente;
+
+
+        return nuovoTurno;
+    }
+
+    public void stampaOrdineTurno(ArrayList<Giocatore> ordineTurno) {
+        System.out.println("il nuovo turno è: ");
+        for (Giocatore g: ordineTurno){
+            System.out.println("giocatore "+ g.getId());
+        }
     }
 
     /*

@@ -75,6 +75,10 @@ public class Piano {
         cartaAssente=true;
     }
 
+    public void togliFamigliare(){
+        this.campoAzione.svuotaCampoAzione();
+    }
+
     public CampoAzioneSingolo getCampoAzione() {
         return campoAzione;
     }

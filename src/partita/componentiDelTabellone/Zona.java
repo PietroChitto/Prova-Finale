@@ -1,5 +1,10 @@
 package partita.componentiDelTabellone;
 
+import partita.carteDaGioco.CartaEdificio;
+import partita.carteDaGioco.CartaTerritorio;
+import partita.eccezioniPartita.ForzaInsufficienteException;
+import partita.eccezioniPartita.ZonaOccupataExcepion;
+
 /**
  * Created by Pietro on 10/05/2017.
  */
@@ -26,10 +31,10 @@ public class Zona {
             campoAzioneMultiplo=new CampoAzioneMultiplo(1);
         }
         if(produzione){
-            campoAzioneSinogolo=new CampoAzioneSingolo(1,true,"attivaProduzione");
+            campoAzioneSinogolo=new CampoAzioneSingolo(1,true,"0P0L0S0M0E0F0V");
         }
         else{
-            campoAzioneSinogolo=new CampoAzioneSingolo(1,true,"attivaRaccolto");
+            campoAzioneSinogolo=new CampoAzioneSingolo(1,true,"0P0L0S0M0E0F0V");
         }
     }
 
@@ -44,5 +49,29 @@ public class Zona {
 
     public CampoAzioneSingolo getCampoAzioneSinogolo() {
         return campoAzioneSinogolo;
+    }
+
+    public void arrivaGiocatore(Familiare f) throws ForzaInsufficienteException{
+        try {
+            campoAzioneSinogolo.setFamiliare(f);
+        } catch (ZonaOccupataExcepion zonaOccupataExcepion) {
+            campoAzioneMultiplo.aggiungiFamiliare(f);
+            //nel campo azione multiplo c'è un malus di -3 sulla forza del familiare
+            f.setForza(f.getForza()-3);
+        }
+
+        if(produzione==false) {
+            for (CartaTerritorio c : f.getGiocatore().getCarteTerritorio()) {
+                if(f.getForza()>c.getCostoAttivazioneEffettoPermanente())
+                    c.attivaEffettoPermanente(f);
+            }
+        }
+        else{
+            for (CartaEdificio c : f.getGiocatore().getCarteEdificio()) {
+                if(f.getForza()>c.getCostoAttivazioneEffettoPermanente())
+                    c.attivaEffettoPermanente(f);
+            }
+        }
+
     }
 }

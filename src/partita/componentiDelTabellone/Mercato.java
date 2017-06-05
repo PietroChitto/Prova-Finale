@@ -44,26 +44,9 @@ public class Mercato {
     public void arrivaGiocatore(Familiare f, int campoAzione ) throws ZonaOccupataExcepion, ForzaInsufficienteException {
             campiAzione[campoAzione].setFamiliare(f);
             campiAzione[campoAzione].setOccupato(true);
-            //attivaEffetto(f.getGiocatore(),campoAzione);
     }
 
-    /*private void attivaEffetto(Giocatore g, int campoAzione){
-        switch (campoAzione){
-            case 0: System.out.println("monete attuali: "+g.getMonete());
-                    g.setMonete(g.getMonete()+5);
-                    System.out.println("monete aumentate: "+g.getMonete());
-                    break;
-            case 1: g.setServitori(g.getServitori()+5);
-                    System.out.println("servi aumentate: "+g.getServitori());
-                    break;
-            case 2: g.setPuntiMilitari(g.getPuntiMilitari()+3);
-                    g.setMonete(g.getMonete()+2);
-                    break;
-            case 3: //manda messaggio scelta pergamena;
-        }
-    }*/
-
-    public void svuotaMercato() throws ZonaOccupataExcepion, ForzaInsufficienteException{
+    public void svuotaMercato(){
 
         for (int i=0;i<campiAzione.length;i++){
             campiAzione[i].svuotaCampoAzione();

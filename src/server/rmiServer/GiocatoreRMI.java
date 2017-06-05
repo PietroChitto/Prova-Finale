@@ -56,9 +56,9 @@ public class GiocatoreRMI extends GiocatoreRemoto{
         try {
             mosseGiocatore.spostaFamiliarePiano(numeroTorre, numeroPiano);
         } catch (FamiliareNonSelezionatoExcepion familiareNonSelezionatoExcepion) {
-
+            controllerClient.messaggio("familiare non selezionato");
         } catch (TurnoException e) {
-
+            controllerClient.messaggio("non è il tuoturno");
         } catch (ForzaInsufficienteException e) {
             controllerClient.messaggio("Il familiare non ha forza sufficiente");
         } catch (ZonaOccupataExcepion zonaOccupataExcepion) {
@@ -85,17 +85,41 @@ public class GiocatoreRMI extends GiocatoreRemoto{
 
     @Override
     public void spostaFamiliarePalazzoDelConsiglio() throws RemoteException {
-        mosseGiocatore.spostaFamiliarePalazzoDelConsiglio();
+        try {
+            mosseGiocatore.spostaFamiliarePalazzoDelConsiglio();
+        } catch (ForzaInsufficienteException e) {
+            controllerClient.messaggio("Forza Insufficiente");
+        } catch (TurnoException e) {
+            controllerClient.messaggio("Non è il tuo turno");
+        } catch (ZonaOccupataExcepion zonaOccupataExcepion) {
+            controllerClient.messaggio("");
+        }
     }
 
     @Override
     public void spostaFamiliareZonaProduzione(int zona) throws RemoteException {
-        mosseGiocatore.spostaFamiliareZonaProduzione(zona);
+        try {
+            mosseGiocatore.spostaFamiliareZonaProduzione(zona);
+        } catch (ForzaInsufficienteException e) {
+            controllerClient.messaggio("forza Insufficiente");
+        } catch (TurnoException e) {
+            controllerClient.messaggio("Non è il tuo turno");
+        } catch (ZonaOccupataExcepion zonaOccupataExcepion) {
+            zonaOccupataExcepion.printStackTrace();
+        }
     }
 
     @Override
     public void spostaFamiliareZonaRaccolto(int zona) throws RemoteException {
-        mosseGiocatore.spostaFamiliareZonaRaccolto(zona);
+        try {
+            mosseGiocatore.spostaFamiliareZonaRaccolto(zona);
+        } catch (TurnoException e) {
+            controllerClient.messaggio("Non è il tuo turno");
+        } catch (ForzaInsufficienteException e) {
+            controllerClient.messaggio("forza Insufficiente");
+        } catch (ZonaOccupataExcepion zonaOccupataExcepion) {
+
+        }
     }
 
     @Override
@@ -121,6 +145,17 @@ public class GiocatoreRMI extends GiocatoreRemoto{
             controllerClient.messaggio("Non è il tuo turno");
         } catch (DadiNonTiratiException e) {
             controllerClient.messaggio("Dadi non tirati");
+        }
+    }
+
+    @Override
+    public void saltaMossa(int id) throws RemoteException {
+        try {
+            mosseGiocatore.saltaMossa(id);
+        } catch (TurnoException e) {
+            controllerClient.messaggio("non è il tuo turno");
+        } catch (DadiNonTiratiException e) {
+            controllerClient.messaggio("dadi non tirati");
         }
     }
 
@@ -162,5 +197,38 @@ public class GiocatoreRMI extends GiocatoreRemoto{
     @Override
     public void spostatoFamiliareMercato(int zonaMercato, String coloreDado, int id) throws RemoteException {
         controllerClient.spostatoFamiliareMercato(zonaMercato,coloreDado,id);
+    }
+
+    @Override
+    public void spostatoFamiliarePalazzoDelConsiglio(String coloreDado, int id) throws RemoteException {
+        controllerClient.spostatoFamiliarePalazzoDelConsiglio(coloreDado, id);
+    }
+
+    @Override
+    public void spostatoFamiliareZonaProduzione(String coloreDado, int id, int zona) throws RemoteException {
+        controllerClient.spostatoFamiliareZonaProduzione(coloreDado,id,zona);
+    }
+
+    @Override
+    public void spostatoFamiliareZonaRaccolto(String coloreDado, int id, int zona) throws RemoteException {
+        controllerClient.spostatoFamiliareZonaRaccolto(coloreDado,id,zona);
+    }
+
+    @Override
+    public void mossaSaltata(int id) {
+        try {
+            controllerClient.messaggio("mossa Saltata");
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void avvisoInizioTurno(ArrayList<String> nomiCarte) {
+        try {
+            controllerClient.avvisoInizioTurno(nomiCarte);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 }

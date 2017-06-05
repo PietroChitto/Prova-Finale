@@ -109,6 +109,31 @@ public class ClientSocket implements InterfacciaClient, InterfaciaRemotaRMI{
 
     }
 
+    @Override
+    public void spostatoFamiliarePalazzoDelConsiglio(String coloreDado, int id) throws RemoteException {
+
+    }
+
+    @Override
+    public void spostatoFamiliareZonaProduzione(String coloreDado, int id, int zona) throws RemoteException {
+
+    }
+
+    @Override
+    public void spostatoFamiliareZonaRaccolto(String coloreDado, int id, int zona) throws RemoteException {
+
+    }
+
+    @Override
+    public void mossaSaltata(int id) {
+
+    }
+
+    @Override
+    public void avvisoInizioTurno(ArrayList<String> nomiCarte) {
+
+    }
+
     //----------------------------------------------------------------------------------------------------------------------------------
 
     @Override
@@ -163,6 +188,11 @@ public class ClientSocket implements InterfacciaClient, InterfaciaRemotaRMI{
 
     @Override
     public void aumentaForzaFamiliare(String coloreDado, int id) throws RemoteException {
+
+    }
+
+    @Override
+    public void saltaMossa(int id) {
 
     }
 

@@ -16,9 +16,11 @@ import java.util.ArrayList;
       public void forzaAumentata(String colore, int forza) throws RemoteException;
       public void risorseIncrementate(int pietra, int legna, int servitori, int monete, int puntiMilitari, int puntiFede, int puntiVittoria) throws RemoteException;
       public void spostatoFamiliareMercato(int zonaMercato, String coloreDado, int id) throws RemoteException;
-      //public void spostaFamiliarePalazzoDelConsiglio() throws RemoteException;
-      //public void spostaFamiliareZonaProduzione(int zona) throws RemoteException;
-      //public void spostaFamiliareZonaRaccolto(int zona) throws RemoteException;
-      //public void tiraIDadi() throws RemoteException;
+      public void spostatoFamiliarePalazzoDelConsiglio(String coloreDado, int id) throws RemoteException;
+      public void spostatoFamiliareZonaProduzione(String coloreDado, int id, int zona) throws RemoteException;
+      public void spostatoFamiliareZonaRaccolto(String coloreDado, int id, int zona) throws RemoteException;
+      public void mossaSaltata(int id) throws RemoteException;
+      public void avvisoInizioTurno(ArrayList<String> nomiCarte) throws RemoteException;
+    //public void tiraIDadi() throws RemoteException;
       //public void scegliScomunica(boolean appoggiaChiesa) throws RemoteException;
 }

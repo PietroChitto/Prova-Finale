@@ -64,6 +64,7 @@ public class CampoAzioneSingolo {
 
     public void svuotaCampoAzione(){
         familiare=null;
+        occupato=false;
     }
 
     private void verificaDisponibilitàForza(int forza) throws ForzaInsufficienteException {

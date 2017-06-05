@@ -55,7 +55,19 @@ public class Torre {
         occupata=bool;
     }
 
-    public void pulisciCarte(){
+    public void pulisciTorre(){
+        pulisciCarte();
+        pulisciFamiliari();
+        occupata=false;
+    }
+
+    private void pulisciFamiliari() {
+        for (int i=0;i<4;i++){
+            piani[i].togliFamigliare();
+        }
+    }
+
+    private void pulisciCarte(){
         for (int i=0;i<4;i++){
             piani[i].togliCarta();
         }

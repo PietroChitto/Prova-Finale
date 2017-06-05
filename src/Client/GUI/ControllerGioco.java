@@ -40,6 +40,9 @@ public class ControllerGioco implements InterfacciaClient{
     private int contaCarteP;
     private int contaCarteE;
     private int contaCarteI;
+    private int contaFamiliariPalazzoConsigglio;
+    private int contaFamZonaProd;
+    private int contaFamZonaRac;
 
     public void setClientGenerico(InterfaciaRemotaRMI clientGenerico){
         this.clientGenerico=clientGenerico;
@@ -48,10 +51,7 @@ public class ControllerGioco implements InterfacciaClient{
 
 
     public void inizializza(HashMap<Integer, String> giocatori, ArrayList<String> carte, int mioId, int[] risorse){
-        if(mioId==0)
-            mioTurno=true;
-        else
-            mioTurno=false;
+
         this.giocatori=giocatori;
         this.mioId=mioId;
         settaLabelGiocatori(this.giocatori);
@@ -64,6 +64,9 @@ public class ControllerGioco implements InterfacciaClient{
         contaCarteI=0;
         contaCarteP=0;
         contaCarteT=0;
+        contaFamiliariPalazzoConsigglio=0;
+        contaFamZonaProd=0;
+        contaFamZonaRac=0;
     }
 
     private void creaPaneCampiAzioneTorri() {
@@ -119,6 +122,7 @@ public class ControllerGioco implements InterfacciaClient{
         System.out.println("piano mandato: "+piano);
         try {
             clientGenerico.spostaFamiliarePiano(torre, piano);
+            System.out.println("messaggio sposta familiare piano mandato");
         } catch (RemoteException e) {
             e.printStackTrace();
         } catch (FamiliareNonSelezionatoExcepion familiareNonSelezionatoExcepion) {
@@ -432,7 +436,69 @@ public class ControllerGioco implements InterfacciaClient{
         return 0;
     }
 
+    public void eventoPalazzoDelConsiglio(){
+        try {
+            clientGenerico.spostaFamiliarePalazzoDelConsiglio();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        } catch (ForzaInsufficienteException e) {
+            e.printStackTrace();
+        } catch (TurnoException e) {
+            e.printStackTrace();
+        } catch (ZonaOccupataExcepion zonaOccupataExcepion) {
+            zonaOccupataExcepion.printStackTrace();
+        }
+    }
 
+    public void eventoZonaRaccolto(){
+        try {
+            if(paneCasZonaRaccolto.getChildren().size()==0){
+                clientGenerico.spostaFamiliareZonaRaccolto(0);
+            }
+            else {
+                clientGenerico.spostaFamiliareZonaRaccolto(1);
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        } catch (ForzaInsufficienteException e) {
+            e.printStackTrace();
+        } catch (TurnoException e) {
+            e.printStackTrace();
+        } catch (ZonaOccupataExcepion zonaOccupataExcepion) {
+            zonaOccupataExcepion.printStackTrace();
+        }
+    }
+
+    public void eventoZonaProduzione(){
+        try {
+            if(paneCasZonaProd.getChildren().size()==0){
+                clientGenerico.spostaFamiliareZonaProduzione(0);
+            }
+            else {
+                clientGenerico.spostaFamiliareZonaProduzione(1);
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        } catch (ForzaInsufficienteException e) {
+            e.printStackTrace();
+        } catch (TurnoException e) {
+            e.printStackTrace();
+        } catch (ZonaOccupataExcepion zonaOccupataExcepion) {
+            zonaOccupataExcepion.printStackTrace();
+        }
+    }
+
+    public void saltaMossa(){
+        try {
+            clientGenerico.saltaMossa(mioId);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        } catch (TurnoException e) {
+            e.printStackTrace();
+        } catch (DadiNonTiratiException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     @FXML
@@ -454,7 +520,7 @@ public class ControllerGioco implements InterfacciaClient{
     private ImageView imageCarta;
 
     @FXML
-    private Pane paneCamZonaProduzione;
+    private GridPane gridZonaProduzione;
 
     @FXML
     private GridPane gridCarteTorre3;
@@ -478,7 +544,7 @@ public class ControllerGioco implements InterfacciaClient{
     private Pane paneDadoBianco;
 
     @FXML
-    private Pane campoAzionePalazzoDelConsiglio;
+    private GridPane gridPalazzoDelConsiglio;
 
     @FXML
     private Pane paneCarta;
@@ -563,6 +629,9 @@ public class ControllerGioco implements InterfacciaClient{
 
     @FXML
     private Pane campoAzioneMercato3;
+
+    @FXML
+    private GridPane gridZonaRaccolto;
 
 
     @Override
@@ -763,5 +832,123 @@ public class ControllerGioco implements InterfacciaClient{
         }
     }
 
+    @Override
+    public void spostatoFamiliarePalazzoDelConsiglio(String coloreDado, int id) throws RemoteException {
+        FamiliareGrafico tempFam;
+        FamiliareGrafico tempFam2;
+        if(id==mioId) {
+            tempFam2=prendiFamiliare(coloreDado);
+            tempFam=new FamiliareGrafico(10,tempFam2.getColore(),tempFam2.getColoreDado());
 
+        }
+        else{
+            tempFam=creaFamiliare(coloreDado, id);
+        }
+
+        gridPalazzoDelConsiglio.add(tempFam,contaFamiliariPalazzoConsigglio,0);
+        contaFamiliariPalazzoConsigglio +=1;
+    }
+
+    @Override
+    public void spostatoFamiliareZonaProduzione(String coloreDado, int id, int zona) throws RemoteException {
+        FamiliareGrafico tempFam;
+        FamiliareGrafico tempFam2;
+        if(id==mioId) {
+            tempFam2=prendiFamiliare(coloreDado);
+            tempFam=new FamiliareGrafico(10,tempFam2.getColore(),tempFam2.getColoreDado());
+
+        }
+        else{
+            tempFam=creaFamiliare(coloreDado, id);
+        }
+
+        if(zona==0){
+            paneCasZonaProd.getChildren().add(tempFam);
+        }
+        else {
+            gridZonaProduzione.add(tempFam,contaFamZonaProd,0);
+            contaFamZonaProd ++;
+        }
+
+
+    }
+
+    @Override
+    public void spostatoFamiliareZonaRaccolto(String coloreDado, int id, int zona) throws RemoteException {
+        FamiliareGrafico tempFam;
+        FamiliareGrafico tempFam2;
+        if(id==mioId) {
+            tempFam2=prendiFamiliare(coloreDado);
+            tempFam=new FamiliareGrafico(10,tempFam2.getColore(),tempFam2.getColoreDado());
+
+        }
+        else{
+            tempFam=creaFamiliare(coloreDado, id);
+        }
+
+        if(zona==0){
+            paneCasZonaRaccolto.getChildren().add(tempFam);
+        }
+        else {
+            gridZonaRaccolto.add(tempFam,contaFamZonaRac,0);
+            contaFamZonaRac ++;
+        }
+    }
+
+    @Override
+    public void mossaSaltata(int id) {
+
+    }
+
+    @Override
+    public void avvisoInizioTurno(ArrayList<String> nomiCarte) {
+
+    }
+
+
+    public void nuovoTurno(ArrayList<String> nomiCarte) {
+        pulisciTabellone();
+        mettiCarteNelleTorri(nomiCarte);
+    }
+
+    private void pulisciTabellone() {
+        pulisciFamiliariTorri();
+        pulisciMercato();
+        pulisciPalazzoConsiglio();
+        pulisciZonaRaccolto();
+        pulisciZonaProduzione();
+        creaFamiliari(mioColore(mioId));
+    }
+
+    private void pulisciZonaProduzione() {
+        paneCasZonaProd.getChildren().clear();
+        gridZonaProduzione.getChildren().clear();
+        contaFamZonaProd=0;
+    }
+
+    private void pulisciZonaRaccolto() {
+        paneCasZonaRaccolto.getChildren().clear();
+        gridZonaRaccolto.getChildren().clear();
+        contaFamZonaRac=0;
+    }
+
+    private void pulisciPalazzoConsiglio() {
+        gridPalazzoDelConsiglio.getChildren().clear();
+        contaFamiliariPalazzoConsigglio=0;
+    }
+
+    private void pulisciMercato() {
+        campoAzioneMercato0.getChildren().clear();
+        campoAzioneMercato1.getChildren().clear();
+        campoAzioneMercato2.getChildren().clear();
+        campoAzioneMercato3.getChildren().clear();
+    }
+
+    private void pulisciFamiliariTorri() {
+        gridCampiAzioneTorre0.getChildren().clear();
+        gridCampiAzioneTorre1.getChildren().clear();
+        gridCampiAzioneTorre2.getChildren().clear();
+        gridCampiAzioneTorre3.getChildren().clear();
+        creaPaneCampiAzioneTorri();
+    }
 }

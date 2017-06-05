@@ -49,13 +49,17 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
     //manca l'attivazione degli effetti delle carte
     @Override
     public void spostaFamiliarePiano(int numeroTorre, int numeroPiano) throws RemoteException, FamiliareNonSelezionatoExcepion, TurnoException, ForzaInsufficienteException, ZonaOccupataExcepion, RisorseInsufficientiException, TorreOccupataException {
+        //stampa di prova
+        System.out.println("piano Ricevuto: " +numeroPiano);
+
         //controllo se è il mio turno, se non va a buon fine lancia un eccezione
         giocatore.getPartita().mioTurno(giocatore.getGiocatore());
-
+        System.out.println("mio turno ok");
         //controllo se ho selezionato un familiare, se non va a buon fine lancia un eccezione
         if(familiareSelezionato==null){
             throw new FamiliareNonSelezionatoExcepion();
         }
+        System.out.println("familiare selezionato ok");
 
         //devo controllare se c'è già un mio familiare sulla torre, se sto muovendo il neutro non devo fare questo controllo
         if(!(familiareSelezionato.getColoreDado().equals("neutro")))
@@ -84,7 +88,7 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
         //deseleziono il familiare
         familiareSelezionato.setDisponibile(false);
         deselezionaFamiliare();
-
+        System.out.println("provoPassaMossa");
         //passo al prossimo giocatore
         giocatore.getPartita().passaMossa(giocatore);
 
@@ -120,50 +124,72 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
     }
 
     @Override
-    public void spostaFamiliarePalazzoDelConsiglio() throws RemoteException {
-        try {
-            giocatore.getPartita().mioTurno(giocatore.getGiocatore());
-            giocatore.getPartita().getCampoDaGioco().getTabellone().getPalazzoDelConsiglio().arrivaGiocatore(giocatore.getGiocatore());
-        } catch (TurnoException e) {
-            //avvisa che non è il mio turno
-            e.printStackTrace();
+    public void spostaFamiliarePalazzoDelConsiglio() throws RemoteException, ForzaInsufficienteException, TurnoException, ZonaOccupataExcepion {
+        //controllo turno, se non è il mio turno manda una TurnoException
+        giocatore.getPartita().mioTurno(giocatore.getGiocatore());
+
+        //metto il familiare nel palazzo del consiglio, se non ho almeno forza 1 manda una ForzaInsufficienteException
+        giocatore.getPartita().getCampoDaGioco().getTabellone().getPalazzoDelConsiglio().arrivaGiocatore(familiareSelezionato);
+
+        //avviso i giocatori della mossa
+        for (GiocatoreRemoto g: giocatore.getPartita().getGiocatori()){
+            g.spostatoFamiliarePalazzoDelConsiglio(familiareSelezionato.getColoreDado(), familiareSelezionato.getGiocatore().getId());
         }
+
+        //avviso il giocatore dell'incremento delle risorse
+        giocatore.risorseIncrementate(giocatore.getGiocatore().getPietra(), giocatore.getGiocatore().getLegna(), giocatore.getGiocatore().getServitori(),giocatore.getGiocatore().getMonete(), giocatore.getGiocatore().getPuntiMilitari(), giocatore.getGiocatore().getPuntiFede(), giocatore.getGiocatore().getPuntiVittoria());
+
+        //deseleziono il familiare
+        familiareSelezionato.setDisponibile(false);
+        deselezionaFamiliare();
+
+        //passo al prossimo giocatore
+        giocatore.getPartita().passaMossa(giocatore);
+
     }
 
     @Override
-    public void spostaFamiliareZonaProduzione(int zona) throws RemoteException {
-        try {
-            giocatore.getPartita().mioTurno(giocatore.getGiocatore());
-            if(zona==1)
-                giocatore.getPartita().getCampoDaGioco().getTabellone().getZonaProduzione().getCampoAzioneSinogolo().setFamiliare(familiareSelezionato);
-            else
-                giocatore.getPartita().getCampoDaGioco().getTabellone().getZonaProduzione().getCampoAzioneMultiplo().aggiungiFamiliare(familiareSelezionato);
-        } catch (TurnoException e) {
-            e.printStackTrace();
-        } catch (ZonaOccupataExcepion zonaOccupataExcepion) {
-            zonaOccupataExcepion.printStackTrace();
-        } catch (ForzaInsufficienteException e) {
-            //il familiare nn ha la forza sufficiente per accedeere alla zona produzione
-            e.printStackTrace();
+    public void spostaFamiliareZonaProduzione(int zona) throws RemoteException, ForzaInsufficienteException, TurnoException, ZonaOccupataExcepion {
+        giocatore.getPartita().mioTurno(giocatore.getGiocatore());
+
+        giocatore.getPartita().getCampoDaGioco().getTabellone().getZonaProduzione().arrivaGiocatore(familiareSelezionato);
+
+        //avviso i giocatori della mossa
+        for (GiocatoreRemoto g: giocatore.getPartita().getGiocatori()){
+            g.spostatoFamiliareZonaProduzione(familiareSelezionato.getColoreDado(), familiareSelezionato.getGiocatore().getId(), zona);
         }
+
+        //avviso il giocatore dell'incremento delle risorse
+        giocatore.risorseIncrementate(giocatore.getGiocatore().getPietra(), giocatore.getGiocatore().getLegna(), giocatore.getGiocatore().getServitori(),giocatore.getGiocatore().getMonete(), giocatore.getGiocatore().getPuntiMilitari(), giocatore.getGiocatore().getPuntiFede(), giocatore.getGiocatore().getPuntiVittoria());
+
+        //deseleziono il familiare
+        familiareSelezionato.setDisponibile(false);
+        deselezionaFamiliare();
+
+        //passo al prossimo giocatore
+        giocatore.getPartita().passaMossa(giocatore);
     }
 
     @Override
-    public void spostaFamiliareZonaRaccolto(int zona) throws RemoteException {
-        try {
-           giocatore.getPartita().mioTurno(giocatore.getGiocatore());
-            if(zona==1)
-                giocatore.getPartita().getCampoDaGioco().getTabellone().getZonaRaccolto().getCampoAzioneSinogolo().setFamiliare(familiareSelezionato);
-            else
-                giocatore.getPartita().getCampoDaGioco().getTabellone().getZonaRaccolto().getCampoAzioneMultiplo().aggiungiFamiliare(familiareSelezionato);
-        } catch (TurnoException e) {
-            e.printStackTrace();
-        } catch (ZonaOccupataExcepion zonaOccupataExcepion) {
-            zonaOccupataExcepion.printStackTrace();
-        } catch (ForzaInsufficienteException e) {
-            //il familiare nn ha la forza sufficiente per accedeere alla zona produzione
-            e.printStackTrace();
+    public void spostaFamiliareZonaRaccolto(int zona) throws RemoteException, TurnoException, ForzaInsufficienteException, ZonaOccupataExcepion {
+        giocatore.getPartita().mioTurno(giocatore.getGiocatore());
+
+        giocatore.getPartita().getCampoDaGioco().getTabellone().getZonaRaccolto().arrivaGiocatore(familiareSelezionato);
+
+        //avviso i giocatori della mossa
+        for (GiocatoreRemoto g: giocatore.getPartita().getGiocatori()){
+            g.spostatoFamiliareZonaRaccolto(familiareSelezionato.getColoreDado(), familiareSelezionato.getGiocatore().getId(), zona);
         }
+
+        //avviso il giocatore dell'incremento delle risorse
+        giocatore.risorseIncrementate(giocatore.getGiocatore().getPietra(), giocatore.getGiocatore().getLegna(), giocatore.getGiocatore().getServitori(),giocatore.getGiocatore().getMonete(), giocatore.getGiocatore().getPuntiMilitari(), giocatore.getGiocatore().getPuntiFede(), giocatore.getGiocatore().getPuntiVittoria());
+
+        //deseleziono il familiare
+        familiareSelezionato.setDisponibile(false);
+        deselezionaFamiliare();
+
+        //passo al prossimo giocatore
+        giocatore.getPartita().passaMossa(giocatore);
     }
 
     @Override
@@ -209,6 +235,22 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
                 giocatore.risorseIncrementate(giocatore.getGiocatore().getPietra(), giocatore.getGiocatore().getLegna(), giocatore.getGiocatore().getServitori(),giocatore.getGiocatore().getMonete(), giocatore.getGiocatore().getPuntiMilitari(), giocatore.getGiocatore().getPuntiFede(), giocatore.getGiocatore().getPuntiVittoria());
 
             }
+        }
+    }
+
+    @Override
+    public void saltaMossa(int id) throws TurnoException, DadiNonTiratiException {
+        giocatore.getPartita().mioTurno(giocatore.getGiocatore());
+        giocatore.getPartita().dadiTirati();
+        try {
+            giocatore.getPartita().passaMossa(giocatore);
+            giocatore.mossaSaltata(id);
+        } catch (ZonaOccupataExcepion zonaOccupataExcepion) {
+            zonaOccupataExcepion.printStackTrace();
+        } catch (ForzaInsufficienteException e) {
+            e.printStackTrace();
+        } catch (RemoteException e) {
+            e.printStackTrace();
         }
     }
 
