@@ -32,11 +32,11 @@ public class CartaEdificio extends CartaSviluppo {
 
     /**
      * controlla se la carta ha un effetto rapido e si occupa di chiamare il metodo che implementa l'effetto
-     * @param g: giocatore possessore della carta
+     * @param f: familiare del giocatore possessore della carta
      */
-    public void attivaEffettoRapido(Giocatore g) throws RisorseInsufficientiException {
+    public void attivaEffettoRapido(Familiare f) throws RisorseInsufficientiException {
         if(super.getEffettoRapido()){
-            effettoRapido.attivaEffetto(codiceEffR, g, null);
+            effettoRapido.attivaEffetto(codiceEffR, f, 0);
         }
     }
 

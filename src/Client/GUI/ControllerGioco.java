@@ -50,7 +50,7 @@ public class ControllerGioco implements InterfacciaClient{
 
 
 
-    public void inizializza(HashMap<Integer, String> giocatori, ArrayList<String> carte, int mioId, int[] risorse){
+    public void inizializza(HashMap<Integer, String> giocatori, ArrayList<String> carte, int mioId, int[] risorse, ArrayList<String> scomuniche){
 
         this.giocatori=giocatori;
         this.mioId=mioId;
@@ -60,6 +60,7 @@ public class ControllerGioco implements InterfacciaClient{
         creaDadi();
         settaRisorse(risorse);
         creaPaneCampiAzioneTorri();
+        mettiScomuniche(scomuniche);
         contaCarteE=0;
         contaCarteI=0;
         contaCarteP=0;
@@ -67,6 +68,24 @@ public class ControllerGioco implements InterfacciaClient{
         contaFamiliariPalazzoConsigglio=0;
         contaFamZonaProd=0;
         contaFamZonaRac=0;
+    }
+
+    private void mettiScomuniche(ArrayList<String> scomuniche) {
+        Image tempImg = new Image("Client/GUI/img/ImmaginiTessereScomunica/" + scomuniche.get(0) + ".png");
+        imgScomunica1.setImage(tempImg);
+        imgScomunica1.setFitWidth(gridScomunica.getWidth()/3);
+        imgScomunica1.setFitHeight(gridScomunica.getHeight());
+
+        tempImg = new Image("Client/GUI/img/ImmaginiTessereScomunica/" + scomuniche.get(1) + ".png");
+        imgScomunica2.setImage(tempImg);
+        imgScomunica2.setFitWidth(gridScomunica.getWidth()/3);
+        imgScomunica2.setFitHeight(gridScomunica.getHeight());
+
+        tempImg = new Image("Client/GUI/img/ImmaginiTessereScomunica/" + scomuniche.get(2) + ".png");
+        imgScomunica3.setImage(tempImg);
+        imgScomunica3.setFitWidth(gridScomunica.getWidth()/3);
+        imgScomunica3.setFitHeight(gridScomunica.getHeight());
+
     }
 
     private void creaPaneCampiAzioneTorri() {
@@ -633,9 +652,21 @@ public class ControllerGioco implements InterfacciaClient{
     @FXML
     private GridPane gridZonaRaccolto;
 
+    @FXML
+    private ImageView imgScomunica1;
+
+    @FXML
+    private ImageView imgScomunica2;
+
+    @FXML
+    private ImageView imgScomunica3;
+
+    @FXML
+    private GridPane gridScomunica;
+
 
     @Override
-    public void iniziaPartita(int mioId, ArrayList<String> carte, ArrayList<String> giocatori, int[] risorse) throws RemoteException {
+    public void iniziaPartita(int mioId, ArrayList<String> carte, ArrayList<String> giocatori, int[] risorse, ArrayList<String> scomuniche) throws RemoteException {
 
     }
 

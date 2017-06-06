@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * Created by Pietro on 16/05/2017.
  */
  public interface InterfacciaClient extends Remote{
-      public void iniziaPartita(int mioId, ArrayList<String> carte, ArrayList<String> giocatori, int[] risorse) throws RemoteException;
+      public void iniziaPartita(int mioId, ArrayList<String> carte, ArrayList<String> giocatori, int[] risorse, ArrayList<String> scomuniche) throws RemoteException;
       public void spostatoFamiliarePiano(int numeroTorre, int numeroPiano, String coloreDado, int idGiocatore) throws RemoteException;
       public void dadiTirati(int ar, int ne, int bi) throws IOException;
       public void messaggio(String s)throws RemoteException;

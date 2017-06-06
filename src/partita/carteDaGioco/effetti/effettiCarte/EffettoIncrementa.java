@@ -1,8 +1,9 @@
-package partita.carteDaGioco.effetti;
+package partita.carteDaGioco.effetti.effettiCarte;
 /**
  * effetti che si occupano di incrementare le risorse del giocatore
  */
 
+import partita.carteDaGioco.effetti.Effetto;
 import partita.componentiDelTabellone.Familiare;
 import partita.componentiDelTabellone.Giocatore;
 import partita.componentiDelTabellone.Tabellone;
@@ -10,7 +11,7 @@ import partita.componentiDelTabellone.Tabellone;
 /**
  * Created by Pietro on 18/05/2017.
  */
-public class EffettoIncrementa implements Effetto{
+public class EffettoIncrementa implements Effetto {
 
     /**
      *
@@ -22,17 +23,17 @@ public class EffettoIncrementa implements Effetto{
      *           E->punti militari
      *           F->fede
      *           V->punti vittoria
-     * @param g  giocatore che attiva l'effetto e al quale verranno incrementate le risorse
+     * @param f  familiare che attiva l'effetto e al quale verranno incrementate le risorse
      */
     @Override
-    public void attivaEffetto(String s, Giocatore g, Tabellone tab) {
+    public void attivaEffetto(String s, Familiare f, int codiceZona) {
         int[] incrementi=new int[7];
         for (int i=0; i<14; i+=2){
             incrementi[i/2]=(int) s.charAt(i)-48;
         }
 
-        g.incrementaRisorse(incrementi);
-        System.out.println("incrementate le risorse del giocatore "+g.getId()+" a causa dell'effetto");
+        f.getGiocatore().incrementaRisorse(incrementi);
+        System.out.println("incrementate le risorse del giocatore "+f.getGiocatore().getId()+" a causa dell'effetto");
     }
 
 

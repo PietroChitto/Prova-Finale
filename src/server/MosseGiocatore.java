@@ -74,6 +74,9 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
         //prendo la carta dalla torre, se non va a buon fine lancia un' eccezione RisorseInsufficienti
         prendiCarta(numeroTorre,numeroPiano);
 
+        //devo attivare gli effetti delle carte personaggio per eventuali aumenti di forza
+        attivaEffettiPersonaggi(numeroTorre);
+
         //metto il familiare nel piano, se è già occupato lancia un eccezione ZonaOccupata
         giocatore.getPartita().getCampoDaGioco().getTabellone().getTorre(numeroTorre).getPiano(numeroPiano).getCampoAzione().setFamiliare(familiareSelezionato);
 
@@ -92,6 +95,12 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
         //passo al prossimo giocatore
         giocatore.getPartita().passaMossa(giocatore);
 
+    }
+
+    private void attivaEffettiPersonaggi(int zona) {
+        for(CartaPersonaggio c: giocatore.getGiocatore().getCartePersonaggio()){
+            c.attivaEffettoPermanente(familiareSelezionato, zona);
+        }
     }
 
     @Override
@@ -153,6 +162,9 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
         giocatore.getPartita().mioTurno(giocatore.getGiocatore());
 
         giocatore.getPartita().getCampoDaGioco().getTabellone().getZonaProduzione().arrivaGiocatore(familiareSelezionato);
+
+        //attivo effetti carte personaggio
+
 
         //avviso i giocatori della mossa
         for (GiocatoreRemoto g: giocatore.getPartita().getGiocatori()){
@@ -267,7 +279,7 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
             cartaTerritorio=(CartaTerritorio) giocatore.getPartita().getCampoDaGioco().getTabellone().getTorre(numeroTorre).getPiano(numeroPiano).getCartaSviluppo();
             giocatore.getGiocatore().aggiungiTerritorio(cartaTerritorio);
             giocatore.getPartita().getCampoDaGioco().getTabellone().getTorre(numeroTorre).getPiano(numeroPiano).setCartaSviluppo(null);
-            cartaTerritorio.attivaEffettoRapido(giocatore.getGiocatore());
+            cartaTerritorio.attivaEffettoRapido(familiareSelezionato);
             System.out.println("codice Effetto: ");
         }
         if(numeroTorre==2) {
@@ -280,7 +292,7 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
             giocatore.getGiocatore().decrementaRisorse(arrayCosti);
             giocatore.getGiocatore().aggiungiEdificio(cartaEdificio);
             giocatore.getPartita().getCampoDaGioco().getTabellone().getTorre(numeroTorre).getPiano(numeroPiano).setCartaSviluppo(null);
-            cartaEdificio.attivaEffettoRapido(giocatore.getGiocatore());
+            cartaEdificio.attivaEffettoRapido(familiareSelezionato);
             System.out.println("codice Effetto: ");
         }
         if(numeroTorre==3) {
@@ -294,7 +306,7 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
             giocatore.getGiocatore().aggiungiImpresa(cartaImpresa);
             giocatore.getPartita().getCampoDaGioco().getTabellone().getTorre(numeroTorre).getPiano(numeroPiano).setCartaSviluppo(null);
             System.out.println("codice Effetto: ");
-            cartaImpresa.attivaEffettoRapido(giocatore.getGiocatore());
+            cartaImpresa.attivaEffettoRapido(familiareSelezionato);
         }
 
         if(numeroTorre==1) {
@@ -308,7 +320,7 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
             giocatore.getGiocatore().aggiungiPersonaggio(cartaPersonaggio);
             giocatore.getPartita().getCampoDaGioco().getTabellone().getTorre(numeroTorre).getPiano(numeroPiano).setCartaSviluppo(null);
             System.out.println("codice Effetto: "+cartaPersonaggio.getCodEffP());
-            cartaPersonaggio.attivaEffettoRapido(giocatore.getGiocatore());
+            cartaPersonaggio.attivaEffettoRapido(familiareSelezionato);
         }
 
     }

@@ -62,13 +62,13 @@ public class Zona {
 
         if(produzione==false) {
             for (CartaTerritorio c : f.getGiocatore().getCarteTerritorio()) {
-                if(f.getForza()>c.getCostoAttivazioneEffettoPermanente())
+                if(f.getForza()>=c.getCostoAttivazioneEffettoPermanente())
                     c.attivaEffettoPermanente(f);
             }
         }
         else{
             for (CartaEdificio c : f.getGiocatore().getCarteEdificio()) {
-                if(f.getForza()>c.getCostoAttivazioneEffettoPermanente())
+                if(f.getForza()>=c.getCostoAttivazioneEffettoPermanente())
                     c.attivaEffettoPermanente(f);
             }
         }

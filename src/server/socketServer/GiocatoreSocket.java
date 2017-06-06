@@ -153,7 +153,7 @@ import java.util.ArrayList;
 
     //-----------------------------------------------------------------------------------------------------------------------------------------
     @Override
-    public void iniziaPartita(int mioId, ArrayList<String> carte, ArrayList<String> giocatori, int[] risorse) {
+    public void iniziaPartita(int mioId, ArrayList<String> carte, ArrayList<String> giocatori, int[] risorse, ArrayList<String> scomuniche) {
         try {
             out.writeObject("INIZIOPARTITA");
             out.flush();
@@ -165,6 +165,8 @@ import java.util.ArrayList;
             out.writeObject(giocatori);
             out.flush();
             out.writeObject(risorse);
+            out.flush();
+            out.writeObject(scomuniche);
             out.flush();
             System.out.println("situazione iniziale inviata");
         } catch (IOException e) {

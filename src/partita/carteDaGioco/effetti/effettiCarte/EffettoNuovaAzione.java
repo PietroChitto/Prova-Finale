@@ -1,5 +1,6 @@
-package partita.carteDaGioco.effetti;
+package partita.carteDaGioco.effetti.effettiCarte;
 
+import partita.carteDaGioco.effetti.Effetto;
 import partita.componentiDelTabellone.Familiare;
 import partita.componentiDelTabellone.Giocatore;
 import partita.componentiDelTabellone.Tabellone;
@@ -11,7 +12,7 @@ import partita.eccezioniPartita.RisorseInsufficientiException;
 public class EffettoNuovaAzione implements Effetto {
 
     @Override
-    public void attivaEffetto(String s, Giocatore giocatore, Tabellone tab) throws RisorseInsufficientiException {
+    public void attivaEffetto(String s, Familiare f, int codiceZona) {
 
     }
 }

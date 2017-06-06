@@ -48,7 +48,7 @@ public class ClientRMI extends UnicastRemoteObject implements InterfacciaClient,
 
 
     @Override
-    public void iniziaPartita(int mioId, ArrayList<String> carte, ArrayList<String> giocatori, int[] risorse) throws RemoteException {
+    public void iniziaPartita(int mioId, ArrayList<String> carte, ArrayList<String> giocatori, int[] risorse, ArrayList<String> scomuniche) throws RemoteException {
         System.out.println("sono dentro");
         this.id=mioId;
         partitaIncorso=true;
@@ -61,7 +61,7 @@ public class ClientRMI extends UnicastRemoteObject implements InterfacciaClient,
         System.out.println("inizializzo partita");
 
         Platform.runLater(()->{
-            controllerGioco.inizializza(mappaGiocatori, carte,mioId, risorse);
+            controllerGioco.inizializza(mappaGiocatori, carte,mioId, risorse, scomuniche);
         });
     }
 

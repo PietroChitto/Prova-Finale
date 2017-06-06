@@ -1,8 +1,9 @@
-package partita.carteDaGioco.effetti;
+package partita.carteDaGioco.effetti.effettiCarte;
 /**
  * effetto che permette la conversione di risorese in altre risorse
  */
 
+import partita.carteDaGioco.effetti.Effetto;
 import partita.componentiDelTabellone.Familiare;
 import partita.componentiDelTabellone.Giocatore;
 import partita.componentiDelTabellone.Tabellone;
@@ -13,7 +14,7 @@ import partita.eccezioniPartita.RisorseInsufficientiException;
  */
 public class EffettoScambia implements Effetto {
     @Override
-    public void attivaEffetto(String s, Giocatore g, Tabellone tab){
+    public void attivaEffetto(String s, Familiare f, int codiceZona){
         int[] risorseIniziali=new int[7];
         int[] risorseFinali=new int[7];
 
@@ -27,14 +28,16 @@ public class EffettoScambia implements Effetto {
         }
         try {
             //controllo se ho le risorse necessarie
-            controlloRisorseSufficienti(risorseIniziali,g);
-            g.incrementaRisorse(risorseFinali);
-            g.decrementaRisorse(risorseIniziali);
+            controlloRisorseSufficienti(risorseIniziali,f.getGiocatore());
+            f.getGiocatore().incrementaRisorse(risorseFinali);
+            f.getGiocatore().decrementaRisorse(risorseIniziali);
 
         } catch (RisorseInsufficientiException e) {
             System.out.println("");
         }
+
     }
+
 
     private void controlloRisorseSufficienti(int[] risorse, Giocatore g) throws RisorseInsufficientiException{
         if(!(g.getPietra()>=risorse[0] && g.getLegna()>=risorse[1] && g.getServitori()>=risorse[2]
@@ -42,4 +45,6 @@ public class EffettoScambia implements Effetto {
             && g.getPuntiVittoria()>=risorse[6]))
                 throw new RisorseInsufficientiException();
     }
+
+
 }

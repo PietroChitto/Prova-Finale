@@ -1,7 +1,5 @@
 package partita.componentiDelTabellone;
 
-import partita.carteDaGioco.effetti.Effetto;
-import partita.carteDaGioco.effetti.EffettoIncrementa;
 import partita.eccezioniPartita.ForzaInsufficienteException;
 
 import java.util.ArrayList;

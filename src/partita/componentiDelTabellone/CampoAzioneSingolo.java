@@ -1,7 +1,6 @@
 package partita.componentiDelTabellone;
 
-import partita.carteDaGioco.effetti.Effetto;
-import partita.carteDaGioco.effetti.EffettoIncrementa;
+import partita.carteDaGioco.effetti.effettiCarte.EffettoIncrementa;
 import partita.eccezioniPartita.ForzaInsufficienteException;
 import partita.eccezioniPartita.ZonaOccupataExcepion;
 
@@ -28,7 +27,7 @@ public class CampoAzioneSingolo {
         verificaDisponibilitàForza(familiare.getForza());
         if(this.familiare==null) {
             this.familiare = familiare;
-            effetto.attivaEffetto(codEff, familiare.getGiocatore(), null);
+            effetto.attivaEffetto(codEff, familiare, 0);
             this.occupato=true;
         }else
             throw new ZonaOccupataExcepion();

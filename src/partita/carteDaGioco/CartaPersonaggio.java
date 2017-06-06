@@ -29,12 +29,12 @@ public class CartaPersonaggio extends CartaSviluppo {
 
     /**
      * controlla se la carta ha un effetto rapido e si occupa di chiamare il metodo che implementa l'effetto
-     * @param g: giocatore possessore della carta
+     * @param f: giocatore possessore della carta
      */
-    public void attivaEffettoRapido(Giocatore g){
+    public void attivaEffettoRapido(Familiare f){
         if(super.getEffettoRapido()){
             try {
-                effettoRapido.attivaEffetto(codiceEffR, g,null);
+                effettoRapido.attivaEffetto(codiceEffR, f, 0);
             } catch (RisorseInsufficientiException e) {
                 e.printStackTrace();
             }
@@ -45,10 +45,10 @@ public class CartaPersonaggio extends CartaSviluppo {
      * controlla se la carta ha un effetto permanente e si occupa dell'attivazione del metodo che implementa l'effetto
      * @param f: familiare del giocatore possessore della carta
      */
-    public void attivaEffettoPermanente(Familiare f){
+    public void attivaEffettoPermanente(Familiare f, int codiceZona){
         if(super.getEffettoPermanente()){
             try {
-                effettoPermanente.attivaEffetto(codiceEffP,f.getGiocatore(),null);
+                effettoPermanente.attivaEffetto(codiceEffP,f,codiceZona);
             } catch (RisorseInsufficientiException e) {
                 e.printStackTrace();
             }

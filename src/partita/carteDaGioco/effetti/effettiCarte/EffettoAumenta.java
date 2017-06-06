@@ -1,8 +1,9 @@
-package partita.carteDaGioco.effetti;
+package partita.carteDaGioco.effetti.effettiCarte;
 /**
  * questo effeto aumenta delle risorse precise per ogni tipo di carta precisa posseduta dal gicatore
  */
 
+import partita.carteDaGioco.effetti.Effetto;
 import partita.componentiDelTabellone.Familiare;
 import partita.componentiDelTabellone.Giocatore;
 import partita.componentiDelTabellone.Tabellone;
@@ -11,11 +12,12 @@ import partita.eccezioniPartita.RisorseInsufficientiException;
 /**
  * Created by Pietro on 18/05/2017.
  */
-public class EffettoAumenta implements Effetto{
+public class EffettoAumenta implements Effetto {
 
 
     @Override
-    public void attivaEffetto(String s, Giocatore giocatore, Tabellone tab) throws RisorseInsufficientiException {
+    public void attivaEffetto(String s, Familiare f, int codiceZona) throws RisorseInsufficientiException {
+        Giocatore giocatore=f.getGiocatore();
         int[] incr =new int[2];
 
         for(int i=0; i<2; i++){

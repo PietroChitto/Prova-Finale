@@ -161,8 +161,8 @@ public class GiocatoreRMI extends GiocatoreRemoto{
 
     //-----------------------------------------------------------------------------------------------------------------------------------------
     @Override
-    public void iniziaPartita(int mioId, ArrayList<String> carte, ArrayList<String> giocatori, int[] risorse) throws RemoteException {
-        controllerClient.iniziaPartita(mioId, carte, giocatori, risorse);
+    public void iniziaPartita(int mioId, ArrayList<String> carte, ArrayList<String> giocatori, int[] risorse, ArrayList<String> scomuniche) throws RemoteException {
+        controllerClient.iniziaPartita(mioId, carte, giocatori, risorse, scomuniche);
     }
 
     @Override

@@ -4,6 +4,7 @@ package partita.carteDaGioco;
 
 
 import partita.carteDaGioco.effetti.*;
+import partita.carteDaGioco.effetti.effettiCarte.*;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -133,6 +134,52 @@ public class CreatoreMazzi {
 
     }
 
+    public ArrayList<CartaScomunica> creaCarteScomunica(){
+        ArrayList<CartaScomunica> carte=new ArrayList<CartaScomunica>();
+        carte.add(primoPeriodoScomunica());
+        carte.add(secondoPeriodoScomunica());
+        carte.add(terzoPeriodoScomunica());
+
+        return carte;
+    }
+
+    private CartaScomunica primoPeriodoScomunica(){
+        ArrayList<CartaScomunica> carte;
+        carte=generaMazzoCarteScomunica("1");
+        carte=mischiaMazzoScomunica(carte);
+        return carte.get(0);
+    }
+
+    private CartaScomunica secondoPeriodoScomunica(){
+        ArrayList<CartaScomunica> carte;
+        carte=generaMazzoCarteScomunica("2");
+        carte=mischiaMazzoScomunica(carte);
+        return carte.get(0);
+    }
+
+    private CartaScomunica terzoPeriodoScomunica(){
+        ArrayList<CartaScomunica> carte;
+        carte=generaMazzoCarteScomunica("3");
+        carte=mischiaMazzoScomunica(carte);
+        return carte.get(0);
+    }
+
+
+
+    private ArrayList<CartaScomunica> mischiaMazzoScomunica(ArrayList<CartaScomunica> mazzettoNonMischiato) {
+        for(int i=0; i<mazzettoNonMischiato.size(); i++){
+            //temp=mazzettoNonMischiato.get(i);
+            double ran=(Math.random()*100);
+            int r=(int)ran%mazzettoNonMischiato.size();
+            if(i<r) {
+                mazzettoNonMischiato.add(i, mazzettoNonMischiato.get(r));
+                mazzettoNonMischiato.remove(r + 1);
+            }
+        }
+
+        return mazzettoNonMischiato;
+    }
+
 
     private ArrayList<CartaSviluppo> mischiaMazzo(ArrayList<CartaSviluppo> mazzettoNonMischiato) {
 
@@ -150,6 +197,28 @@ public class CreatoreMazzi {
     }
 
 
+    private ArrayList<CartaScomunica> generaMazzoCarteScomunica(String periodo){
+
+        ArrayList<CartaScomunica> carte=new ArrayList<>();
+        try {
+            rs=s.executeQuery("SELECT* FROM carte.cartescomunica WHERE periodo="+periodo);
+
+            while (rs.next()){
+                int per=rs.getInt("periodo");
+                String nome=rs.getString("nome");
+                String tipoEffetto=rs.getString("tipoEffetto");
+                String codiceEffetto=rs.getString("codice effetto");
+                Effetto eff=creaEffetto(tipoEffetto);
+                CartaScomunica carta=new CartaScomunica(eff, per, codiceEffetto, nome);
+
+                carte.add(carta);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return carte;
+    }
 
     private ArrayList<CartaSviluppo> generaMazzoCarteTerritorio(String periodo) throws SQLException {
         ArrayList<CartaSviluppo> carte= new ArrayList<CartaSviluppo>();

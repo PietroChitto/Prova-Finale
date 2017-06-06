@@ -18,6 +18,7 @@ public class CampoDaGioco {
     private ArrayList<CartaSviluppo> mazzoEdificio;
     private ArrayList<CartaSviluppo> mazzoPersonaggi;
     private ArrayList<CartaSviluppo> mazzoImprese;
+    private ArrayList<CartaScomunica> carteScomunica;
     public final int NUMEROGIOCATORI;
 
     public CampoDaGioco(ArrayList<Giocatore> giocatori, boolean treGiocatori, boolean quattroGiocatori){
@@ -35,6 +36,7 @@ public class CampoDaGioco {
         creaMazzoEdifici();
         creaMazzoImprese();
         creaMazzoPersonaggio();
+        carteScomunica=creatoreMazzi.creaCarteScomunica();
 
     }
 
@@ -147,6 +149,14 @@ public class CampoDaGioco {
             nomiCarte.add(tabellone.getTorre(i).getPiano(3).getCartaSviluppo().getNome());
         }
         return nomiCarte;
+    }
+
+    public ArrayList<String> getCarteScomunica(){
+        ArrayList<String> nomiScomuniche=new ArrayList<>();
+        for(CartaScomunica c: carteScomunica){
+            nomiScomuniche.add(c.getNome());
+        }
+        return nomiScomuniche;
     }
 
 }

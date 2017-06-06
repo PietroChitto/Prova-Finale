@@ -14,8 +14,7 @@ import partita.eccezioniPartita.RisorseInsufficientiException;
  * Created by Pietro on 18/05/2017.
  */
 public interface Effetto {
-    public void attivaEffetto(String s, Giocatore giocatore, Tabellone tab) throws RisorseInsufficientiException;
-
+    public void attivaEffetto(String s, Familiare f, int codiceZona) throws RisorseInsufficientiException;
 }
 
 

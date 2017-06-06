@@ -1,6 +1,7 @@
 package partita.carteDaGioco;
 
 import partita.carteDaGioco.effetti.Effetto;
+import partita.componentiDelTabellone.Familiare;
 import partita.componentiDelTabellone.Giocatore;
 import partita.eccezioniPartita.RisorseInsufficientiException;
 
@@ -41,22 +42,22 @@ public class CartaImpresa extends CartaSviluppo {
 
     /**
      * controlla se la carta ha un effetto rapido e si occupa di chiamare il metodo che implementa l'effetto
-     * @param g: giocatore possessore della carta
+     * @param f: giocatore possessore della carta
      */
-    public void attivaEffettoRapido(Giocatore g){
+    public void attivaEffettoRapido(Familiare f){
         if(super.getEffettoRapido()){
             try {
-                effettoRapido.attivaEffetto(codiceEffR, g, null);
+                effettoRapido.attivaEffetto(codiceEffR, f, 0);
             } catch (RisorseInsufficientiException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public void attivaEffettoPermanente(Giocatore g){
+    public void attivaEffettoPermanente(Familiare f){
         if(super.getEffettoPermanente()){
             try {
-                effettoPermanente.attivaEffetto(codiceEffP, g,null);
+                effettoPermanente.attivaEffetto(codiceEffP, f,0);
             } catch (RisorseInsufficientiException e) {
                 e.printStackTrace();
             }

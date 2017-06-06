@@ -3,14 +3,13 @@ package partita;
 import partita.carteDaGioco.CartaEdificio;
 import partita.carteDaGioco.CartaPersonaggio;
 import partita.carteDaGioco.CartaTerritorio;
-import partita.carteDaGioco.effetti.EffettoAumentaForza;
+import partita.carteDaGioco.effetti.effettiCarte.EffettoAumentaForza;
 import partita.componentiDelTabellone.*;
 import partita.eccezioniPartita.DadiNonTiratiException;
 import partita.eccezioniPartita.ForzaInsufficienteException;
 import partita.eccezioniPartita.TurnoException;
 import partita.eccezioniPartita.ZonaOccupataExcepion;
 import server.GiocatoreRemoto;
-import server.rmiServer.GiocatoreRMI;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -32,6 +31,7 @@ public class Partita {
     private int valoreDadoArancio;
     private int valoreDadoBianco;
     private ArrayList<String> nomiCarte;
+    private ArrayList<String> nomiScomuniche;
     private boolean dadiTirati;
 
     public Partita() {
@@ -86,6 +86,7 @@ public class Partita {
         numeroMosseTurno=0;
         getCampoDaGioco().mettiCarteNelleTorri();
         nomiCarte=getCampoDaGioco().getNomiCarteTorri();
+        nomiScomuniche=getCampoDaGioco().getCarteScomunica();
         //avvisa i client che la partita è iniziata e possono fare le mosse
         avvisoInizioPartita();
         System.out.println("giocatori avvisati");
@@ -104,7 +105,7 @@ public class Partita {
             risorse[1]=g.getGiocatore().getLegna();
             risorse[2]=g.getGiocatore().getServitori();
             risorse[3]=g.getGiocatore().getMonete();
-            g.iniziaPartita(g.getGiocatore().getId(), nomiCarte, nomiGiocatori, risorse);
+            g.iniziaPartita(g.getGiocatore().getId(), nomiCarte, nomiGiocatori, risorse, nomiScomuniche);
         }
     }
 
@@ -211,6 +212,7 @@ public class Partita {
         getCampoDaGioco().getTabellone().getPalazzoDelConsiglio().stampaOrdineTurno(ordineTurno);
         getCampoDaGioco().mettiCarteNelleTorri();
         nomiCarte=getCampoDaGioco().getNomiCarteTorri();
+        ripristinaDisponibilitàFamiliari();
         turno++;
         if(turno==3){
             passaPeriodo();
@@ -222,6 +224,14 @@ public class Partita {
             e.printStackTrace();
         }
 
+    }
+
+    private void ripristinaDisponibilitàFamiliari() {
+        for(Giocatore g: giocatoriGioco){
+            for(Familiare f: g.getFamiliari()){
+                f.setDisponibile(true);
+            }
+        }
     }
 
     private void avvisoInizioTurno() throws RemoteException {
@@ -257,64 +267,6 @@ public class Partita {
             //carte impresa
             //carte personaggio
             //risorse
-    }
-
-    public void ripristinaForzaTabellone(){
-
-        String codice;
-        int [] zone=new int[6];
-        ArrayList<CartaPersonaggio> cartePersonaggio= new ArrayList<CartaPersonaggio>();
-
-        //Ripristino la condizioni iniziali sulla forza a livello del tabellone
-        cartePersonaggio=giocatoreCorrente.getCartePersonaggio();
-        Tabellone tab = getCampoDaGioco().getTabellone();
-
-        for (CartaPersonaggio cp : cartePersonaggio){
-
-            if (cp.getEffettoP() instanceof EffettoAumentaForza){
-
-                codice=cp.getCodEffP();
-
-                int forza=codice.charAt(0);
-
-                for (int i=0; i<6; i++){
-                    zone[i]=(int) codice.charAt((i+1)*2);
-                }
-
-                if(zone[0]==1){
-                    for (Piano p:tab.getTorre(1).getPiani()){
-                        p.getCampoAzione().setCosto(p.getCampoAzione().getCosto()+forza);
-                    }
-                }
-                if(zone[1]==1){
-                    for (Piano p:tab.getTorre(2).getPiani()){
-                        p.getCampoAzione().setCosto(p.getCampoAzione().getCosto()+forza);
-                    }
-                }
-                if(zone[2]==1){
-                    for (Piano p:tab.getTorre(3).getPiani()){
-                        p.getCampoAzione().setCosto(p.getCampoAzione().getCosto()+forza);
-                    }
-                }
-                if(zone[3]==1){
-                    for (Piano p:tab.getTorre(4).getPiani()){
-                        p.getCampoAzione().setCosto(p.getCampoAzione().getCosto()+forza);
-                    }
-
-                }
-                if(zone[4]==1){
-                    for (CartaEdificio cs: giocatoreCorrente.getCarteEdificio()){
-                        cs.setCostoAttivazioneEffettoPermanente(cs.getCostoAttivazioneEffettoPermanente()+forza);
-                    }
-                }if(zone[5]==1){
-                    for (CartaTerritorio cs: giocatoreCorrente.getCarteTerritorio()){
-                        cs.setCostoAttivazioneEffettoPermanente(cs.getCostoAttivazioneEffettoPermanente()+forza);
-                    }
-                }
-
-
-            }
-        }
     }
 
     public void pulisciTabellone() throws ZonaOccupataExcepion, ForzaInsufficienteException {

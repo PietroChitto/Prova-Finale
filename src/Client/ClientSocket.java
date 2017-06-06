@@ -59,7 +59,7 @@ public class ClientSocket implements InterfacciaClient, InterfaciaRemotaRMI{
     }
 
     @Override
-    public void iniziaPartita(int mioId, ArrayList<String> carte, ArrayList<String> giocatori, int[] risorse) throws RemoteException {
+    public void iniziaPartita(int mioId, ArrayList<String> carte, ArrayList<String> giocatori, int[] risorse, ArrayList<String> scomuniche) throws RemoteException {
 
         HashMap<Integer,String > mappaGiocatori=new HashMap<>();
         int i=0;
@@ -68,7 +68,7 @@ public class ClientSocket implements InterfacciaClient, InterfaciaRemotaRMI{
             i++;
         }
         Platform.runLater(()->{
-            controllerGioco.inizializza(mappaGiocatori, carte,mioId, risorse);
+            controllerGioco.inizializza(mappaGiocatori, carte,mioId, risorse, scomuniche);
         });
 
     }
@@ -216,16 +216,18 @@ public class ClientSocket implements InterfacciaClient, InterfaciaRemotaRMI{
                         System.out.println("messaggio ricevuto: INIZIOPARTITA");
                         ArrayList<String> carte;
                         ArrayList<String> giocatori;
+                        ArrayList<String> scomuniche;
                         int[] risorse;
                         id=in.readInt();
                         System.out.println("il mio id: "+ id);
                         carte=(ArrayList<String>) in.readObject();
                         giocatori=(ArrayList<String>) in.readObject();
+                        scomuniche=(ArrayList<String>) in.readObject();
                         risorse=(int[]) in.readObject();
 
                         System.out.println("situazione iniziale inviata");
 
-                        iniziaPartita(id,carte,giocatori, risorse);
+                        iniziaPartita(id,carte,giocatori, risorse,scomuniche);
                     }
                     else if(comando.startsWith("DADITIRATI")){
                         System.out.println("messaggio ricevuto: DADITIRATI");
