@@ -10,10 +10,12 @@ import javafx.scene.effect.Shadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.TextAlignment;
 import partita.componentiDelTabellone.Familiare;
 import partita.eccezioniPartita.*;
 import server.rmiServer.InterfaciaRemotaRMI;
@@ -56,6 +58,7 @@ public class ControllerGioco implements InterfacciaClient{
         this.mioId=mioId;
         settaLabelGiocatori(this.giocatori);
         mettiCarteNelleTorri(carte);
+        settaSfondo();
         creaFamiliari(mioColore(mioId));
         creaDadi();
         settaRisorse(risorse);
@@ -68,6 +71,28 @@ public class ControllerGioco implements InterfacciaClient{
         contaFamiliariPalazzoConsigglio=0;
         contaFamZonaProd=0;
         contaFamZonaRac=0;
+    }
+
+    private void settaSfondo() {
+        Image image;
+        switch (mioId){
+            case 0: image=new Image("Client/GUI/img/planciaBlu.jpg");
+                imgSfondoClassifica.setImage(image);
+                anchorDestro.setStyle("-fx-background-color: #5f6493");
+                break;
+            case 1: image=new Image("Client/GUI/img/planciaGialla.jpg");
+                imgSfondoClassifica.setImage(image);
+                anchorDestro.setStyle("-fx-background-color: #c6a349");
+                break;
+            case 2: image=new Image("Client/GUI/img/planciaRossa.jpg");
+                imgSfondoClassifica.setImage(image);
+                anchorDestro.setStyle("-fx-background-color: #903b42");
+                break;
+            case 3: image=new Image("Client/GUI/img/planciaVerde.jpg");
+                imgSfondoClassifica.setImage(image);
+                anchorDestro.setStyle("-fx-background-color: #6aa259");
+                break;
+        }
     }
 
     private void mettiScomuniche(ArrayList<String> scomuniche) {
@@ -664,6 +689,12 @@ public class ControllerGioco implements InterfacciaClient{
     @FXML
     private GridPane gridScomunica;
 
+    @FXML
+    private ImageView imgSfondoClassifica;
+
+    @FXML
+    private AnchorPane anchorDestro;
+
 
     @Override
     public void iniziaPartita(int mioId, ArrayList<String> carte, ArrayList<String> giocatori, int[] risorse, ArrayList<String> scomuniche) throws RemoteException {
@@ -804,9 +835,13 @@ public class ControllerGioco implements InterfacciaClient{
         paneDadoBianco.getChildren().add(immaginiDadoBianco[bi-1]);
         paneDadoNero.getChildren().add(immaginiDadoNero[ne-1]);
         labelForzaNero.setText(ne+"");
+        labelForzaNero.setTextAlignment(TextAlignment.CENTER);
         labelForzaBianco.setText(bi+"");
+        labelForzaBianco.setTextAlignment(TextAlignment.CENTER);
         labelForzaArancio.setText(ar+"");
+        labelForzaArancio.setTextAlignment(TextAlignment.CENTER);
         labelForzaNeutro.setText("0");
+        labelForzaNeutro.setTextAlignment(TextAlignment.CENTER);
     }
 
     @Override
