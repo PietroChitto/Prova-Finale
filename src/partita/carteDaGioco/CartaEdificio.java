@@ -47,7 +47,11 @@ public class CartaEdificio extends CartaSviluppo {
     public void attivaEffettoPermanente(Familiare f) throws ForzaInsufficienteException {
         if(super.getEffettoPermanente()){
             verificaDisponibilitàForza(f.getForza());
-            //cerca metodo permanente
+            try {
+                effettoPermanente.attivaEffetto(codiceEffP,f,0);
+            } catch (RisorseInsufficientiException e) {
+                e.printStackTrace();
+            }
         }
     }
 

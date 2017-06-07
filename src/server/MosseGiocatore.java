@@ -161,10 +161,11 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
     public void spostaFamiliareZonaProduzione(int zona) throws RemoteException, ForzaInsufficienteException, TurnoException, ZonaOccupataExcepion {
         giocatore.getPartita().mioTurno(giocatore.getGiocatore());
 
+        //devo attivare gli effetti delle carte personaggio per eventuali aumenti di forza
+        attivaEffettiPersonaggi(4);
+
+        //metto il familiare nella zona produzionee attivo gli effetti
         giocatore.getPartita().getCampoDaGioco().getTabellone().getZonaProduzione().arrivaGiocatore(familiareSelezionato);
-
-        //attivo effetti carte personaggio
-
 
         //avviso i giocatori della mossa
         for (GiocatoreRemoto g: giocatore.getPartita().getGiocatori()){
@@ -185,6 +186,9 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
     @Override
     public void spostaFamiliareZonaRaccolto(int zona) throws RemoteException, TurnoException, ForzaInsufficienteException, ZonaOccupataExcepion {
         giocatore.getPartita().mioTurno(giocatore.getGiocatore());
+
+        //devo attivare gli effetti delle carte personaggio per eventuali aumenti di forza
+        attivaEffettiPersonaggi(5);
 
         giocatore.getPartita().getCampoDaGioco().getTabellone().getZonaRaccolto().arrivaGiocatore(familiareSelezionato);
 

@@ -58,7 +58,7 @@ public class ControllerGioco implements InterfacciaClient{
         this.mioId=mioId;
         settaLabelGiocatori(this.giocatori);
         mettiCarteNelleTorri(carte);
-        settaSfondo();
+        //settaSfondo();
         creaFamiliari(mioColore(mioId));
         creaDadi();
         settaRisorse(risorse);

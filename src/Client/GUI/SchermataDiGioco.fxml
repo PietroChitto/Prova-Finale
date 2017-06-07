@@ -171,14 +171,14 @@
       </GridPane>
       <AnchorPane fx:id="anchorDestro" layoutX="590.0" prefHeight="666.0" prefWidth="810.0">
          <children>
-            <AnchorPane layoutX="14.0" layoutY="20.0" prefHeight="345.0" prefWidth="468.0">
+            <AnchorPane layoutY="-5.0" prefHeight="370.0" prefWidth="487.0">
                <children>
-                  <ImageView fitHeight="345.0" fitWidth="468.0" pickOnBounds="true">
+                  <ImageView fitHeight="376.0" fitWidth="487.0" pickOnBounds="true">
                      <image>
                         <Image url="@img/contenitoreCarte.png" />
                      </image>
                   </ImageView>
-                  <GridPane fx:id="gridPlancia" hgap="5.0" prefHeight="345.0" prefWidth="468.0" vgap="5.0">
+                  <GridPane fx:id="gridPlancia" hgap="10.0" prefHeight="364.0" prefWidth="482.0" vgap="5.0">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -199,46 +199,32 @@
                   <Reflection fraction="0.3" topOpacity="0.52" />
                </effect>
             </AnchorPane>
-            <GridPane alignment="TOP_CENTER" layoutX="56.0" layoutY="585.0" prefHeight="60.0" prefWidth="264.0">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
+            <AnchorPane layoutX="482.0" layoutY="-1.0" prefHeight="370.0" prefWidth="330.0">
                <children>
-                  <ImageView fitHeight="30.0" fitWidth="88.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="370.0" fitWidth="330.0" pickOnBounds="true">
                      <image>
-                        <Image url="@img/Immagini%20Risorse/Pietre.png" />
+                        <Image url="@img/arco.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="31.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
-                     <image>
-                        <Image url="@img/Immagini%20Risorse/Legna.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="31.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
-                     <image>
-                        <Image url="@img/Immagini%20Risorse/Servitori.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="31.0" fitWidth="101.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3">
-                     <image>
-                        <Image url="@img/Immagini%20Risorse/Monete.png" />
-                     </image>
-                  </ImageView>
-                  <Label fx:id="labelPietra" textFill="#f8f6f6" GridPane.rowIndex="1" />
-                  <Label fx:id="labelLegna" textFill="#f8f6f6" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Label fx:id="labelServitori" textFill="#f8f6f6" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                  <Label fx:id="labelMonete" textFill="#f8f6f6" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                  <Pane fx:id="paneCarta" layoutX="45.0" layoutY="43.0" prefHeight="284.0" prefWidth="241.0">
+                     <children>
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fffb1f" height="284.0" layoutX="2.0" stroke="BLACK" strokeType="INSIDE" width="239.0" />
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fefeff" height="276.0" layoutX="8.0" layoutY="4.0" stroke="BLACK" strokeType="INSIDE" width="227.0" />
+                        <ImageView fx:id="imageCarta" fitHeight="270.0" fitWidth="220.0" layoutX="12.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" />
+                     </children>
+                  </Pane>
                </children>
-            </GridPane>
-            <AnchorPane layoutX="20.0" layoutY="381.0" prefHeight="191.0" prefWidth="336.0">
+               <effect>
+                  <Reflection fraction="0.23" topOpacity="0.19" />
+               </effect>
+            </AnchorPane>
+            <AnchorPane layoutX="1.0" layoutY="365.0" prefHeight="302.0" prefWidth="375.0">
                <children>
+                  <ImageView fitHeight="302.0" fitWidth="375.0" pickOnBounds="true">
+                     <image>
+                        <Image url="@img/arco.png" />
+                     </image>
+                  </ImageView>
                   <GridPane fx:id="gridFamiliari" layoutX="69.0" layoutY="63.0" prefHeight="59.0" prefWidth="306.0">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="95.0" minWidth="10.0" prefWidth="74.0" />
@@ -278,38 +264,88 @@
                   <Button layoutX="135.0" layoutY="2.0" mnemonicParsing="false" onMouseClicked="#saltaMossa" text="Salta Mossa" />
                </children>
             </AnchorPane>
-            <AnchorPane layoutX="405.0" layoutY="404.0" prefHeight="239.0" prefWidth="377.0">
+            <GridPane alignment="TOP_CENTER" layoutX="56.0" layoutY="585.0" prefHeight="60.0" prefWidth="264.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
                <children>
-                  <ImageView fx:id="imgSfondoClassifica" fitHeight="239.0" fitWidth="382.0" layoutY="1.0" pickOnBounds="true">
-                     <effect>
-                        <DropShadow />
-                     </effect>
+                  <ImageView fitHeight="30.0" fitWidth="88.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@img/Immagini%20Risorse/Pietre.png" />
+                     </image>
                   </ImageView>
-                  <ImageView fitHeight="59.0" fitWidth="63.0" layoutX="299.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="31.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
+                     <image>
+                        <Image url="@img/Immagini%20Risorse/Legna.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="31.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
+                     <image>
+                        <Image url="@img/Immagini%20Risorse/Servitori.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="31.0" fitWidth="101.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3">
+                     <image>
+                        <Image url="@img/Immagini%20Risorse/Monete.png" />
+                     </image>
+                  </ImageView>
+                  <Label fx:id="labelPietra" textFill="#f8f6f6" GridPane.rowIndex="1" />
+                  <Label fx:id="labelLegna" textFill="#f8f6f6" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label fx:id="labelServitori" textFill="#f8f6f6" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  <Label fx:id="labelMonete" textFill="#f8f6f6" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+               </children>
+            </GridPane>
+            <AnchorPane layoutX="372.0" layoutY="365.0" prefHeight="302.0" prefWidth="440.0">
+               <children>
+                  <ImageView fitHeight="302.0" fitWidth="438.0" pickOnBounds="true">
+                     <image>
+                        <Image url="@img/arco.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="59.0" fitWidth="63.0" layoutX="328.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@img/imgPuntiMilitari.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="59.0" fitWidth="40.0" layoutX="208.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="59.0" fitWidth="40.0" layoutX="248.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@img/imgPuntiFede.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="59.0" fitWidth="70.0" layoutX="124.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="59.0" fitWidth="70.0" layoutX="155.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@img/imgPuntiVittoria.png" />
                      </image>
                   </ImageView>
-                  <Label layoutX="29.0" layoutY="19.0" prefHeight="38.0" prefWidth="85.0" text="Giocatori" textFill="#eeeaea">
+                  <Label layoutX="43.0" layoutY="19.0" prefHeight="38.0" prefWidth="85.0" text="Giocatori" textFill="#eeeaea">
                      <font>
                         <Font name="Berlin Sans FB" size="21.0" />
                      </font>
                   </Label>
-                  <Label fx:id="labelGiocatore1" layoutX="29.0" layoutY="89.0" prefHeight="17.0" prefWidth="50.0" />
-                  <Label fx:id="labelGiocatore2" layoutX="29.0" layoutY="120.0" prefHeight="17.0" prefWidth="50.0" />
-                  <Label fx:id="labelGiocatore3" layoutX="29.0" layoutY="153.0" prefHeight="17.0" prefWidth="50.0" />
-                  <Label fx:id="labelGiocatore4" layoutX="35.0" layoutY="190.0" prefHeight="17.0" prefWidth="50.0" />
-                  <Label fx:id="labelMessaggiServer" layoutX="14.0" layoutY="199.0" prefHeight="42.0" prefWidth="364.0" text="Server Message" textFill="#fcf7f7">
+                  <Label fx:id="labelGiocatore1" layoutX="29.0" layoutY="89.0" prefHeight="17.0" prefWidth="50.0" textFill="WHITE">
+                     <font>
+                        <Font name="Ebrima Bold" size="12.0" />
+                     </font></Label>
+                  <Label fx:id="labelGiocatore2" layoutX="29.0" layoutY="120.0" prefHeight="17.0" prefWidth="50.0" textFill="WHITE">
+                     <font>
+                        <Font name="Ebrima Bold" size="12.0" />
+                     </font></Label>
+                  <Label fx:id="labelGiocatore3" layoutX="29.0" layoutY="153.0" prefHeight="17.0" prefWidth="50.0" textFill="WHITE">
+                     <font>
+                        <Font name="Ebrima Bold" size="12.0" />
+                     </font></Label>
+                  <Label fx:id="labelGiocatore4" layoutX="35.0" layoutY="190.0" prefHeight="17.0" prefWidth="50.0" textFill="WHITE">
+                     <font>
+                        <Font name="Ebrima Bold" size="12.0" />
+                     </font></Label>
+                  <Label fx:id="labelMessaggiServer" layoutX="43.0" layoutY="253.0" prefHeight="42.0" prefWidth="313.0" text="Server Message" textFill="#fcf7f7">
                      <font>
                         <Font name="Ebrima Bold" size="20.0" />
                      </font>
@@ -330,20 +366,6 @@
                      </children>
                   </GridPane>
                </children>
-            </AnchorPane>
-            <AnchorPane layoutX="519.0" layoutY="34.0" prefHeight="279.0" prefWidth="240.0">
-               <children>
-                  <Pane fx:id="paneCarta" layoutX="-1.0" layoutY="-5.0" prefHeight="284.0" prefWidth="243.0">
-                     <children>
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fffb1f" height="284.0" layoutX="2.0" stroke="BLACK" strokeType="INSIDE" width="239.0" />
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fefeff" height="276.0" layoutX="8.0" layoutY="4.0" stroke="BLACK" strokeType="INSIDE" width="227.0" />
-                        <ImageView fx:id="imageCarta" fitHeight="270.0" fitWidth="220.0" layoutX="12.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" />
-                     </children>
-                  </Pane>
-               </children>
-               <effect>
-                  <Reflection fraction="0.23" topOpacity="0.19" />
-               </effect>
             </AnchorPane>
          </children>
       </AnchorPane>
