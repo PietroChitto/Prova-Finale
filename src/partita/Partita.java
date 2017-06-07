@@ -18,7 +18,7 @@ import java.util.ArrayList;
  * Created by Pietro on 16/05/2017.
  */
 public class Partita {
-    public static final int N_GIOCATORI=4;
+    public static final int N_GIOCATORI=2;
     private ArrayList<GiocatoreRemoto> giocatori;
     private ArrayList<Giocatore> giocatoriGioco;
     private CampoDaGioco campoDaGioco;
@@ -77,8 +77,8 @@ public class Partita {
     }
 
     public void iniziaPartita() throws RemoteException {
+        System.out.println("Partita Iniziata");
         creaGiocatoriGioco();
-        System.out.println("creatiGiocatoriGioco");
         ordineTurnoIniziale();
         creaCampoDaGioco();
         periodo=1;
@@ -93,6 +93,7 @@ public class Partita {
     }
 
     private void avvisoInizioPartita() throws RemoteException {
+        System.out.println("Avviso inizio Partita");
         ArrayList<String> nomiGiocatori=new ArrayList<String>();
         for (GiocatoreRemoto g: giocatori){
             nomiGiocatori.add(g.getUsername());

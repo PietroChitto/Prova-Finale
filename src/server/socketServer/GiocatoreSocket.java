@@ -74,11 +74,11 @@ import java.util.ArrayList;
       Server.giocatori.add(this);
       this.setUsername(nickName);
       System.out.println("dentro metodo sk "+Server.giocatori.size()+" connessi");
-      if(Server.giocatori.size()==4){
+      if(Server.giocatori.size()==Partita.N_GIOCATORI){
             System.out.println("sono nell'if");
             Partita p=new Partita();
             System.out.println("partitaCreata, aggiungo i giocatori");
-            for(int i=0; i<4; i++) {
+            for(int i=0; i<Partita.N_GIOCATORI; i++) {
                Giocatore modelloGiocatore=new Giocatore(i);
                Server.giocatori.get(i).setGiocatore(modelloGiocatore);
                p.addGiocatore(Server.giocatori.get(i));

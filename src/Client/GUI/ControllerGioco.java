@@ -71,6 +71,7 @@ public class ControllerGioco implements InterfacciaClient{
         contaFamiliariPalazzoConsigglio=0;
         contaFamZonaProd=0;
         contaFamZonaRac=0;
+        buttonForzaArancio.setStyle("-fx-border-style: ");
     }
 
     private void settaSfondo() {
