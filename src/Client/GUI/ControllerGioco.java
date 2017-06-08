@@ -120,11 +120,8 @@ public class ControllerGioco implements InterfacciaClient{
     private void creaPaneCampiAzioneTorri() {
         Pane tempPane;
         paneCampiAzioneTorri=new ArrayList<>();
-        FamiliareGrafico f=new FamiliareGrafico(30, Color.BLACK,Color.WHITE);
         for(int i=0; i<4; i++){
             tempPane=new Pane();
-            //tempPane.setPrefWidth(gridCampiAzioneTorre0.getWidth());
-            //tempPane.setPrefHeight(gridCampiAzioneTorre0.getHeight());
             paneCampiAzioneTorri.add(tempPane);
             gridCampiAzioneTorre0.add(tempPane,0,i);
             tempPane.setVisible(true);
@@ -779,21 +776,29 @@ public class ControllerGioco implements InterfacciaClient{
 
     private void spostaInTorre3(int numeroPiano, FamiliareGrafico familiare) {
         paneCampiAzioneTorri.get(numeroPiano+12).getChildren().removeAll();
+        familiare.setLayoutX(paneCampiAzioneTorri.get(numeroPiano).getWidth()/2);
+        familiare.setLayoutY(paneCampiAzioneTorri.get(numeroPiano).getHeight()/2);
         paneCampiAzioneTorri.get(numeroPiano+12).getChildren().add(familiare);
     }
 
     private void spostaInTorre2(int numeroPiano, FamiliareGrafico familiare) {
         paneCampiAzioneTorri.get(numeroPiano+8).getChildren().removeAll();
+        familiare.setLayoutX(paneCampiAzioneTorri.get(numeroPiano).getWidth()/2);
+        familiare.setLayoutY(paneCampiAzioneTorri.get(numeroPiano).getHeight()/2);
         paneCampiAzioneTorri.get(numeroPiano+8).getChildren().add(familiare);
     }
 
     private void spostaInTorre1(int numeroPiano, FamiliareGrafico familiare) {
         paneCampiAzioneTorri.get(numeroPiano+4).getChildren().removeAll();
+        familiare.setLayoutX(paneCampiAzioneTorri.get(numeroPiano).getWidth()/2);
+        familiare.setLayoutY(paneCampiAzioneTorri.get(numeroPiano).getHeight()/2);
         paneCampiAzioneTorri.get(numeroPiano+4).getChildren().add(familiare);
     }
 
     private void spostaInTorre0(int numeroPiano, FamiliareGrafico familiare) {
         paneCampiAzioneTorri.get(numeroPiano).getChildren().removeAll();
+        familiare.setLayoutX(paneCampiAzioneTorri.get(numeroPiano).getWidth()/2);
+        familiare.setLayoutY(paneCampiAzioneTorri.get(numeroPiano).getHeight()/2);
         paneCampiAzioneTorri.get(numeroPiano).getChildren().add(familiare);
     }
 
@@ -891,14 +896,22 @@ public class ControllerGioco implements InterfacciaClient{
             tempFam=creaFamiliare(coloreDado, id);
         }
         switch (zonaMercato){
-            case 0: campoAzioneMercato0.getChildren().add(tempFam);
-                break;
-            case 1: campoAzioneMercato1.getChildren().add(tempFam);
-                break;
-            case 2: campoAzioneMercato2.getChildren().add(tempFam);
-                break;
-            case 3: campoAzioneMercato3.getChildren().add(tempFam);
-                break;
+            case 0: tempFam.setLayoutX(campoAzioneMercato0.getWidth()/2);
+                    tempFam.setLayoutY(campoAzioneMercato0.getHeight()/2);
+                    campoAzioneMercato0.getChildren().add(tempFam);
+                    break;
+            case 1: tempFam.setLayoutX(campoAzioneMercato1.getWidth()/2);
+                    tempFam.setLayoutY(campoAzioneMercato1.getHeight()/2);
+                    campoAzioneMercato1.getChildren().add(tempFam);
+                    break;
+            case 2: tempFam.setLayoutX(campoAzioneMercato2.getWidth()/2);
+                    tempFam.setLayoutY(campoAzioneMercato2.getHeight()/2);
+                    campoAzioneMercato2.getChildren().add(tempFam);
+                    break;
+            case 3:tempFam.setLayoutX(campoAzioneMercato3.getWidth()/2);
+                    tempFam.setLayoutY(campoAzioneMercato3.getHeight()/2);
+                    campoAzioneMercato3.getChildren().add(tempFam);
+                    break;
         }
     }
 
@@ -933,6 +946,8 @@ public class ControllerGioco implements InterfacciaClient{
         }
 
         if(zona==0){
+            tempFam.setLayoutX(paneCasZonaProd.getWidth()/2);
+            tempFam.setLayoutY(paneCasZonaProd.getHeight()/2);
             paneCasZonaProd.getChildren().add(tempFam);
         }
         else {
@@ -957,6 +972,8 @@ public class ControllerGioco implements InterfacciaClient{
         }
 
         if(zona==0){
+            tempFam.setLayoutX(paneCasZonaRaccolto.getWidth()/2);
+            tempFam.setLayoutY(paneCasZonaRaccolto.getHeight()/2);
             paneCasZonaRaccolto.getChildren().add(tempFam);
         }
         else {
