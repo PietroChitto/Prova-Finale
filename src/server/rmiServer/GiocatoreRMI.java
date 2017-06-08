@@ -133,8 +133,8 @@ public class GiocatoreRMI extends GiocatoreRemoto{
     }
 
     @Override
-    public synchronized void scegliScomunica(boolean appoggiaChiesa) throws RemoteException {
-        mosseGiocatore.scegliScomunica(appoggiaChiesa);
+    public synchronized void sceltaScomunica(boolean appoggiaChiesa) throws RemoteException {
+        mosseGiocatore.sceltaScomunica(appoggiaChiesa);
     }
 
     @Override
@@ -159,6 +159,11 @@ public class GiocatoreRMI extends GiocatoreRemoto{
         }
     }
 
+    @Override
+    public void sceltaPergamena(int scelta) throws RemoteException {
+        mosseGiocatore.sceltaPergamena(scelta);
+    }
+
     //-----------------------------------------------------------------------------------------------------------------------------------------
     @Override
     public void iniziaPartita(int mioId, ArrayList<String> carte, ArrayList<String> giocatori, int[] risorse, ArrayList<String> scomuniche) throws RemoteException {
@@ -181,7 +186,7 @@ public class GiocatoreRMI extends GiocatoreRemoto{
 
     @Override
     public void messaggio(String s) throws RemoteException {
-
+        controllerClient.messaggio(s);
     }
 
     @Override
@@ -230,5 +235,20 @@ public class GiocatoreRMI extends GiocatoreRemoto{
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void scegliPergamena() throws RemoteException {
+        controllerClient.scegliPergamena();
+    }
+
+    @Override
+    public void scegliScomunica() throws RemoteException {
+        controllerClient.scegliScomunica();
+    }
+
+    @Override
+    public void giocatoreScomunicato(int id) throws RemoteException {
+        controllerClient.giocatoreScomunicato(id);
     }
 }

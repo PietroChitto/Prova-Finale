@@ -20,7 +20,7 @@ public class Mercato {
         effetti[0]="0P0L0S5M0E0F0V";
         effetti[1]="0P0L5S0M0E0F0V";
         effetti[2]="0P0L0S2M3E0F0V";
-        effetti[3]="2P2L0S0M0E0F0V";
+        effetti[3]="0P0L0S0M0E0F0V";
         creaZoneMercato();
     }
 

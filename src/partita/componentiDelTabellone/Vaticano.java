@@ -23,6 +23,12 @@ public class Vaticano {
         return carteScomunica;
     }
 
+    /**
+     *
+     * @param g
+     * @param periodo
+     * @return true se i punti fede del giocatori sono sufficienti per appoggiare la chiesa
+     */
     public synchronized boolean controlloPuntiFede(Giocatore g, int periodo){
         /*
             controllo se i punti fede del giocatore sono minori del periodo incrementati di due, punti necessari per poter sceglere di non

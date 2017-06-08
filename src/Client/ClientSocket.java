@@ -134,6 +134,21 @@ public class ClientSocket implements InterfacciaClient, InterfaciaRemotaRMI{
 
     }
 
+    @Override
+    public void scegliPergamena() throws RemoteException {
+
+    }
+
+    @Override
+    public void scegliScomunica() throws RemoteException {
+
+    }
+
+    @Override
+    public void giocatoreScomunicato(int id) throws RemoteException {
+
+    }
+
     //----------------------------------------------------------------------------------------------------------------------------------
 
     @Override
@@ -182,7 +197,7 @@ public class ClientSocket implements InterfacciaClient, InterfaciaRemotaRMI{
     }
 
     @Override
-    public void scegliScomunica(boolean appoggiaChiesa) throws RemoteException {
+    public void sceltaScomunica(boolean appoggiaChiesa) throws RemoteException {
 
     }
 
@@ -193,6 +208,11 @@ public class ClientSocket implements InterfacciaClient, InterfaciaRemotaRMI{
 
     @Override
     public void saltaMossa(int id) {
+
+    }
+
+    @Override
+    public void sceltaPergamena(int scelta) throws RemoteException {
 
     }
 

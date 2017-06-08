@@ -116,6 +116,12 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
         */
         giocatore.getPartita().getCampoDaGioco().getTabellone().getMercato().arrivaGiocatore(familiareSelezionato, zonaMercato);
 
+        if(zonaMercato==3){
+            //manda la scelta pergamena
+            giocatore.scegliPergamena();
+            giocatore.scegliPergamena();
+        }
+
         //avviso i giocatori della mossa
         for (GiocatoreRemoto g: giocatore.getPartita().getGiocatori()){
             g.spostatoFamiliareMercato(zonaMercato, familiareSelezionato.getColoreDado(), familiareSelezionato.getGiocatore().getId());
@@ -144,6 +150,9 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
         for (GiocatoreRemoto g: giocatore.getPartita().getGiocatori()){
             g.spostatoFamiliarePalazzoDelConsiglio(familiareSelezionato.getColoreDado(), familiareSelezionato.getGiocatore().getId());
         }
+
+        //faccio scegliere al giocatore il privilegio del consiglio
+        giocatore.scegliPergamena();
 
         //avviso il giocatore dell'incremento delle risorse
         giocatore.risorseIncrementate(giocatore.getGiocatore().getPietra(), giocatore.getGiocatore().getLegna(), giocatore.getGiocatore().getServitori(),giocatore.getGiocatore().getMonete(), giocatore.getGiocatore().getPuntiMilitari(), giocatore.getGiocatore().getPuntiFede(), giocatore.getGiocatore().getPuntiVittoria());
@@ -230,11 +239,18 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
     }
 
     @Override
-    public void scegliScomunica(boolean appoggiaChiesa) throws RemoteException {
+    public synchronized void sceltaScomunica(boolean appoggiaChiesa) throws RemoteException {
         if (appoggiaChiesa) {
+            giocatore.getGiocatore().setPuntiVittoria(giocatore.getGiocatore().getPuntiVittoria()+giocatore.getGiocatore().getPuntiFede());
             giocatore.getGiocatore().setPuntiFede(0);
         } else {
             giocatore.getPartita().getCampoDaGioco().getTabellone().getVaticano().scomunica(giocatore.getGiocatore(), giocatore.getPartita().getPeriodo());
+            for(GiocatoreRemoto g: giocatore.getPartita().getGiocatori()){
+                g.giocatoreScomunicato(giocatore.getGiocatore().getId());
+            }
+            //avviso il giocatore dell'incremento delle risorse
+            giocatore.risorseIncrementate(giocatore.getGiocatore().getPietra(), giocatore.getGiocatore().getLegna(), giocatore.getGiocatore().getServitori(),giocatore.getGiocatore().getMonete(), giocatore.getGiocatore().getPuntiMilitari(), giocatore.getGiocatore().getPuntiFede(), giocatore.getGiocatore().getPuntiVittoria());
+
         }
     }
 
@@ -268,6 +284,26 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public synchronized void sceltaPergamena(int scelta) throws RemoteException {
+        Giocatore giocatoreGioco=giocatore.getGiocatore();
+        switch (scelta){
+            case 0: giocatoreGioco.setLegna(giocatoreGioco.getLegna()+1);
+                    giocatoreGioco.setPietra(giocatoreGioco.getPietra()+1);
+                    break;
+            case 1: giocatoreGioco.setServitori(giocatoreGioco.getServitori()+2);
+                    break;
+            case 2: giocatoreGioco.setMonete(giocatoreGioco.getMonete()+2);
+                    break;
+            case 3: giocatoreGioco.setPuntiMilitari(giocatoreGioco.getPuntiMilitari()+2);
+                    break;
+            case 4: giocatoreGioco.setPuntiFede(giocatoreGioco.getPuntiFede()+1);
+                    break;
+        }
+
+        giocatore.risorseIncrementate(giocatoreGioco.getPietra(),giocatoreGioco.getLegna(),giocatoreGioco.getServitori(),giocatoreGioco.getMonete(),giocatoreGioco.getPuntiMilitari(),giocatoreGioco.getPuntiFede(),giocatoreGioco.getPuntiVittoria());
     }
 
     /**

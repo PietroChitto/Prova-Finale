@@ -22,9 +22,10 @@ public interface InterfaciaRemotaRMI extends Remote{
     public void spostaFamiliareZonaProduzione(int zona) throws RemoteException, ForzaInsufficienteException, TurnoException, ZonaOccupataExcepion;
     public void spostaFamiliareZonaRaccolto(int zona) throws RemoteException, TurnoException, ForzaInsufficienteException, ZonaOccupataExcepion;
     public void tiraIDadi() throws IOException;
-    public void scegliScomunica(boolean appoggiaChiesa) throws RemoteException;
+    public void sceltaScomunica(boolean appoggiaChiesa) throws RemoteException;
     public void aumentaForzaFamiliare(String coloreDado, int id) throws RemoteException, TurnoException, DadiNonTiratiException;
     public void saltaMossa(int id) throws RemoteException, TurnoException, DadiNonTiratiException;
+    public void sceltaPergamena(int scelta) throws RemoteException;
 
 }
 

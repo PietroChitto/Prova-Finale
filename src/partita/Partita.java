@@ -175,12 +175,25 @@ public class Partita {
     }
 
     private void settaProssimoGiocatore(GiocatoreRemoto giocatoreRemoto) {
+        System.out.println("setto il prossimo giocatore");
         for (int i=0; i<N_GIOCATORI; i++){
             if(giocatoreRemoto.getGiocatore().equals(giocatori.get(i).getGiocatore())) {
                 if (i < N_GIOCATORI - 1) {
                     setGiocatoreCorrente(giocatori.get(i + 1).getGiocatore());
+                    try {
+                        System.out.println("mando il messaggio");
+                        giocatori.get(i+1).messaggio("E' il tuo turno");
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
                 } else {
                     setGiocatoreCorrente(giocatori.get(0).getGiocatore());
+                    try {
+                        System.out.println("mando il messaggio");
+                        giocatori.get(0).messaggio("E' il tuo turno");
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -188,16 +201,13 @@ public class Partita {
 
     public void passaMossa(GiocatoreRemoto giocatoreRemoto) throws ZonaOccupataExcepion, ForzaInsufficienteException {
         //ripristinaForzaTabellone();
-        System.out.println("sono in passa mossa");
         numeroMosseTurno++;
         if(numeroMosseTurno==giocatori.size()*4){
-            System.out.println("passa Turno");
             passaTurno();
             numeroMosseTurno=0;
             setGiocatoreCorrente(ordineTurno.get(0));
 
         }else {
-            System.out.println("ramo else");
             settaProssimoGiocatore(giocatoreRemoto);
         }
 
@@ -293,11 +303,24 @@ public class Partita {
         Vaticano vat = getCampoDaGioco().getTabellone().getVaticano();
 
         for (int i=0;i<giocatori.size();i++){
-
+            //se il giocatore ha abbastanza punti fede gli faccio scesgliere se appoggiare la chiesa o no,
+            //se non li ha lo scomunico
             if (vat.controlloPuntiFede(giocatori.get(i).getGiocatore(), periodo)){
-                //implementa scelta gestione punti fede
-                //invia al client la possibilità di secglere
-
+                try {
+                    giocatori.get(i).scegliScomunica();
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+            //se il giocatore è scomunicato lo dico a tutti i giocatori
+            else{
+                for(GiocatoreRemoto g: giocatori){
+                    try {
+                        g.giocatoreScomunicato(giocatori.get(i).getGiocatore().getId());
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         }
     }

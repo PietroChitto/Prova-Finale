@@ -137,7 +137,7 @@ import java.util.ArrayList;
     }
 
     @Override
-    public void scegliScomunica(boolean appoggiaChiesa) throws RemoteException {
+    public void sceltaScomunica(boolean appoggiaChiesa) throws RemoteException {
 
     }
 
@@ -148,6 +148,11 @@ import java.util.ArrayList;
 
     @Override
     public void saltaMossa(int id) {
+
+    }
+
+    @Override
+    public void sceltaPergamena(int scelta) throws RemoteException {
 
     }
 
@@ -235,6 +240,21 @@ import java.util.ArrayList;
 
     @Override
     public void avvisoInizioTurno(ArrayList<String> nomiCarte) {
+
+    }
+
+    @Override
+    public void scegliPergamena() throws RemoteException {
+
+    }
+
+    @Override
+    public void scegliScomunica() throws RemoteException {
+
+    }
+
+    @Override
+    public void giocatoreScomunicato(int id) throws RemoteException {
 
     }
 

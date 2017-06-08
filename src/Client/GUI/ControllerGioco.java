@@ -4,7 +4,9 @@ import Client.InterfacciaClient;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.effect.Shadow;
 import javafx.scene.image.Image;
@@ -24,6 +26,7 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Optional;
 
 public class ControllerGioco implements InterfacciaClient{
 
@@ -71,7 +74,7 @@ public class ControllerGioco implements InterfacciaClient{
         contaFamiliariPalazzoConsigglio=0;
         contaFamZonaProd=0;
         contaFamZonaRac=0;
-        buttonForzaArancio.setStyle("-fx-border-style: ");
+        //buttonForzaArancio.setStyle("-fx-shape: inherit");
     }
 
     private void settaSfondo() {
@@ -969,6 +972,61 @@ public class ControllerGioco implements InterfacciaClient{
 
     @Override
     public void avvisoInizioTurno(ArrayList<String> nomiCarte) {
+
+    }
+
+    @Override
+    public void scegliPergamena() throws RemoteException {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Lorenzo Il Magnifico");
+        alert.setHeaderText("Privilegio del Consiglio");
+        alert.setContentText("Fai una Scelta");
+
+        ButtonType buttonTypeOne = new ButtonType("1 Legna\n1Pietra");
+        ButtonType buttonTypeTwo = new ButtonType("2 Servitori");
+        ButtonType buttonTypeThree = new ButtonType("2 Monete");
+        ButtonType buttonTypeFour = new ButtonType("2 Punti Militari");
+        ButtonType buttonTypeFive = new ButtonType("1 Punto Fede");
+
+        alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeThree, buttonTypeFour, buttonTypeFive);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == buttonTypeOne){
+            clientGenerico.sceltaPergamena(0);
+        } else if (result.get() == buttonTypeTwo) {
+            clientGenerico.sceltaPergamena(1);
+        } else if (result.get() == buttonTypeThree) {
+            clientGenerico.sceltaPergamena(2);
+        } else if (result.get() == buttonTypeFour) {
+            clientGenerico.sceltaPergamena(3);
+        }else if (result.get() == buttonTypeFive) {
+            clientGenerico.sceltaPergamena(4);
+        }
+    }
+
+    @Override
+    public void scegliScomunica() throws RemoteException {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Lorenzo Il Magnifico");
+        alert.setHeaderText("Appoggio alla Chiesa");
+        alert.setContentText("Fai una Scelta");
+
+        ButtonType buttonTypeOne = new ButtonType("Appoggio la Chiesa");
+        ButtonType buttonTypeTwo = new ButtonType("Non Appoggio la Chiesa");
+
+        alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == buttonTypeOne){
+            clientGenerico.sceltaScomunica(true);
+        } else if (result.get() == buttonTypeTwo) {
+            clientGenerico.sceltaScomunica(false);
+        }
+
+    }
+
+    @Override
+    public void giocatoreScomunicato(int id) throws RemoteException {
 
     }
 

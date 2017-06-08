@@ -178,6 +178,39 @@ public class ClientRMI extends UnicastRemoteObject implements InterfacciaClient,
     }
 
     @Override
+    public void scegliPergamena() throws RemoteException {
+        Platform.runLater(()->{
+            try {
+                controllerGioco.scegliPergamena();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @Override
+    public void scegliScomunica() throws RemoteException {
+        Platform.runLater(()->{
+            try {
+                controllerGioco.scegliScomunica();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @Override
+    public void giocatoreScomunicato(int id) throws RemoteException {
+        Platform.runLater(()->{
+            try {
+                controllerGioco.giocatoreScomunicato(id);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @Override
     public void selezionaFamiliare(String colore, int idGiocatore) throws RemoteException {
         try {
             metodiPartita.selezionaFamiliare(colore, idGiocatore);
@@ -274,7 +307,7 @@ public class ClientRMI extends UnicastRemoteObject implements InterfacciaClient,
     }
 
     @Override
-    public void scegliScomunica(boolean appoggiaChiesa) throws RemoteException {
+    public void sceltaScomunica(boolean appoggiaChiesa) throws RemoteException {
 
     }
 
@@ -300,5 +333,10 @@ public class ClientRMI extends UnicastRemoteObject implements InterfacciaClient,
         } catch (DadiNonTiratiException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void sceltaPergamena(int scelta) throws RemoteException {
+        metodiPartita.sceltaPergamena(scelta);
     }
 }

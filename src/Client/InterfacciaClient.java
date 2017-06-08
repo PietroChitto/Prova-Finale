@@ -21,6 +21,9 @@ import java.util.ArrayList;
       public void spostatoFamiliareZonaRaccolto(String coloreDado, int id, int zona) throws RemoteException;
       public void mossaSaltata(int id) throws RemoteException;
       public void avvisoInizioTurno(ArrayList<String> nomiCarte) throws RemoteException;
+      public void scegliPergamena() throws RemoteException;
+      public void scegliScomunica() throws RemoteException;
+      public void giocatoreScomunicato(int id) throws RemoteException;
     //public void tiraIDadi() throws RemoteException;
       //public void scegliScomunica(boolean appoggiaChiesa) throws RemoteException;
 }
