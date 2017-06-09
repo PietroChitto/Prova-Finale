@@ -248,10 +248,10 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
             for(GiocatoreRemoto g: giocatore.getPartita().getGiocatori()){
                 g.giocatoreScomunicato(giocatore.getGiocatore().getId());
             }
-            //avviso il giocatore dell'incremento delle risorse
-            giocatore.risorseIncrementate(giocatore.getGiocatore().getPietra(), giocatore.getGiocatore().getLegna(), giocatore.getGiocatore().getServitori(),giocatore.getGiocatore().getMonete(), giocatore.getGiocatore().getPuntiMilitari(), giocatore.getGiocatore().getPuntiFede(), giocatore.getGiocatore().getPuntiVittoria());
-
         }
+        //avviso il giocatore dell'incremento delle risorse
+        giocatore.risorseIncrementate(giocatore.getGiocatore().getPietra(), giocatore.getGiocatore().getLegna(), giocatore.getGiocatore().getServitori(),giocatore.getGiocatore().getMonete(), giocatore.getGiocatore().getPuntiMilitari(), giocatore.getGiocatore().getPuntiFede(), giocatore.getGiocatore().getPuntiVittoria());
+
     }
 
     @Override
