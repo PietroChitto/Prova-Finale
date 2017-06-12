@@ -298,10 +298,22 @@
                         <Image url="@img/Immagini%20Risorse/Monete.png" />
                      </image>
                   </ImageView>
-                  <Label fx:id="labelPietra" textFill="#f8f6f6" GridPane.rowIndex="1" />
-                  <Label fx:id="labelLegna" textFill="#f8f6f6" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Label fx:id="labelServitori" textFill="#f8f6f6" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                  <Label fx:id="labelMonete" textFill="#f8f6f6" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                  <Label fx:id="labelPietra" textFill="#f8f6f6" GridPane.rowIndex="1">
+                     <font>
+                        <Font name="Ebrima Bold" size="18.0" />
+                     </font></Label>
+                  <Label fx:id="labelLegna" textFill="#f8f6f6" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <font>
+                        <Font name="Ebrima Bold" size="18.0" />
+                     </font></Label>
+                  <Label fx:id="labelServitori" textFill="#f8f6f6" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                     <font>
+                        <Font name="Ebrima Bold" size="18.0" />
+                     </font></Label>
+                  <Label fx:id="labelMonete" textFill="#f8f6f6" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                     <font>
+                        <Font name="Ebrima Bold" size="18.0" />
+                     </font></Label>
                </children>
             </GridPane>
             <AnchorPane layoutX="372.0" layoutY="365.0" prefHeight="302.0" prefWidth="440.0">

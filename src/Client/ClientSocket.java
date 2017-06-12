@@ -108,12 +108,24 @@ public class ClientSocket implements InterfacciaClient, InterfaciaRemotaRMI{
 
     @Override
     public void forzaAumentata(String colore, int forza) throws RemoteException {
-
+        Platform.runLater(()->{
+            try {
+                controllerGioco.forzaAumentata(colore,forza);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @Override
     public void risorseIncrementate(int pietra, int legna, int servitori, int monete, int puntiMilitari, int puntiFede, int puntiVittoria) throws RemoteException {
-
+        Platform.runLater(()->{
+            try {
+                controllerGioco.risorseIncrementate(pietra,legna,servitori,monete,puntiMilitari,puntiFede,puntiVittoria);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @Override
@@ -129,17 +141,35 @@ public class ClientSocket implements InterfacciaClient, InterfaciaRemotaRMI{
 
     @Override
     public void spostatoFamiliarePalazzoDelConsiglio(String coloreDado, int id) throws RemoteException {
-
+        Platform.runLater(()->{
+            try {
+                controllerGioco.spostatoFamiliarePalazzoDelConsiglio(coloreDado,id);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @Override
-    public void spostatoFamiliareZonaProduzione(String coloreDado, int id, int zona) throws RemoteException {
-
+    public void spostatoFamiliareZonaProduzione(String coloreDado, int idGiocatore, int zona) throws RemoteException {
+        Platform.runLater(()->{
+            try {
+                controllerGioco.spostatoFamiliareZonaProduzione(coloreDado,idGiocatore,zona);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @Override
-    public void spostatoFamiliareZonaRaccolto(String coloreDado, int id, int zona) throws RemoteException {
-
+    public void spostatoFamiliareZonaRaccolto(String coloreDado, int idGiocatore, int zona) throws RemoteException {
+        Platform.runLater(()->{
+            try {
+                controllerGioco.spostatoFamiliareZonaRaccolto(coloreDado,idGiocatore,zona);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @Override
@@ -230,12 +260,26 @@ public class ClientSocket implements InterfacciaClient, InterfaciaRemotaRMI{
 
     @Override
     public void spostaFamiliareZonaProduzione(int zona) throws RemoteException {
-
+        try {
+            out.writeObject("SPOSTAZONAPRODUZIONE");
+            out.flush();
+            out.writeObject(zona);
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void spostaFamiliareZonaRaccolto(int zona) throws RemoteException {
-
+        try {
+            out.writeObject("SPOSTAZONARACCOLTO");
+            out.flush();
+            out.writeObject(zona);
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -268,8 +312,18 @@ public class ClientSocket implements InterfacciaClient, InterfaciaRemotaRMI{
     }
 
     @Override
-    public void saltaMossa(int id) {
+    public void saltaMossa(int idGiocatore) {
+        try {
+            out.writeObject("SALTAMOSSA");
+            out.flush();
+            out.writeObject(idGiocatore);
+            out.flush();
 
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -283,6 +337,14 @@ public class ClientSocket implements InterfacciaClient, InterfaciaRemotaRMI{
         private int numeroTorre;
         private int numeroPiano;
         private int zonaMercato;
+        private int forza;
+        private int pietra;
+        private int legna;
+        private int servitori;
+        private int monete;
+        private int puntiMilitari;
+        private int puntiFede;
+        private int puntiVittoria;
         private String coloreDado;
         private String messaggio;
         private boolean run=true;
@@ -345,8 +407,36 @@ public class ClientSocket implements InterfacciaClient, InterfaciaRemotaRMI{
                     else if(comando.startsWith("SPOSTATOPALAZZOCONSIGLIO")){
                         coloreDado=(String) in.readObject();
                         idGiocatore=(int) in.readObject();
-                        controllerGioco.spostatoFamiliarePalazzoDelConsiglio(coloreDado, idGiocatore);
+                        spostatoFamiliarePalazzoDelConsiglio(coloreDado, idGiocatore);
                     }
+                    else if (comando.startsWith("FORZAAUMENTATA")){
+                        coloreDado=(String) in.readObject();
+                        forza=(int) in.readObject();
+                        forzaAumentata(coloreDado,forza);
+                    }
+                    else if(comando.startsWith("RISORSEINCREMENTATE")){
+                        pietra=(int) in.readObject();
+                        legna=(int) in.readObject();
+                        servitori=(int) in.readObject();
+                        monete=(int) in.readObject();
+                        puntiMilitari=(int) in.readObject();
+                        puntiFede=(int) in.readObject();
+                        puntiVittoria=(int) in.readObject();
+                        risorseIncrementate(pietra,legna,servitori,monete,puntiMilitari,puntiFede,puntiVittoria);
+                    }
+                    else if(comando.startsWith("SPOSTATOPRODUZIONE")){
+                        coloreDado=(String) in.readObject();
+                        idGiocatore=(int) in.readObject();
+                        zonaMercato=(int) in.readObject();
+                        spostatoFamiliareZonaProduzione(coloreDado,idGiocatore,zonaMercato);
+                    }
+                    else if(comando.startsWith("SPOSTATORACCOLTO")){
+                        coloreDado=(String) in.readObject();
+                        idGiocatore=(int) in.readObject();
+                        zonaMercato=(int) in.readObject();
+                        spostatoFamiliareZonaRaccolto(coloreDado,idGiocatore,zonaMercato);
+                    }
+
                 }
                 catch (SocketException e){
                     try {

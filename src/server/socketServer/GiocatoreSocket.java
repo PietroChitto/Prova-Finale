@@ -118,12 +118,72 @@ import java.util.ArrayList;
 
     @Override
     public void spostaFamiliareZonaProduzione(int zona) throws RemoteException {
+        try {
+            mosseGiocatore.spostaFamiliareZonaProduzione(zona);
+        } catch (ForzaInsufficienteException e) {
+            try {
+                out.writeObject("MESSAGGIO");
+                out.flush();
+                out.writeObject("Forza Insufficiente");
+                out.flush();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
 
+        } catch (TurnoException e) {
+            try {
+                out.writeObject("MESSAGGIO");
+                out.flush();
+                out.writeObject("Non è il tuo turno");
+                out.flush();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        } catch (ZonaOccupataExcepion zonaOccupataExcepion) {
+            try {
+                out.writeObject("MESSAGGIO");
+                out.flush();
+                out.writeObject("Zona già occupata");
+                out.flush();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        }
     }
 
     @Override
     public void spostaFamiliareZonaRaccolto(int zona) throws RemoteException {
+        try {
+            mosseGiocatore.spostaFamiliareZonaRaccolto(zona);
+        } catch (ForzaInsufficienteException e) {
+            try {
+                out.writeObject("MESSAGGIO");
+                out.flush();
+                out.writeObject("Forza Insufficiente");
+                out.flush();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
 
+        } catch (TurnoException e) {
+            try {
+                out.writeObject("MESSAGGIO");
+                out.flush();
+                out.writeObject("Non è il tuo turno");
+                out.flush();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        } catch (ZonaOccupataExcepion zonaOccupataExcepion) {
+            try {
+                out.writeObject("MESSAGGIO");
+                out.flush();
+                out.writeObject("Zona già occupata");
+                out.flush();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -218,13 +278,41 @@ import java.util.ArrayList;
     }
 
     @Override
-    public void forzaAumentata(String colore, int forza) throws RemoteException {
-
+    public void forzaAumentata(String colore, int forza){
+        try {
+            out.writeObject("FORZAAUMENTATA");
+            out.flush();
+            out.writeObject(colore);
+            out.flush();
+            out.writeObject(forza);
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void risorseIncrementate(int pietra, int legna, int servitori, int monete, int puntiMilitari, int puntiFede, int puntiVittoria) throws RemoteException {
-
+        try {
+            out.writeObject("RISORSEINCREMENTATE");
+            out.flush();
+            out.writeObject(pietra);
+            out.flush();
+            out.writeObject(legna);
+            out.flush();
+            out.writeObject(servitori);
+            out.flush();
+            out.writeObject(monete);
+            out.flush();
+            out.writeObject(puntiMilitari);
+            out.flush();
+            out.writeObject(puntiFede);
+            out.flush();
+            out.writeObject(puntiVittoria);
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -258,12 +346,35 @@ import java.util.ArrayList;
 
     @Override
     public void spostatoFamiliareZonaProduzione(String coloreDado, int id, int zona) throws RemoteException {
-
+        try {
+            System.out.println("invio risposta zona produzione");
+            out.writeObject("SPOSTATOPRODUZIONE");
+            out.flush();
+            out.writeObject(coloreDado);
+            out.flush();
+            out.writeObject(id);
+            out.flush();
+            out.writeObject(zona);
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void spostatoFamiliareZonaRaccolto(String coloreDado, int id, int zona) throws RemoteException {
-
+        try {
+            out.writeObject("SPOSTATORACCOLTO");
+            out.flush();
+            out.writeObject(coloreDado);
+            out.flush();
+            out.writeObject(id);
+            out.flush();
+            out.writeObject(zona);
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -388,7 +499,24 @@ import java.util.ArrayList;
                         }
                     }
                     else if(comando.startsWith("AUMENTAFORZAFAMILIARE")){
-
+                        coloreDado=(String) in.readObject();
+                        id=(int) in.readObject();
+                            mosseGiocatore.aumentaForzaFamiliare(coloreDado,id);
+                    }
+                    else if(comando.startsWith("SALTAMOSSA")){
+                        id=(int) in.readObject();
+                        mosseGiocatore.saltaMossa(id);
+                        out.writeObject("MESSAGGIO");
+                        out.flush();
+                        out.writeObject("Mossa Saltata");
+                    }
+                    else if(comando.startsWith("SPOSTAZONAPRODUZIONE")){
+                        zonaMercato=(int) in.readObject();
+                        spostaFamiliareZonaProduzione(zonaMercato);
+                    }
+                    else if(comando.startsWith("SPOSTAZONARACCOLTO")){
+                        zonaMercato=(int) in.readObject();
+                        spostaFamiliareZonaRaccolto(zonaMercato);
                     }
                 } catch (SocketException e){
                     try {

@@ -6,6 +6,5 @@ package partita.eccezioniPartita;
 public class TorreOccupataException extends Exception{
     public TorreOccupataException(){
         super();
-        //vnjsvdkuhf lnvk l
     }
 }
