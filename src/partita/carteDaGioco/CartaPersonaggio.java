@@ -60,7 +60,6 @@ public class CartaPersonaggio extends CartaSviluppo {
     }
 
     public void confrontaCosto(Giocatore g) throws RisorseInsufficientiException {
-        stampaSitua(g);
         if(!(costo.getCostoLegna()<=g.getLegna() && costo.getCostoMonete()<=g.getMonete()
                 && costo.getCostoPietra()<=g.getPietra() && costo.getCostoServitori()<=g.getServitori()
                 && costo.getCostoPuntiMilitari()<=g.getPuntiMilitari()) )

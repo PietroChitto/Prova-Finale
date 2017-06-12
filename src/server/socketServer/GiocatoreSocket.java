@@ -4,8 +4,7 @@ import Client.InterfacciaClient;
 import Client.Messaggio;
 import partita.Partita;
 import partita.componentiDelTabellone.Giocatore;
-import partita.eccezioniPartita.DadiNonTiratiException;
-import partita.eccezioniPartita.TurnoException;
+import partita.eccezioniPartita.*;
 import server.GiocatoreRemoto;
 import server.MosseGiocatore;
 import server.Server;
@@ -182,7 +181,22 @@ import java.util.ArrayList;
 
     @Override
     public void spostatoFamiliarePiano(int numeroTorre, int numeroPiano, String coloreDado, int idGiocatore) throws RemoteException {
+        try {
+            out.writeObject("SPOSTATOFAMILIAREPIANO");
+            out.flush();
+            out.writeObject(numeroTorre);
+            out.flush();
+            out.writeObject(numeroPiano);
+            out.flush();
+            out.writeObject(coloreDado);
+            out.flush();
+            System.out.println("id familiare spostato (socket): "+idGiocatore);
+            out.writeObject(idGiocatore);
+            out.flush();
 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -214,13 +228,32 @@ import java.util.ArrayList;
     }
 
     @Override
-    public void spostatoFamiliareMercato(int zonaMercato, String coloreDado, int id) throws RemoteException {
-        
+    public void spostatoFamiliareMercato(int zonaMercato, String coloreDado, int idGiocatore) throws RemoteException {
+        try {
+            out.writeObject("SPOSTATOFAMILIAREMERCATO");
+            out.flush();
+            out.writeObject(zonaMercato);
+            out.flush();
+            out.writeObject(coloreDado);
+            out.flush();
+            out.writeObject(idGiocatore);
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public void spostatoFamiliarePalazzoDelConsiglio(String coloreDado, int id) throws RemoteException {
-
+    public void spostatoFamiliarePalazzoDelConsiglio(String coloreDado, int idGiocatore) throws RemoteException {
+        try {
+            out.writeObject("SPOSTATOPALAZZOCONSIGLIO");
+            out.writeObject(coloreDado);
+            out.flush();
+            out.writeObject(idGiocatore);
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -268,8 +301,11 @@ import java.util.ArrayList;
 
             System.out.println("thread socket partito");
             String comando;
-            String tempString1;
-            int tempInt1;
+            String coloreDado;
+            int id;
+            int numeroTorre;
+            int numeroPiano;
+            int zonaMercato;
 
             while(run){
                 try {
@@ -279,12 +315,79 @@ import java.util.ArrayList;
                        tiraIDadi();
                     }
                     else if(comando.startsWith("SELEZIONA")){
-                        messaggio=(Messaggio) in.readObject();
-                        tempString1=messaggio.getMessasggio();
-                        tempInt1=in.readInt();
-                        mosseGiocatore.selezionaFamiliare(tempString1, tempInt1);
+                        coloreDado=(String) in.readObject();
+                        id=(int) in.readObject();
+                        mosseGiocatore.selezionaFamiliare(coloreDado, id);
+                        System.out.println("familiare selezionato: ");
                     }
                     else if(comando.startsWith("DESELEZIONA")){
+                        mosseGiocatore.deselezionaFamiliare();
+                    }
+                    else if(comando.startsWith("SPOSTAFAMILIAREPIANO")){
+                        numeroTorre=(int) in.readObject();
+                        numeroPiano=(int) in.readObject();
+                        try {
+                            mosseGiocatore.spostaFamiliarePiano(numeroTorre,numeroPiano);
+                        } catch (FamiliareNonSelezionatoExcepion familiareNonSelezionatoExcepion) {
+                            out.writeObject("MESSAGGIO");
+                            out.flush();
+                            out.writeObject("Familiare non selezionato");
+                            out.flush();
+                        } catch (ForzaInsufficienteException e) {
+                            out.writeObject("MESSAGGIO");
+                            out.flush();
+                            out.writeObject("Forza del familiare insufficiente");
+                            out.flush();
+                        } catch (ZonaOccupataExcepion zonaOccupataExcepion) {
+                            out.writeObject("MESSAGGIO");
+                            out.flush();
+                            out.writeObject("La zona è già occupata");
+                            out.flush();
+                        } catch (RisorseInsufficientiException e) {
+                            out.writeObject("MESSAGGIO");
+                            out.flush();
+                            out.writeObject("Risorse insufficienti");
+                            out.flush();
+                        } catch (TorreOccupataException e) {
+                            out.writeObject("MESSAGGIO");
+                            out.flush();
+                            out.writeObject("Hai già un familiare sulla torre");
+                            out.flush();
+                        }
+                    }
+                    else if (comando.startsWith("SPOSTAFAMILIAREMERCATO")){
+                        zonaMercato=(int) in.readObject();
+                        try {
+                            mosseGiocatore.spostaFamiliareMercato(zonaMercato);
+                        } catch (ForzaInsufficienteException e) {
+                            out.writeObject("MESSAGGIO");
+                            out.flush();
+                            out.writeObject("Forza del familiare insufficiente");
+                            out.flush();
+                        } catch (ZonaOccupataExcepion zonaOccupataExcepion) {
+                            out.writeObject("MESSAGGIO");
+                            out.flush();
+                            out.writeObject("La zona è già occupata");
+                            out.flush();
+                        }
+                    }
+                    else if(comando.startsWith("SPOSTAPALAZZOCONSIGLIO")){
+
+                        try {
+                            mosseGiocatore.spostaFamiliarePalazzoDelConsiglio();
+                        } catch (ForzaInsufficienteException e) {
+                            out.writeObject("MESSAGGIO");
+                            out.flush();
+                            out.writeObject("Forza del familiare insufficiente");
+                            out.flush();
+                        } catch (ZonaOccupataExcepion zonaOccupataExcepion) {
+                            out.writeObject("MESSAGGIO");
+                            out.flush();
+                            out.writeObject("La zona è già occupata");
+                            out.flush();
+                        }
+                    }
+                    else if(comando.startsWith("AUMENTAFORZAFAMILIARE")){
 
                     }
                 } catch (SocketException e){
@@ -302,9 +405,24 @@ import java.util.ArrayList;
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 } catch (TurnoException e) {
-                    e.printStackTrace();
+                    try {
+                        out.writeObject("MESSAGGIO");
+                        out.flush();
+                        out.writeObject("Non è il tuo turno");
+                        out.flush();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
                 } catch (DadiNonTiratiException e) {
-                    e.printStackTrace();
+                    try {
+                        out.writeObject("MESSAGGIO");
+                        out.flush();
+                        out.writeObject("Dadi non tirati");
+                        out.flush();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+
                 }
 
 

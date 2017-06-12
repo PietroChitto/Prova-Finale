@@ -23,7 +23,6 @@ public class ClientSocket implements InterfacciaClient, InterfaciaRemotaRMI{
     private Scanner stdin;
     private ObjectInputStream in;
     private ObjectOutputStream out;
-    private Messaggio messaggio;
     private String comando;
     private int id;
     private boolean partitatInCorso;
@@ -75,7 +74,13 @@ public class ClientSocket implements InterfacciaClient, InterfaciaRemotaRMI{
 
     @Override
     public void spostatoFamiliarePiano(int numeroTorre, int numeroPiano, String coloreDado, int idGiocatore) throws RemoteException {
-
+        Platform.runLater(()->{
+            try {
+                controllerGioco.spostatoFamiliarePiano(numeroTorre,numeroPiano,coloreDado,idGiocatore);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @Override
@@ -91,7 +96,14 @@ public class ClientSocket implements InterfacciaClient, InterfaciaRemotaRMI{
 
     @Override
     public void messaggio(String s) throws RemoteException {
-
+        System.out.println("modifico il server message");
+        Platform.runLater(()->{
+            try {
+                controllerGioco.messaggio(s);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @Override
@@ -105,8 +117,14 @@ public class ClientSocket implements InterfacciaClient, InterfaciaRemotaRMI{
     }
 
     @Override
-    public void spostatoFamiliareMercato(int zonaMercato, String coloreDado, int id) throws RemoteException {
-
+    public void spostatoFamiliareMercato(int zonaMercato, String coloreDado, int idGiocatore) throws RemoteException {
+        Platform.runLater(()->{
+            try {
+                controllerGioco.spostatoFamiliareMercato(zonaMercato,coloreDado,idGiocatore);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @Override
@@ -153,27 +171,61 @@ public class ClientSocket implements InterfacciaClient, InterfaciaRemotaRMI{
 
     @Override
     public void selezionaFamiliare(String colore, int idGiocatore) throws RemoteException {
-
+        try {
+            out.writeObject("SELEZIONA");
+            out.writeObject(colore);
+            out.flush();
+            out.writeObject(idGiocatore);
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void deselezionaFamiliare() throws RemoteException {
-
+        try {
+            out.writeObject("DESELEZIONA");
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void spostaFamiliarePiano(int numeroTorre, int numeroPiano) throws RemoteException {
-
+        try {
+            out.writeObject("SPOSTAFAMILIAREPIANO");
+            out.flush();
+            out.writeObject(numeroTorre);
+            out.flush();
+            out.writeObject(numeroPiano);
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void spostaFamiliareMercato(int zonaMercato) throws RemoteException {
-
+        try {
+            out.writeObject("SPOSTAFAMILIAREMERCATO");
+            out.flush();
+            out.writeObject(zonaMercato);
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void spostaFamiliarePalazzoDelConsiglio() throws RemoteException {
-
+        try {
+            out.writeObject("SPOSTAPALAZZOCONSIGLIO");
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -202,8 +254,17 @@ public class ClientSocket implements InterfacciaClient, InterfaciaRemotaRMI{
     }
 
     @Override
-    public void aumentaForzaFamiliare(String coloreDado, int id) throws RemoteException {
-
+    public void aumentaForzaFamiliare(String coloreDado, int idGiocatore) throws RemoteException {
+        try {
+            out.writeObject("AUMENTAFORZAFAMILIARE");
+            out.flush();
+            out.writeObject(coloreDado);
+            out.flush();
+            out.writeObject(idGiocatore);
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -217,9 +278,13 @@ public class ClientSocket implements InterfacciaClient, InterfaciaRemotaRMI{
     }
 
     class ClientHandler implements Runnable{
-        private Messaggio messaggio;
         private String comando;
-        private Messaggio m;
+        private int idGiocatore;
+        private int numeroTorre;
+        private int numeroPiano;
+        private int zonaMercato;
+        private String coloreDado;
+        private String messaggio;
         private boolean run=true;
 
 
@@ -242,12 +307,16 @@ public class ClientSocket implements InterfacciaClient, InterfaciaRemotaRMI{
                         System.out.println("il mio id: "+ id);
                         carte=(ArrayList<String>) in.readObject();
                         giocatori=(ArrayList<String>) in.readObject();
-                        scomuniche=(ArrayList<String>) in.readObject();
                         risorse=(int[]) in.readObject();
+                        scomuniche=(ArrayList<String>) in.readObject();
 
                         System.out.println("situazione iniziale inviata");
 
                         iniziaPartita(id,carte,giocatori, risorse,scomuniche);
+                    }
+                    else if(comando.startsWith("MESSAGGIO")){
+                        messaggio=(String) in.readObject();
+                        messaggio(messaggio);
                     }
                     else if(comando.startsWith("DADITIRATI")){
                         System.out.println("messaggio ricevuto: DADITIRATI");
@@ -257,6 +326,26 @@ public class ClientSocket implements InterfacciaClient, InterfaciaRemotaRMI{
                         bi=(int)in.readObject();
                         System.out.println(ar+""+ne+""+bi);
                         dadiTirati(ar,ne,bi);
+                    }
+                    else if(comando.startsWith("SPOSTATOFAMILIAREPIANO")){
+                        numeroTorre=(int) in.readObject();
+                        numeroPiano=(int) in.readObject();
+                        coloreDado=(String) in.readObject();
+                        idGiocatore=(int) in.readObject();
+                        System.out.println("id giocatore arrivato (socket): "+idGiocatore);
+                        spostatoFamiliarePiano(numeroTorre,numeroPiano,coloreDado,idGiocatore);
+                    }
+                    else if(comando.startsWith("SPOSTATOFAMILIAREMERCATO")){
+                        zonaMercato=(int) in.readObject();
+                        coloreDado=(String) in.readObject();
+                        idGiocatore=(int) in.readObject();
+
+                        spostatoFamiliareMercato(zonaMercato,coloreDado,idGiocatore);
+                    }
+                    else if(comando.startsWith("SPOSTATOPALAZZOCONSIGLIO")){
+                        coloreDado=(String) in.readObject();
+                        idGiocatore=(int) in.readObject();
+                        controllerGioco.spostatoFamiliarePalazzoDelConsiglio(coloreDado, idGiocatore);
                     }
                 }
                 catch (SocketException e){

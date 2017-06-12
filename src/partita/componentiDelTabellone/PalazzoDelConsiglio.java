@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public class PalazzoDelConsiglio {
     private final int costo=1;
     private ArrayList<Giocatore> ordineArrivoGiocatori;
+    private boolean giocatorePresente;
 
 
     public PalazzoDelConsiglio(int numeroGiocatori){
@@ -19,11 +20,16 @@ public class PalazzoDelConsiglio {
     public void arrivaGiocatore(Familiare familiare) throws ForzaInsufficienteException {
         if(familiare.getForza()<costo)
             throw new ForzaInsufficienteException();
-        ordineArrivoGiocatori.add(familiare.getGiocatore());
+        //controllo se il giocatore è la prima volta che arriva, se è la seconda non lo aggiungo alla lista
+        for(Giocatore g: ordineArrivoGiocatori){
+            if(g == familiare.getGiocatore()){
+                giocatorePresente=true;
+            }
+        }
+        if(!giocatorePresente)
+            ordineArrivoGiocatori.add(familiare.getGiocatore());
         familiare.getGiocatore().setMonete(familiare.getGiocatore().getMonete()+1);
-        /*
-        la scelta dello scambio della pergamena è gestita nel ciclo while del server
-         */
+        giocatorePresente=false;
     }
     public ArrayList<Giocatore> calcoaTurnoSuccessivo(ArrayList<Giocatore> ordineTurnoCorrente){
         ArrayList<Giocatore> nuovoTurno=new ArrayList<>();

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 /**
  * Created by william on 10/05/2017.
  */
-public class Giocatore implements Serializable{
+public class Giocatore {
     private String nome;
     private int id;
     private Familiare[] familiari;

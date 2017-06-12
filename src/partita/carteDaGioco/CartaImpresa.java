@@ -65,7 +65,6 @@ public class CartaImpresa extends CartaSviluppo {
     }
 
     public void confrontaCosto(Giocatore g) throws RisorseInsufficientiException {
-        stampaSitua(g);
         if(!(costoCarta1.getCostoLegna()<=g.getLegna() && costoCarta1.getCostoMonete()<=g.getMonete()
                 && costoCarta1.getCostoServitori()<=g.getServitori()
                 && costoCarta1.getCostoPuntiMilitari()<=g.getPuntiMilitari()) )
