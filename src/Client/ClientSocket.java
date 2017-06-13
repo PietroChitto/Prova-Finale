@@ -174,27 +174,53 @@ public class ClientSocket implements InterfacciaClient, InterfaciaRemotaRMI{
 
     @Override
     public void mossaSaltata(int id) {
-
+        Platform.runLater(()->{
+            try {
+                controllerGioco.messaggio("Mossa Saltata");
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @Override
     public void avvisoInizioTurno(ArrayList<String> nomiCarte) {
-
+        Platform.runLater(()->{
+            controllerGioco.nuovoTurno(nomiCarte);
+        });
     }
 
     @Override
     public void scegliPergamena() throws RemoteException {
-
+        Platform.runLater(()->{
+            try {
+                controllerGioco.scegliPergamena();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @Override
     public void scegliScomunica() throws RemoteException {
-
+        Platform.runLater(()->{
+            try {
+                controllerGioco.scegliScomunica();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     @Override
-    public void giocatoreScomunicato(int id) throws RemoteException {
-
+    public void giocatoreScomunicato(int idGiocatore, int periodo) throws RemoteException {
+        Platform.runLater(()->{
+            try {
+                controllerGioco.giocatoreScomunicato(idGiocatore, periodo);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     //----------------------------------------------------------------------------------------------------------------------------------
@@ -294,6 +320,14 @@ public class ClientSocket implements InterfacciaClient, InterfaciaRemotaRMI{
 
     @Override
     public void sceltaScomunica(boolean appoggiaChiesa) throws RemoteException {
+        try {
+            out.writeObject("SCELTASCOMUNICA");
+            out.flush();
+            out.writeObject(appoggiaChiesa);
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -328,7 +362,14 @@ public class ClientSocket implements InterfacciaClient, InterfaciaRemotaRMI{
 
     @Override
     public void sceltaPergamena(int scelta) throws RemoteException {
-
+        try {
+            out.writeObject("SCELTAPERGAMENA");
+            out.flush();
+            out.writeObject(scelta);
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     class ClientHandler implements Runnable{
@@ -345,8 +386,10 @@ public class ClientSocket implements InterfacciaClient, InterfaciaRemotaRMI{
         private int puntiMilitari;
         private int puntiFede;
         private int puntiVittoria;
+        private int periodo;
         private String coloreDado;
         private String messaggio;
+        private ArrayList<String> nomiCarte;
         private boolean run=true;
 
 
@@ -436,6 +479,23 @@ public class ClientSocket implements InterfacciaClient, InterfaciaRemotaRMI{
                         zonaMercato=(int) in.readObject();
                         spostatoFamiliareZonaRaccolto(coloreDado,idGiocatore,zonaMercato);
                     }
+                    else if(comando.startsWith("SCEGLISCOMUNICA")){
+                        scegliScomunica();
+                    }
+                    else if(comando.startsWith("SCEGLIPERGAMENA")){
+                        scegliPergamena();
+                    }
+                    else if(comando.startsWith("GIOCATORESCOMUNICATO")){
+                        idGiocatore=(int) in.readObject();
+                        periodo=(int) in.readObject();
+                        giocatoreScomunicato(idGiocatore,periodo);
+                    }
+                    else if (comando.startsWith("AVVISOINIZIOTURNO")){
+                        System.out.println("(Socket) ricevo inizio turno");
+                        nomiCarte=(ArrayList<String>) in.readObject();
+                        avvisoInizioTurno(nomiCarte);
+                    }
+
 
                 }
                 catch (SocketException e){

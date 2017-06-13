@@ -5,6 +5,9 @@ package partita.carteDaGioco;
 
 import partita.carteDaGioco.effetti.*;
 import partita.carteDaGioco.effetti.effettiCarte.*;
+import partita.carteDaGioco.effettiScomunica.EffettoDiminuisciForza;
+import partita.carteDaGioco.effettiScomunica.EffettoDiminuisciIncremento;
+import partita.carteDaGioco.effettiScomunica.EffettoDiminuisciPuntiVittoria;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -208,6 +211,7 @@ public class CreatoreMazzi {
                 String nome=rs.getString("nome");
                 String tipoEffetto=rs.getString("tipoEffetto");
                 String codiceEffetto=rs.getString("codice effetto");
+                System.out.print(nome+" ");
                 Effetto eff=creaEffetto(tipoEffetto);
                 CartaScomunica carta=new CartaScomunica(eff, per, codiceEffetto, nome);
 
@@ -216,6 +220,8 @@ public class CreatoreMazzi {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        System.out.println("numero carte scomunica: "+ carte.size());
 
         return carte;
     }
@@ -382,6 +388,22 @@ public class CreatoreMazzi {
             effetto=new EffettoNuovaAzione();
             return effetto;
         }
+        else if(codice.startsWith("DIMINUISCIFORZA")){
+            System.out.println("scomunica diminuisci forza");
+            effetto=new EffettoDiminuisciForza();
+            return effetto;
+        }
+        else if(codice.startsWith("DIMINUISIINCREMENTO")){
+            System.out.println("scomunica diminuisci incremento");
+            effetto=new EffettoDiminuisciIncremento();
+            return effetto;
+        }
+        else if(codice.startsWith("DIMINUISCIPUNTIVITTORIA")){
+            System.out.println("scomunica diminuisci vittoria");
+            effetto=new EffettoDiminuisciPuntiVittoria();
+            return effetto;
+        }
+
 
         return new EffettoIncrementa();
     }

@@ -22,6 +22,7 @@ public class CartaScomunica {
         this.periodo=periodo;
         this.effetto=effetto;
         this.nome=nome;
+        this.codiceEffetto=codiceEffetto;
 
 
     }
@@ -30,9 +31,17 @@ public class CartaScomunica {
         return periodo;
     }
 
+    /**
+     *
+     * @param f familiare che sta usando il giocatore
+     * @param s codice dell'effettoIncrementa della carta che ha attivato il proprio effetto, serve solo per l'effettoDiminuisciIncremento
+     *          , negli altri casi non viene considerato
+     * @param zona serve per l'effetto DiminuisciForza, che viene attivato solo se il familiare si trova in determinate zone;
+     */
     public void attivaEffettoScomunica(Familiare f, String s, int zona){
         if(effetto instanceof EffettoDiminuisciIncremento){
             try {
+                System.out.println("L'effetto scomunica è del tipo diminuisci incremento");
                 effetto.attivaEffetto(s+"#"+codiceEffetto, f,0);
             } catch (RisorseInsufficientiException e) {
                 e.printStackTrace();

@@ -248,7 +248,7 @@ public class GiocatoreRMI extends GiocatoreRemoto{
     }
 
     @Override
-    public void giocatoreScomunicato(int id) throws RemoteException {
-        controllerClient.giocatoreScomunicato(id);
+    public void giocatoreScomunicato(int id, int periodo) throws RemoteException {
+        controllerClient.giocatoreScomunicato(id, periodo);
     }
 }

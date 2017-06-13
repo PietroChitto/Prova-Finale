@@ -85,4 +85,7 @@ public class CartaEdificio extends CartaSviluppo {
         return costo;
     }
 
+    public String getCodiceEffettoRapido() {
+        return codiceEffR;
+    }
 }

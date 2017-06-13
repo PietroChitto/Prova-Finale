@@ -200,10 +200,10 @@ public class ClientRMI extends UnicastRemoteObject implements InterfacciaClient,
     }
 
     @Override
-    public void giocatoreScomunicato(int id) throws RemoteException {
+    public void giocatoreScomunicato(int id, int periodo) throws RemoteException {
         Platform.runLater(()->{
             try {
-                controllerGioco.giocatoreScomunicato(id);
+                controllerGioco.giocatoreScomunicato(id, periodo);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -241,6 +241,8 @@ public class ClientRMI extends UnicastRemoteObject implements InterfacciaClient,
         } catch (RisorseInsufficientiException e) {
             e.printStackTrace();
         } catch (TorreOccupataException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

@@ -43,5 +43,7 @@ public class EffettoAumenta implements Effetto {
         }
 
 
+        System.out.println("Effetto aumenta attivato");
+
     }
 }

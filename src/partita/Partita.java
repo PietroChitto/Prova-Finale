@@ -1,8 +1,6 @@
 package partita;
 
-import partita.carteDaGioco.CartaEdificio;
-import partita.carteDaGioco.CartaPersonaggio;
-import partita.carteDaGioco.CartaTerritorio;
+import partita.carteDaGioco.*;
 import partita.carteDaGioco.effetti.effettiCarte.EffettoAumentaForza;
 import partita.componentiDelTabellone.*;
 import partita.eccezioniPartita.DadiNonTiratiException;
@@ -271,13 +269,76 @@ public class Partita {
 
 
     private void finePartita() {
+        /*classifica=*/calcolaClassifica();
+        for (GiocatoreRemoto g: giocatori){
+            //g.finePartita(classifica);
+        }
+    }
 
-        //calcola i punti vittoria
-            //punti fede
-            //quello che ha più punti militari
-            //carte impresa
-            //carte personaggio
-            //risorse
+    private void calcolaClassifica() {
+        Giocatore g;
+        for (GiocatoreRemoto giocatoreRemoto: giocatori){
+            g=giocatoreRemoto.getGiocatore();
+            puntiTerritori(g);
+            puntiPersonaggi(g);
+            puntiImprese(g);
+            puntiRisorse(g);
+            puntiPuntiFede(g);
+            attivaScomuniche(g);
+        }
+        //ORDINARE LA CLASSIFICA E RITORNARLA COME PARAMETRO PER POTERLA MANADRE AI CLIENT
+    }
+
+    private void attivaScomuniche(Giocatore g) {
+        for(CartaScomunica c: g.getScomuniche()){
+            c.attivaEffettoScomunica(g.getFamiliari()[0],"",0);
+        }
+    }
+
+    private void puntiPuntiFede(Giocatore g) {
+        g.setPuntiVittoria(g.getPuntiVittoria()+g.getPuntiFede());
+    }
+
+    private void puntiRisorse(Giocatore g) {
+        int quantitaRisorse;
+        quantitaRisorse=g.getPietra()+g.getLegna()+g.getServitori()+g.getMonete();
+        g.setPuntiVittoria(g.getPuntiVittoria()+(quantitaRisorse/5));
+    }
+
+    private void puntiImprese(Giocatore g) {
+        for(CartaImpresa c: g.getCarteImpresa()){
+            c.attivaEffettoPermanente(g.getFamiliari()[0]);
+        }
+    }
+
+    private void puntiPersonaggi(Giocatore g) {
+        switch (g.getCarteTerritorio().size()){
+            case 1: g.setPuntiVittoria(g.getPuntiVittoria()+1);
+                break;
+            case 2: g.setPuntiVittoria(g.getPuntiVittoria()+3);
+                break;
+            case 3: g.setPuntiVittoria(g.getPuntiVittoria()+6);
+                break;
+            case 4: g.setPuntiVittoria(g.getPuntiVittoria()+10);
+                break;
+            case 5: g.setPuntiVittoria(g.getPuntiVittoria()+15);
+                break;
+            case 6: g.setPuntiVittoria(g.getPuntiVittoria()+21);
+                break;
+        }
+    }
+
+    private void puntiTerritori(Giocatore g) {
+        switch (g.getCarteTerritorio().size()){
+            case 3: g.setPuntiVittoria(g.getPuntiVittoria()+1);
+                break;
+            case 4: g.setPuntiVittoria(g.getPuntiVittoria()+4);
+                break;
+            case 5: g.setPuntiVittoria(g.getPuntiVittoria()+10);
+                break;
+            case 6: g.setPuntiVittoria(g.getPuntiVittoria()+20);
+                break;
+        }
     }
 
     public void pulisciTabellone() throws ZonaOccupataExcepion, ForzaInsufficienteException {
@@ -316,7 +377,7 @@ public class Partita {
             else{
                 for(GiocatoreRemoto g: giocatori){
                     try {
-                        g.giocatoreScomunicato(giocatori.get(i).getGiocatore().getId());
+                        g.giocatoreScomunicato(giocatori.get(i).getGiocatore().getId(), giocatori.get(i).getPartita().getPeriodo());
                     } catch (RemoteException e) {
                         e.printStackTrace();
                     }

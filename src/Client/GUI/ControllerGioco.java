@@ -12,11 +12,9 @@ import javafx.scene.effect.Shadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.TextAlignment;
 import partita.componentiDelTabellone.Familiare;
 import partita.eccezioniPartita.*;
@@ -181,6 +179,8 @@ public class ControllerGioco implements InterfacciaClient{
         } catch (RisorseInsufficientiException e) {
             e.printStackTrace();
         } catch (TorreOccupataException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -696,6 +696,15 @@ public class ControllerGioco implements InterfacciaClient{
     @FXML
     private AnchorPane anchorDestro;
 
+    @FXML
+    private VBox vBoxScomunica1;
+
+    @FXML
+    private VBox vBoxScomunica2;
+
+    @FXML
+    private VBox vBoxScomunica3;
+
 
     @Override
     public void iniziaPartita(int mioId, ArrayList<String> carte, ArrayList<String> giocatori, int[] risorse, ArrayList<String> scomuniche) throws RemoteException {
@@ -1043,7 +1052,24 @@ public class ControllerGioco implements InterfacciaClient{
     }
 
     @Override
-    public void giocatoreScomunicato(int id) throws RemoteException {
+    public void giocatoreScomunicato(int id, int periodo) throws RemoteException {
+        Color color;
+        color=mioColore(id);
+        Rectangle rectangle=new Rectangle(10,10,color);
+
+        if(periodo==1){
+            vBoxScomunica1.getChildren().add(rectangle);
+        }
+        else if(periodo==2){
+            vBoxScomunica2.getChildren().add(rectangle);
+        }
+        else if(periodo==3){
+            vBoxScomunica3.getChildren().add(rectangle);
+        }
+        else {
+            System.out.println("Giocatore scomunicato: Periodo non valido");
+        }
+
 
     }
 

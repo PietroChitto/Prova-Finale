@@ -71,11 +71,15 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
             System.out.println("la torre è occupata, paga monete");
              giocatore.getGiocatore().setMonete(giocatore.getGiocatore().getMonete()-3);
          }
-        //prendo la carta dalla torre, se non va a buon fine lancia un' eccezione RisorseInsufficienti
-        prendiCarta(numeroTorre,numeroPiano);
 
         //devo attivare gli effetti delle carte personaggio per eventuali aumenti di forza
         attivaEffettiPersonaggi(numeroTorre);
+
+        //attivo le scomuniche per eventuali diminuzioni di forza
+        attivaScomuniche(numeroTorre,"");
+
+        //prendo la carta dalla torre, se non va a buon fine lancia un' eccezione RisorseInsufficienti
+        prendiCarta(numeroTorre,numeroPiano);
 
         //metto il familiare nel piano, se è già occupato lancia un eccezione ZonaOccupata
         giocatore.getPartita().getCampoDaGioco().getTabellone().getTorre(numeroTorre).getPiano(numeroPiano).getCampoAzione().setFamiliare(familiareSelezionato);
@@ -97,10 +101,27 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
 
     }
 
+    private void attivaScomuniche(int zona, String codiceAggiuntivo) {
+            System.out.println("ATTIVO SCOMUNICHE ");
+            System.out.println("codice aggiuntivo: "+codiceAggiuntivo);
+            System.out.println("zona: "+zona);
+            System.out.println("familiare "+familiareSelezionato.getColoreDado()+" del giocatore "+familiareSelezionato.getGiocatore().getId());
+            for(CartaScomunica c: giocatore.getGiocatore().getScomuniche()){
+                if(c!=null) {
+                    c.attivaEffettoScomunica(familiareSelezionato, codiceAggiuntivo, zona);
+                }
+                else {
+                    System.out.println("carta scomunica = null");
+                }
+            }
+    }
+
     private void attivaEffettiPersonaggi(int zona) {
-        for(CartaPersonaggio c: giocatore.getGiocatore().getCartePersonaggio()){
-            c.attivaEffettoPermanente(familiareSelezionato, zona);
-        }
+
+            for (CartaPersonaggio c : giocatore.getGiocatore().getCartePersonaggio()) {
+                c.attivaEffettoPermanente(familiareSelezionato, zona);
+            }
+
     }
 
     @Override
@@ -173,6 +194,9 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
         //devo attivare gli effetti delle carte personaggio per eventuali aumenti di forza
         attivaEffettiPersonaggi(4);
 
+        //attivo le scomuniche per eventuali diminuzioni di forza
+        attivaScomuniche(4,"");
+
         //metto il familiare nella zona produzionee attivo gli effetti
         giocatore.getPartita().getCampoDaGioco().getTabellone().getZonaProduzione().arrivaGiocatore(familiareSelezionato);
 
@@ -198,6 +222,9 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
 
         //devo attivare gli effetti delle carte personaggio per eventuali aumenti di forza
         attivaEffettiPersonaggi(5);
+
+        //attivo le scomuniche per eventuali diminuzioni di forza
+        attivaScomuniche(5,"");
 
         giocatore.getPartita().getCampoDaGioco().getTabellone().getZonaRaccolto().arrivaGiocatore(familiareSelezionato);
 
@@ -246,7 +273,7 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
         } else {
             giocatore.getPartita().getCampoDaGioco().getTabellone().getVaticano().scomunica(giocatore.getGiocatore(), giocatore.getPartita().getPeriodo());
             for(GiocatoreRemoto g: giocatore.getPartita().getGiocatori()){
-                g.giocatoreScomunicato(giocatore.getGiocatore().getId());
+                g.giocatoreScomunicato(giocatore.getGiocatore().getId(), giocatore.getPartita().getPeriodo()-1);
             }
         }
         //avviso il giocatore dell'incremento delle risorse

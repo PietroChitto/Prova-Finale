@@ -31,6 +31,7 @@ public class EffettoScambia implements Effetto {
             controlloRisorseSufficienti(risorseIniziali,f.getGiocatore());
             f.getGiocatore().incrementaRisorse(risorseFinali);
             f.getGiocatore().decrementaRisorse(risorseIniziali);
+            System.out.println("Effetto scambia attivato");
 
         } catch (RisorseInsufficientiException e) {
             System.out.println("");

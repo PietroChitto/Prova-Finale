@@ -48,6 +48,7 @@ public class Vaticano {
     public synchronized void scomunica(Giocatore g,int periodo){
 
         if(periodo==1)
+            System.out.println("aggiunta la scomunica: "+carteScomunica[0].getNome());
             g.aggiungiScomunica(carteScomunica[0]);
         if(periodo==2)
             g.aggiungiScomunica(carteScomunica[1]);

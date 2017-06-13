@@ -80,11 +80,12 @@ public class CartaPersonaggio extends CartaSviluppo {
         System.out.println("mil c: "+costo.getCostoPuntiMilitari());
     }
 
-    public Effetto getEffettoP() {
-        return effettoPermanente;
+
+    public String getCodiceEffettoRapido() {
+        return codiceEffR;
     }
 
-    public String getCodEffP() {
-        return codiceEffP;
+    public Effetto getEffettoP() {
+        return effettoPermanente;
     }
 }

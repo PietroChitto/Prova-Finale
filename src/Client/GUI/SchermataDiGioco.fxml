@@ -122,6 +122,9 @@
             <ImageView fx:id="imgScomunica1" fitHeight="68.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true" />
             <ImageView fx:id="imgScomunica3" fitHeight="68.0" fitWidth="44.0" layoutX="10.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" />
             <ImageView fx:id="imgScomunica2" fitHeight="68.0" fitWidth="44.0" layoutX="55.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
+            <VBox fx:id="vBoxScomunica1" alignment="CENTER" prefHeight="28.0" prefWidth="45.0" />
+            <VBox fx:id="vBoxScomunica2" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" />
+            <VBox fx:id="vBoxScomunica3" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" />
          </children>
       </GridPane>
       <Pane fx:id="paneCasZonaProd" layoutX="43.0" layoutY="549.0" onMouseClicked="#eventoZonaProduzione" prefHeight="23.0" prefWidth="34.0" />

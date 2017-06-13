@@ -3,6 +3,7 @@ package partita.carteDaGioco.effetti.effettiCarte;
  * effetti che si occupano di incrementare le risorse del giocatore
  */
 
+import partita.carteDaGioco.CartaScomunica;
 import partita.carteDaGioco.effetti.Effetto;
 import partita.componentiDelTabellone.Familiare;
 import partita.componentiDelTabellone.Giocatore;
@@ -34,6 +35,11 @@ public class EffettoIncrementa implements Effetto {
 
         f.getGiocatore().incrementaRisorse(incrementi);
         System.out.println("incrementate le risorse del giocatore "+f.getGiocatore().getId()+" a causa dell'effetto");
+
+        //attivo le scomuniche diminuisci incremento
+        for(CartaScomunica c: f.getGiocatore().getScomuniche()){
+            c.attivaEffettoScomunica(f,s,0);
+        }
     }
 
 

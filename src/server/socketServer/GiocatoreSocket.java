@@ -102,8 +102,40 @@ import java.util.ArrayList;
     }
 
     @Override
-    public void spostaFamiliarePiano(int numeroTorre, int numeroPiano) throws RemoteException {
-
+    public void spostaFamiliarePiano(int numeroTorre, int numeroPiano) throws IOException {
+        try {
+            mosseGiocatore.spostaFamiliarePiano(numeroTorre,numeroPiano);
+        } catch (FamiliareNonSelezionatoExcepion familiareNonSelezionatoExcepion) {
+            out.writeObject("MESSAGGIO");
+            out.flush();
+            out.writeObject("Familiare non selezionato");
+            out.flush();
+        } catch (ForzaInsufficienteException e) {
+            out.writeObject("MESSAGGIO");
+            out.flush();
+            out.writeObject("Forza del familiare insufficiente");
+            out.flush();
+        } catch (ZonaOccupataExcepion zonaOccupataExcepion) {
+            out.writeObject("MESSAGGIO");
+            out.flush();
+            out.writeObject("La zona è già occupata");
+            out.flush();
+        } catch (RisorseInsufficientiException e) {
+            out.writeObject("MESSAGGIO");
+            out.flush();
+            out.writeObject("Risorse insufficienti");
+            out.flush();
+        } catch (TorreOccupataException e) {
+            out.writeObject("MESSAGGIO");
+            out.flush();
+            out.writeObject("Hai già un familiare sulla torre");
+            out.flush();
+        } catch (TurnoException e) {
+            out.writeObject("MESSAGGIO");
+            out.flush();
+            out.writeObject("Nonè il tuo turno");
+            out.flush();
+        }
     }
 
     @Override
@@ -197,7 +229,7 @@ import java.util.ArrayList;
 
     @Override
     public void sceltaScomunica(boolean appoggiaChiesa) throws RemoteException {
-
+        mosseGiocatore.sceltaScomunica(appoggiaChiesa);
     }
 
     @Override
@@ -212,7 +244,7 @@ import java.util.ArrayList;
 
     @Override
     public void sceltaPergamena(int scelta) throws RemoteException {
-
+        mosseGiocatore.sceltaPergamena(scelta);
     }
 
     //-----------------------------------------------------------------------------------------------------------------------------------------
@@ -274,7 +306,14 @@ import java.util.ArrayList;
 
     @Override
     public void messaggio(String s) throws RemoteException {
-
+        try {
+            out.writeObject("MESSAGGIO");
+            out.flush();
+            out.writeObject(s);
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -384,22 +423,49 @@ import java.util.ArrayList;
 
     @Override
     public void avvisoInizioTurno(ArrayList<String> nomiCarte) {
-
+        try {
+            out.writeObject("AVVISOINIZIOTURNO");
+            out.flush();
+            out.writeObject(nomiCarte);
+            out.flush();
+            System.out.println("(Socket) mando inizio turno");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void scegliPergamena() throws RemoteException {
-
+        try {
+            out.writeObject("SCEGLIPERGAMENA");
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void scegliScomunica() throws RemoteException {
-
+        try {
+            out.writeObject("SCEGLISCOMUNICA");
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public void giocatoreScomunicato(int id) throws RemoteException {
-
+    public void giocatoreScomunicato(int idGiocatore, int periodo) throws RemoteException {
+        try {
+            out.writeObject("GIOCATORESCOMUNICATO");
+            out.flush();
+            out.writeObject(idGiocatore);
+            out.flush();
+            out.writeObject(periodo);
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     class SocketHandler implements Runnable{
@@ -414,9 +480,11 @@ import java.util.ArrayList;
             String comando;
             String coloreDado;
             int id;
+            int scelta;
             int numeroTorre;
             int numeroPiano;
             int zonaMercato;
+            boolean bool;
 
             while(run){
                 try {
@@ -437,34 +505,8 @@ import java.util.ArrayList;
                     else if(comando.startsWith("SPOSTAFAMILIAREPIANO")){
                         numeroTorre=(int) in.readObject();
                         numeroPiano=(int) in.readObject();
-                        try {
-                            mosseGiocatore.spostaFamiliarePiano(numeroTorre,numeroPiano);
-                        } catch (FamiliareNonSelezionatoExcepion familiareNonSelezionatoExcepion) {
-                            out.writeObject("MESSAGGIO");
-                            out.flush();
-                            out.writeObject("Familiare non selezionato");
-                            out.flush();
-                        } catch (ForzaInsufficienteException e) {
-                            out.writeObject("MESSAGGIO");
-                            out.flush();
-                            out.writeObject("Forza del familiare insufficiente");
-                            out.flush();
-                        } catch (ZonaOccupataExcepion zonaOccupataExcepion) {
-                            out.writeObject("MESSAGGIO");
-                            out.flush();
-                            out.writeObject("La zona è già occupata");
-                            out.flush();
-                        } catch (RisorseInsufficientiException e) {
-                            out.writeObject("MESSAGGIO");
-                            out.flush();
-                            out.writeObject("Risorse insufficienti");
-                            out.flush();
-                        } catch (TorreOccupataException e) {
-                            out.writeObject("MESSAGGIO");
-                            out.flush();
-                            out.writeObject("Hai già un familiare sulla torre");
-                            out.flush();
-                        }
+                        spostaFamiliarePiano(numeroTorre,numeroPiano);
+
                     }
                     else if (comando.startsWith("SPOSTAFAMILIAREMERCATO")){
                         zonaMercato=(int) in.readObject();
@@ -517,6 +559,14 @@ import java.util.ArrayList;
                     else if(comando.startsWith("SPOSTAZONARACCOLTO")){
                         zonaMercato=(int) in.readObject();
                         spostaFamiliareZonaRaccolto(zonaMercato);
+                    }
+                    else if(comando.startsWith("SCELTASCOMUNICA")){
+                        bool=(boolean) in.readObject();
+                        sceltaScomunica(bool);
+                    }
+                    else if(comando.startsWith("SCELTAPERGAMENA")){
+                        scelta=(int) in.readObject();
+                        sceltaPergamena(scelta);
                     }
                 } catch (SocketException e){
                     try {

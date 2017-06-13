@@ -71,6 +71,11 @@ public class CartaTerritorio extends CartaSviluppo{
         this.costoAttivazioneEffettoPermanente = costoAttivazioneEffettoPermanente;
     }
 
+
+    public String getCodiceEffettoRapido() {
+        return codiceEffR;
+    }
+
     public int getCostoAttivazioneEffettoPermanente() {
         return costoAttivazioneEffettoPermanente;
     }

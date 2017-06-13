@@ -37,7 +37,12 @@ public class CampoDaGioco {
         creaMazzoImprese();
         creaMazzoPersonaggio();
         carteScomunica=creatoreMazzi.creaCarteScomunica();
+        aggiungiScomunicheVaticano();
 
+    }
+
+    private void aggiungiScomunicheVaticano() {
+        getTabellone().getVaticano().setCarteScomunica(carteScomunica.get(0), carteScomunica.get(1), carteScomunica.get(2));
     }
 
     public void test(){

@@ -85,4 +85,9 @@ public class CartaImpresa extends CartaSviluppo {
         System.out.println("mil c: "+costoCarta1.getCostoPuntiMilitari());
     }
 
+
+    public String getCodiceEffettoRapido() {
+        return codiceEffR;
+    }
+
 }
