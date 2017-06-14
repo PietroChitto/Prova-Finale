@@ -5,6 +5,7 @@ import Client.ClientSocket;
 import Client.MainClient;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.stage.WindowEvent;
 import server.rmiServer.InterfaciaRemotaRMI;
 
 import java.io.IOException;
@@ -66,10 +68,15 @@ public class ControllerMenu {
 
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("Client/GUI/SchermataDiGioco.fxml"));
             Parent root = (Parent) fxmlLoader.load();
-            //Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("Client/GUI/SchermataDiGioco.fxml"));
             Platform.runLater(()->{
                 MainClient.stage.setTitle("Lorenzo il magnifico");
                 MainClient.stage.setScene(new Scene(root));
+                MainClient.stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                    @Override
+                    public void handle(WindowEvent event) {
+                        //chiudi tutto
+                    }
+                });
             });
             ControllerGioco controllerGioco=(ControllerGioco) fxmlLoader.getController();
 
