@@ -32,7 +32,7 @@ public class SocketServer implements ServerInterface{
     }
 
     @Override
-    public InterfaciaRemotaRMI partecipaAPartita(String username, InterfacciaClient controller) throws RemoteException {
+    public InterfaciaRemotaRMI partecipaAPartita(String username, InterfacciaClient controller, int numeroGiocatori) throws RemoteException {
         return null;
     }
 

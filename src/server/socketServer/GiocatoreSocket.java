@@ -29,6 +29,7 @@ import java.util.ArrayList;
     private ObjectInputStream in;
     private String nickName;
     private MosseGiocatore mosseGiocatore;
+    private int numeroGiocatori;
 
 
     public GiocatoreSocket(Socket socket) throws RemoteException {
@@ -51,8 +52,9 @@ import java.util.ArrayList;
           if (messaggio.getMessasggio().equals("PARTECIPA")) {
              messaggio= (Messaggio) in.readObject();
              nickName=messaggio.getMessasggio();
+             numeroGiocatori=(int) in.readObject();
              System.out.println(nickName+" connesso");
-             partecipaAPartita(nickName, null);
+             partecipaAPartita(nickName, null,numeroGiocatori);
           }
 
        } catch (IOException e) {
@@ -69,23 +71,23 @@ import java.util.ArrayList;
 
 
    @Override
-   public InterfaciaRemotaRMI partecipaAPartita(String username, InterfacciaClient controller) throws RemoteException {
-      Server.giocatori.add(this);
+   public synchronized InterfaciaRemotaRMI partecipaAPartita(String username, InterfacciaClient controller, int numeroGiocatori) throws RemoteException {
+      Server.giocatori.get(numeroGiocatori).add(this);
       this.setUsername(nickName);
       System.out.println("dentro metodo sk "+Server.giocatori.size()+" connessi");
-      if(Server.giocatori.size()==Partita.N_GIOCATORI){
+      if(Server.giocatori.get(numeroGiocatori).size()==numeroGiocatori){
             System.out.println("sono nell'if");
-            Partita p=new Partita();
+            Partita p=new Partita(numeroGiocatori);
             System.out.println("partitaCreata, aggiungo i giocatori");
             for(int i=0; i<Partita.N_GIOCATORI; i++) {
                Giocatore modelloGiocatore=new Giocatore(i);
-               Server.giocatori.get(i).setGiocatore(modelloGiocatore);
-               p.addGiocatore(Server.giocatori.get(i));
+               Server.giocatori.get(numeroGiocatori).get(i).setGiocatore(modelloGiocatore);
+               p.addGiocatore(Server.giocatori.get(numeroGiocatori).get(i));
                System.out.println("aggiunto giocatore"+i);
-               Server.giocatori.get(i).setPartita(p);
+               Server.giocatori.get(numeroGiocatori).get(i).setPartita(p);
             }
             p.iniziaPartita();
-            Server.giocatori.clear();
+            Server.giocatori.get(numeroGiocatori).clear();
             System.out.print("svuoto lista giocatori");
       }
          return null;

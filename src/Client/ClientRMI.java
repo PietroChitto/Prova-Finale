@@ -26,7 +26,7 @@ public class ClientRMI extends UnicastRemoteObject implements InterfacciaClient,
     private InterfaciaRemotaRMI metodiPartita;
     private ControllerGioco controllerGioco;
 
-    public ClientRMI(String text, ControllerGioco controllerGioco) throws RemoteException, NotBoundException {
+    public ClientRMI(String text, ControllerGioco controllerGioco, int numeroGiocatori) throws RemoteException, NotBoundException {
         nickname=text;
         this.controllerGioco=controllerGioco;
         this.controllerGioco.setClientGenerico(this);
@@ -35,7 +35,7 @@ public class ClientRMI extends UnicastRemoteObject implements InterfacciaClient,
         System.out.println("Registry caricato");
         ServerInterface inizio = (ServerInterface) registry.lookup("InterfaciaRemotaRMI");
         System.out.println("Oggetto scaricato");
-        metodiPartita=(InterfaciaRemotaRMI) inizio.partecipaAPartita(nickname, this);
+        metodiPartita=(InterfaciaRemotaRMI) inizio.partecipaAPartita(nickname, this, numeroGiocatori);
     }
 
     private void startClient() {

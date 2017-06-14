@@ -1,30 +1,3 @@
-/*.button {
-    -fx-padding: 8 10 10 10;
-    -fx-background-insets: 0,0 0 5 0, 0 0 6 0, 0 0 7 0;
-    -fx-background-radius: 8;
-    -fx-background-color:
-            linear-gradient(from 0% 93% to 0% 100%, #0f00be 0%, #0027d1 100%),
-            #2d349d,
-            #050301,
-            radial-gradient(center 50% 50%, radius 100%, #4472ca, #0027d1);
-    -fx-effect: dropshadow( gaussian , rgb(133, 159, 255), 4,0,0,1 );
-    -fx-font-weight: bold;
-    -fx-font-size: 1.1em;
-}
-
-.button:hover {
-    -fx-background-color:
-            linear-gradient(from 0% 93% to 0% 100%, #7e817c 0%, #6e696d 100%),
-            #8b8b90,
-            #040201,
-            radial-gradient(center 50% 50%, radius 100%, #cac2c2, #a5a3a1);
-}
-
-.button:pressed {
-    -fx-padding: 10 15 13 15;
-    -fx-background-insets: 2 0 0 0,2 0 3 0, 2 0 4 0, 2 0 5 0;
-}
-*/
 
 .button {
     -fx-background-color: #c3c4c4,
@@ -47,6 +20,26 @@
 .button:pressed {
     -fx-background-radius: 30;
     -fx-background-color: silver;
+}
+
+.toggle-button{
+    -fx-background-color: #c3c4c4,
+    linear-gradient(#d6d6d6 50%, white 100%),
+    radial-gradient(center 50% -40%, radius 200%, #e6e6e6 45%, rgba(230, 230, 230, 0) 50%);
+    -fx-background-radius: 30;
+    -fx-background-insets: 0, 1, 1;
+    -fx-text-fill: black;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.6), 3, 0.0, 0, 1);
+}
+
+.toggle-button:selected {
+    -fx-background-color:
+            #c3c4c4,
+            linear-gradient(#818181 50%, silver 100%),
+            radial-gradient(center 50% -40%, radius 200%, #929292 45%, rgba(171, 171, 171, 0.62) 50%);
+}
+.toggle-button:selected:focused {
+
 }
 
 .text-field{

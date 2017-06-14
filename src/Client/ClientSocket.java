@@ -28,7 +28,7 @@ public class ClientSocket implements InterfacciaClient, InterfaciaRemotaRMI{
     private boolean partitatInCorso;
     private ControllerGioco controllerGioco;
 
-    public ClientSocket(String userName, ControllerGioco controllerGioco) throws IOException {
+    public ClientSocket(String userName, ControllerGioco controllerGioco, int numeroGiocatori) throws IOException {
         nickName=userName;
         try {
             socket=new Socket("localhost", 8001);
@@ -38,10 +38,10 @@ public class ClientSocket implements InterfacciaClient, InterfaciaRemotaRMI{
         System.out.println("Client connesso alla porta 8001 attraverso socket1");
         this.controllerGioco=controllerGioco;
         this.controllerGioco.setClientGenerico(this);
-        startClient(nickName);
+        startClient(nickName,numeroGiocatori);
     }
 
-    private void startClient(String userName) throws IOException {
+    private void startClient(String userName,int numeroGiocatori) throws IOException {
         System.out.println("dentro start client");
         try {
             out = new ObjectOutputStream(socket.getOutputStream());
@@ -52,6 +52,8 @@ public class ClientSocket implements InterfacciaClient, InterfaciaRemotaRMI{
         out.writeObject(new Messaggio("PARTECIPA"));
         out.flush();
         out.writeObject(new Messaggio(nickName));
+        out.flush();
+        out.writeObject(numeroGiocatori);
         out.flush();
         System.out.println("parte il thread");
         new Thread(new ClientHandler()).start();

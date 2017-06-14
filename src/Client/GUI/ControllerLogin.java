@@ -61,12 +61,12 @@ public class ControllerLogin {
 
             if (txtStartSocket.isFocused()){
 
-                client = new ClientSocket(txtUsername.getText(), controllerGioco);
+                //client = new ClientSocket(txtUsername.getText(), controllerGioco);
 
 
             }else{
 
-                client=new ClientRMI(txtUsername.getText(), controllerGioco);
+                //client=new ClientRMI(txtUsername.getText(), controllerGioco);
 
             }
 

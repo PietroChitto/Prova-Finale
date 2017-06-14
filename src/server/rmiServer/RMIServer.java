@@ -44,28 +44,28 @@ public class RMIServer extends UnicastRemoteObject implements ServerInterface{
     }
 
     @Override
-    public InterfaciaRemotaRMI partecipaAPartita(String username, InterfacciaClient controller) throws RemoteException {
+    public InterfaciaRemotaRMI partecipaAPartita(String username, InterfacciaClient controller, int numeroGiocatori) throws RemoteException {
         GiocatoreRMI giocatore=new GiocatoreRMI();
         giocatore.setUsername(username);
         giocatore.setControllerClientRMI(controller);
-        Server.giocatori.add(giocatore);
 
-        stampaListaGiocatori();
-        if(Server.giocatori.size()==Partita.N_GIOCATORI){
-            System.out.println("sono nell'if");
-            Partita p=new Partita();
+        Server.giocatori.get(numeroGiocatori).add(giocatore);
+        System.out.println("Giocatore aggiunto alla lista "+numeroGiocatori);
+        if(Server.giocatori.get(numeroGiocatori).size()==numeroGiocatori){
+            Partita p=new Partita(numeroGiocatori);
             System.out.println("partitaCreata, aggiungo i giocatori");
             for(int i=0; i<Partita.N_GIOCATORI; i++) {
                 Giocatore modelloGiocatore=new Giocatore(i);
-                Server.giocatori.get(i).setGiocatore(modelloGiocatore);
-                p.addGiocatore(Server.giocatori.get(i));
+                //prendo la lista giusta della mappa e per ogni giocatoreRemoto gli setto un giocatore
+                Server.giocatori.get(numeroGiocatori).get(i).setGiocatore(modelloGiocatore);
+                p.addGiocatore(Server.giocatori.get(numeroGiocatori).get(i));
                 System.out.println("aggiunto giocatore"+i);
-                Server.giocatori.get(i).setPartita(p);
+                Server.giocatori.get(numeroGiocatori).get(i).setPartita(p);
             }
             p.iniziaPartita();
             System.out.print("svuoto lista giocatori");
-            Server.giocatori.clear();
-            stampaListaGiocatori();
+            Server.giocatori.get(numeroGiocatori).clear();
+            stampaListaGiocatori(numeroGiocatori);
             return giocatore;
         }
         else{
@@ -74,8 +74,8 @@ public class RMIServer extends UnicastRemoteObject implements ServerInterface{
 
     }
 
-    public static void stampaListaGiocatori() {
-        for (GiocatoreRemoto g: Server.giocatori){
+    public static void stampaListaGiocatori(int numeroGiocatori) {
+        for (GiocatoreRemoto g: Server.giocatori.get(numeroGiocatori)){
             System.out.println(g.getUsername());
         }
     }

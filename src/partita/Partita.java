@@ -16,7 +16,7 @@ import java.util.ArrayList;
  * Created by Pietro on 16/05/2017.
  */
 public class Partita {
-    public static final int N_GIOCATORI=2;
+    public static int N_GIOCATORI;
     private ArrayList<GiocatoreRemoto> giocatori;
     private ArrayList<Giocatore> giocatoriGioco;
     private CampoDaGioco campoDaGioco;
@@ -32,7 +32,8 @@ public class Partita {
     private ArrayList<String> nomiScomuniche;
     private boolean dadiTirati;
 
-    public Partita() {
+    public Partita(int numeroGiocatori) {
+        N_GIOCATORI=numeroGiocatori;
         giocatori=new ArrayList<>();
         giocatoriGioco= new ArrayList<Giocatore>();
         ordineTurno = new ArrayList<Giocatore>();

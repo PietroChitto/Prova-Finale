@@ -3,6 +3,7 @@ package server;
 import Client.InterfacciaClient;
 import partita.Partita;
 import partita.componentiDelTabellone.Familiare;
+import partita.componentiDelTabellone.Giocatore;
 import server.rmiServer.InterfaciaRemotaRMI;
 import server.rmiServer.RMIServer;
 import server.socketServer.SocketServer;
@@ -18,14 +19,22 @@ import java.util.HashMap;
 public class Server implements ServerInterface {
     private static final int RMI_PORT=8000;
     private static final int SOCKET_PORT=8001;
-    public  static ArrayList<GiocatoreRemoto> giocatori;
+    //mappa di liste, la chiave è il numero di giocatori della partita, l'oggetto è la lista dei giocatori in attesa per quella partita
+    public  static HashMap<Integer,ArrayList<GiocatoreRemoto>> giocatori;
     public static Partita partita;
     private SocketServer socketServer;
     private RMIServer rmiServer;
     private static final Object PLAYERS_MUTEX = new Object();
 
     public Server() throws NetworkException, RemoteException {
-        giocatori = new ArrayList<GiocatoreRemoto>();
+        giocatori = new HashMap<>();
+        ArrayList<GiocatoreRemoto> lista2G=new ArrayList<>();
+        ArrayList<GiocatoreRemoto> lista3G=new ArrayList<>();
+        ArrayList<GiocatoreRemoto> lista4G=new ArrayList<>();
+        giocatori.put(2,lista2G);
+        giocatori.put(3,lista3G);
+        giocatori.put(4,lista4G);
+
         partita=null;
         socketServer=new SocketServer(/*this*/);
         rmiServer = new RMIServer(/*this*/);
@@ -48,7 +57,7 @@ public class Server implements ServerInterface {
     }
 
     @Override
-    public InterfaciaRemotaRMI partecipaAPartita(String username, InterfacciaClient controller) throws RemoteException {
+    public InterfaciaRemotaRMI partecipaAPartita(String username, InterfacciaClient controller, int numeroGiocatori) throws RemoteException {
         return null;
     }
 /*
