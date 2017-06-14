@@ -14,6 +14,7 @@ import server.GiocatoreRemoto;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by Pietro on 16/05/2017.
@@ -35,20 +36,20 @@ public class Partita {
     private ArrayList<String> nomiScomuniche;
     private boolean dadiTirati;
 
+    /**
+     *
+     * @param numeroGiocatori numero giocatori della partita
+     */
     public Partita(int numeroGiocatori) {
         N_GIOCATORI=numeroGiocatori;
         giocatori=new ArrayList<>();
-        giocatoriGioco= new ArrayList<Giocatore>();
-        ordineTurno = new ArrayList<Giocatore>();
+        giocatoriGioco= new ArrayList<>();
+        ordineTurno = new ArrayList<>();
         dadiTirati=false;
     }
 
     public ArrayList<GiocatoreRemoto> getGiocatori() {
         return giocatori;
-    }
-
-    public ArrayList<Giocatore> getGiocatoriGioco() {
-        return giocatoriGioco;
     }
 
     private void ordineTurnoIniziale() {
@@ -72,7 +73,7 @@ public class Partita {
         giocatoreRemoto.getGiocatore().setMonete(giocatori.size()+4);
     }
 
-    public void creaGiocatoriGioco(){
+    private void creaGiocatoriGioco(){
         for(GiocatoreRemoto gr: giocatori){
             giocatoriGioco.add(gr.getGiocatore());
         }
@@ -100,7 +101,7 @@ public class Partita {
 
     private void avvisoInizioPartita() throws RemoteException {
         System.out.println("Avviso inizio Partita");
-        ArrayList<String> nomiGiocatori=new ArrayList<String>();
+        ArrayList<String> nomiGiocatori=new ArrayList<>();
         for (GiocatoreRemoto g: giocatori){
             nomiGiocatori.add(g.getUsername());
         }
@@ -129,7 +130,7 @@ public class Partita {
         campoDaGioco = new CampoDaGioco(modelloGiocatori,true,true);
     }
 
-    public synchronized void setGiocatoreCorrente(Giocatore g){
+    private synchronized void setGiocatoreCorrente(Giocatore g){
         giocatoreCorrente=g;
         System.out.println("tocca al giocatore "+ g.getId());
     }
@@ -158,22 +159,6 @@ public class Partita {
 
     public int getValoreDadoNero() {
         return valoreDadoNero;
-    }
-
-    public void setTurno(int turno) {
-        this.turno = turno;
-    }
-
-    public int getTurno() {
-        return turno;
-    }
-
-    public int getNumeroMosseTurno() {
-        return numeroMosseTurno;
-    }
-
-    public void setNumeroMosseTurno(int numeroMosseTurno) {
-        this.numeroMosseTurno = numeroMosseTurno;
     }
 
     public void setPeriodo(int periodo) {
@@ -221,7 +206,7 @@ public class Partita {
 
     }
 
-    public void passaTurno() throws ForzaInsufficienteException, ZonaOccupataExcepion {
+    private void passaTurno() throws ForzaInsufficienteException, ZonaOccupataExcepion {
 
         pulisciTabellone();
         dadiTirati=false;
@@ -266,16 +251,6 @@ public class Partita {
         }
     }
 
-    private void fineMossa() {
-        //ripristina i costi
-    }
-
-    public void fineTurno(){
-        //togle le carte e i familiari
-    }
-
-
-
     private void finePartita() {
         /*classifica=*/calcolaClassifica();
         for (GiocatoreRemoto g: giocatori){
@@ -283,7 +258,7 @@ public class Partita {
         }
     }
 
-    private void calcolaClassifica() {
+    private void calcolaClassifica(){
         Giocatore g;
         for (GiocatoreRemoto giocatoreRemoto: giocatori){
             g=giocatoreRemoto.getGiocatore();
@@ -294,7 +269,25 @@ public class Partita {
             puntiPuntiFede(g);
             attivaScomuniche(g);
         }
-        //ORDINARE LA CLASSIFICA E RITORNARLA COME PARAMETRO PER POTERLA MANADRE AI CLIENT
+
+        GiocatoreRemoto classifica[];
+
+        classifica= (GiocatoreRemoto[]) giocatori.toArray();
+
+        GiocatoreRemoto tmp;
+
+        for (int i=0;i<giocatori.size();i++){
+            for (int j=0;j<(giocatori.size()-1)-i;j++){
+                if (classifica[j].getGiocatore().getPuntiVittoria()<classifica[j+1].getGiocatore().getPuntiVittoria()){
+                    tmp=classifica[j];
+                    classifica[j]=classifica[j+1];
+                    classifica[j+1]=tmp;
+                }
+            }
+        }
+
+        giocatori.clear();
+        giocatori.addAll(Arrays.asList(classifica));
     }
 
     private void attivaScomuniche(Giocatore g) {
@@ -349,13 +342,11 @@ public class Partita {
         }
     }
 
-    public void pulisciTabellone() throws ZonaOccupataExcepion, ForzaInsufficienteException {
+    private void pulisciTabellone() throws ZonaOccupataExcepion, ForzaInsufficienteException {
 
         //pulisco il tabellone per il turno successivo
         Torre[] torri;
         torri=getCampoDaGioco().getTabellone().getTorri();
-
-        int posizione=0;
 
         for (int i=0;i<4;i++){
             torri[i].pulisciTorre();
@@ -366,7 +357,7 @@ public class Partita {
         getCampoDaGioco().getTabellone().getMercato().svuotaMercato();
     }
 
-    public void finePeriodo() throws ZonaOccupataExcepion, ForzaInsufficienteException{
+    private void finePeriodo() throws ZonaOccupataExcepion, ForzaInsufficienteException{
 
         //pulisco il tabellone per il periodo successivo
         Vaticano vat = getCampoDaGioco().getTabellone().getVaticano();
@@ -416,7 +407,3 @@ public class Partita {
             throw new DadiNonTiratiException();
     }
 }
-
-/**
- * https://github.com/PietroChitto/Prova-Finale/invitations
- */

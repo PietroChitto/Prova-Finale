@@ -2,8 +2,6 @@ package server;
 
 import Client.InterfacciaClient;
 import partita.Partita;
-import partita.componentiDelTabellone.Familiare;
-import partita.componentiDelTabellone.Giocatore;
 import server.rmiServer.InterfaciaRemotaRMI;
 import server.rmiServer.RMIServer;
 import server.socketServer.SocketServer;
@@ -17,8 +15,8 @@ import java.util.HashMap;
  * Created by Pietro on 16/05/2017.
  */
 public class Server implements ServerInterface {
-    private static final int RMI_PORT=8000;
-    private static final int SOCKET_PORT=8001;
+    private static final int RMI_PORT=8008;
+    private static final int SOCKET_PORT=8009;
     //mappa di liste, la chiave è il numero di giocatori della partita, l'oggetto è la lista dei giocatori in attesa per quella partita
     public  static HashMap<Integer,ArrayList<GiocatoreRemoto>> giocatori;
     public static Partita partita;
@@ -41,6 +39,8 @@ public class Server implements ServerInterface {
     }
 
      public static void main(String[] args) throws ServerException {
+
+         System.out.print("server lanciati");
         try {
             Server server = new Server();
             server.startServer(SOCKET_PORT, RMI_PORT);
@@ -51,6 +51,8 @@ public class Server implements ServerInterface {
      }
 
     private void startServer(int socketPort, int rmiPort) throws NetworkException, ServerException {
+
+        System.out.print("lancio i server");
         socketServer.startServer(SOCKET_PORT);
         rmiServer.startServer(RMI_PORT);
         System.out.print("server lanciati");

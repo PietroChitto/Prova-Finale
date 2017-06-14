@@ -1,7 +1,8 @@
 package server.socketServer;
 
 import Client.InterfacciaClient;
-import server.*;
+import server.NetworkException;
+import server.ServerInterface;
 import server.rmiServer.InterfaciaRemotaRMI;
 
 import java.io.IOException;
@@ -23,10 +24,11 @@ public class SocketServer implements ServerInterface{
     /*@Override*/
     public void startServer(int port) throws NetworkException {
         try {
+            System.out.print("server socket");
             serverSocket = new ServerSocket(port);
             new RequestHandler().start();
         } catch (IOException e) {
-            throw new NetworkException("");
+            e.printStackTrace();
         }
 
     }

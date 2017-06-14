@@ -1,9 +1,7 @@
 package partita.carteDaGioco;
 
 
-
-
-import partita.carteDaGioco.effetti.*;
+import partita.carteDaGioco.effetti.Effetto;
 import partita.carteDaGioco.effetti.effettiCarte.*;
 import partita.carteDaGioco.effettiScomunica.EffettoDiminuisciForza;
 import partita.carteDaGioco.effettiScomunica.EffettoDiminuisciIncremento;
@@ -25,7 +23,7 @@ public class CreatoreMazzi {
     public CreatoreMazzi() throws SQLException, ClassNotFoundException {
 
         Class.forName("com.mysql.jdbc.Driver");
-        c= DriverManager.getConnection("jdbc:mysql://localhost:3306/carte", "root", "Ilfatato1");
+        c= DriverManager.getConnection("jdbc:mysql://localhost:3306/carte", "root", "ilfatato1");
         s = c.createStatement();
 
     }

@@ -21,12 +21,8 @@ public class GiocatoreRMI extends GiocatoreRemoto{
         mosseGiocatore=new MosseGiocatore(this);
     }
 
-    public void setControllerClientRMI(InterfacciaClient controllerClientRMI){
+    void setControllerClientRMI(InterfacciaClient controllerClientRMI){
         this.controllerClient=controllerClientRMI;
-    }
-
-    public InterfacciaClient getControllerClientRMI() {
-        return controllerClient;
     }
 
     @Override
@@ -118,7 +114,7 @@ public class GiocatoreRMI extends GiocatoreRemoto{
         } catch (ForzaInsufficienteException e) {
             controllerClient.messaggio("forza Insufficiente");
         } catch (ZonaOccupataExcepion zonaOccupataExcepion) {
-
+            controllerClient.messaggio("Zona già Occupata");
         }
     }
 

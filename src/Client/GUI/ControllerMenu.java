@@ -67,7 +67,7 @@ public class ControllerMenu {
         }else{
 
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("Client/GUI/SchermataDiGioco.fxml"));
-            Parent root = (Parent) fxmlLoader.load();
+            Parent root = fxmlLoader.load();
             Platform.runLater(()->{
                 MainClient.stage.setTitle("Lorenzo il magnifico");
                 MainClient.stage.setScene(new Scene(root));
@@ -78,7 +78,7 @@ public class ControllerMenu {
                     }
                 });
             });
-            ControllerGioco controllerGioco=(ControllerGioco) fxmlLoader.getController();
+            ControllerGioco controllerGioco= fxmlLoader.getController();
 
 
             if (toggleSocket.isSelected()){

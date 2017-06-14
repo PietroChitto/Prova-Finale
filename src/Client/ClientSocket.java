@@ -31,7 +31,7 @@ public class ClientSocket implements InterfacciaClient, InterfaciaRemotaRMI{
     public ClientSocket(String userName, ControllerGioco controllerGioco, int numeroGiocatori) throws IOException {
         nickName=userName;
         try {
-            socket=new Socket("localhost", 8001);
+            socket=new Socket("localhost", 8009);
         } catch (IOException e) {
             e.printStackTrace();
         }

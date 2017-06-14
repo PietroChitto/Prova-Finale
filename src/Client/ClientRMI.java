@@ -21,7 +21,7 @@ import java.util.HashMap;
 public class ClientRMI extends UnicastRemoteObject implements InterfacciaClient, InterfaciaRemotaRMI {
     private String nickname;
     private int id;
-    boolean partitaIncorso;
+    private boolean partitaIncorso;
     private InterfaciaRemotaRMI metodiPartita;
     private ControllerGioco controllerGioco;
 
@@ -30,11 +30,11 @@ public class ClientRMI extends UnicastRemoteObject implements InterfacciaClient,
         this.controllerGioco=controllerGioco;
         this.controllerGioco.setClientGenerico(this);
         partitaIncorso=false;
-        Registry registry = LocateRegistry.getRegistry(8000);
+        Registry registry = LocateRegistry.getRegistry(8008);
         System.out.println("Registry caricato");
         ServerInterface inizio = (ServerInterface) registry.lookup("InterfaciaRemotaRMI");
         System.out.println("Oggetto scaricato");
-        metodiPartita=(InterfaciaRemotaRMI) inizio.partecipaAPartita(nickname, this, numeroGiocatori);
+        metodiPartita= inizio.partecipaAPartita(nickname, this, numeroGiocatori);
     }
 
     private void startClient() {

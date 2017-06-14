@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataSource name="@localhost">
-  <database-model serializer="dbm" rdbms="MYSQL" format-version="4.1">
+  <database-model serializer="dbm" rdbms="MYSQL" format-version="4.2">
     <root id="1"/>
     <schema id="2" parent="1" name="information_schema">
       <Current>1</Current>
@@ -198,9 +198,7 @@
     <view id="69" parent="2" name="VIEWS">
       <System>1</System>
     </view>
-    <table id="70" parent="8" name="carte">
-      <Comment>contiene tutte le carte</Comment>
-    </table>
+    <table id="70" parent="8" name="carte"/>
     <table id="71" parent="8" name="cartescomunica"/>
     <column id="72" parent="9" name="CHARACTER_SET_NAME">
       <Position>1</Position>
@@ -3048,12 +3046,10 @@
     <column id="679" parent="70" name="tipo">
       <Position>2</Position>
       <DataType>varchar(20)|0</DataType>
-      <NotNull>1</NotNull>
     </column>
     <column id="680" parent="70" name="periodo">
       <Position>3</Position>
       <DataType>int(11)|0</DataType>
-      <NotNull>1</NotNull>
     </column>
     <column id="681" parent="70" name="effettoRapido">
       <Position>4</Position>
@@ -3066,7 +3062,6 @@
     <column id="683" parent="70" name="costoAquisizione">
       <Position>6</Position>
       <DataType>varchar(100)|0</DataType>
-      <NotNull>1</NotNull>
     </column>
     <column id="684" parent="70" name="costoAttivazione">
       <Position>7</Position>
@@ -3074,13 +3069,11 @@
     </column>
     <column id="685" parent="70" name="boolRapido">
       <Position>8</Position>
-      <DataType>tinyint(1)|0</DataType>
-      <NotNull>1</NotNull>
+      <DataType>tinyint(4)|0</DataType>
     </column>
     <column id="686" parent="70" name="boolPermanente">
       <Position>9</Position>
-      <DataType>tinyint(1)|0</DataType>
-      <NotNull>1</NotNull>
+      <DataType>tinyint(4)|0</DataType>
     </column>
     <key id="687" parent="70" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
@@ -3095,17 +3088,14 @@
     <column id="689" parent="71" name="codice effetto">
       <Position>2</Position>
       <DataType>varchar(50)|0</DataType>
-      <NotNull>1</NotNull>
     </column>
     <column id="690" parent="71" name="periodo">
       <Position>3</Position>
       <DataType>int(11)|0</DataType>
-      <NotNull>1</NotNull>
     </column>
     <column id="691" parent="71" name="tipoEffetto">
       <Position>4</Position>
       <DataType>varchar(50)|0</DataType>
-      <NotNull>1</NotNull>
     </column>
     <key id="692" parent="71" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>

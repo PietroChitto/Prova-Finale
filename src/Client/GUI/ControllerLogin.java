@@ -1,6 +1,6 @@
 package Client.GUI;
 
-import Client.*;
+import Client.MainClient;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -50,13 +50,13 @@ public class ControllerLogin {
         }else{
 
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("Client/GUI/SchermataDiGioco.fxml"));
-            Parent root = (Parent) fxmlLoader.load();
+            Parent root = fxmlLoader.load();
             //Parent root = (Parent) FXMLLoader.load(getClass().getClassLoader().getResource("Client/GUI/SchermataDiGioco.fxml"));
             Platform.runLater(()->{
                 MainClient.stage.setTitle("Lorenzo il magnifico");
                 MainClient.stage.setScene(new Scene(root));
             });
-            ControllerGioco controllerGioco=(ControllerGioco) fxmlLoader.getController();
+            ControllerGioco controllerGioco= fxmlLoader.getController();
 
 
             if (txtStartSocket.isFocused()){

@@ -6,15 +6,13 @@ package partita.carteDaGioco.effetti;
  */
 
 import partita.componentiDelTabellone.Familiare;
-import partita.componentiDelTabellone.Giocatore;
-import partita.componentiDelTabellone.Tabellone;
 import partita.eccezioniPartita.RisorseInsufficientiException;
 
 /**
  * Created by Pietro on 18/05/2017.
  */
 public interface Effetto {
-    public void attivaEffetto(String s, Familiare f, int codiceZona) throws RisorseInsufficientiException;
+    void attivaEffetto(String s, Familiare f, int codiceZona) throws RisorseInsufficientiException;
 }
 
 
