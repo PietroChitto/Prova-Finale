@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="574.0" prefWidth="502.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.GUI.ControllerMenu">
+   <children>
+      <ImageView fitHeight="582.0" fitWidth="502.0" layoutX="-1.0" layoutY="-2.0" pickOnBounds="true" AnchorPane.bottomAnchor="-8.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <image>
+            <Image url="@sfondoMenu.png" />
+         </image>
+      </ImageView>
+      <VBox alignment="CENTER" layoutX="73.0" layoutY="95.0" prefHeight="385.0" prefWidth="357.0" spacing="60.0">
+         <children>
+            <TextField fx:id="txtUsername" alignment="CENTER" promptText="Username" stylesheets="@css/menu.css">
+               <VBox.margin>
+                  <Insets left="80.0" right="80.0" />
+               </VBox.margin></TextField>
+            <Button fx:id="btnDueGiocatori" alignment="CENTER" layoutX="198.0" layoutY="219.0" mnemonicParsing="false" onAction="#login" stylesheets="@css/menu.css" text="Due Giocatori" textFill="#00eaff">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets bottom="5.0" left="40.0" right="40.0" top="5.0" />
+               </padding>
+               <font>
+                  <Font name="Calibri Light" size="18.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnTreGiocatori" alignment="CENTER" layoutX="202.0" layoutY="279.0" mnemonicParsing="false" onAction="#login" stylesheets="@css/menu.css" text="Tre Giocatori" textFill="#457d8a">
+               <padding>
+                  <Insets bottom="5.0" left="40.0" right="40.0" top="5.0" />
+               </padding>
+               <font>
+                  <Font name="Calibri Light" size="18.0" />
+               </font>
+            </Button>
+            <Button fx:id="btnQuattroGiocatori" alignment="CENTER" layoutX="190.0" layoutY="340.0" mnemonicParsing="false" onAction="#login" stylesheets="@css/menu.css" text="Quattro Giocatori" textFill="#457d8a">
+               <padding>
+                  <Insets bottom="5.0" left="40.0" right="40.0" top="5.0" />
+               </padding>
+               <font>
+                  <Font name="Calibri Light" size="18.0" />
+               </font>
+            </Button>
+            <Button alignment="CENTER" layoutX="227.0" layoutY="403.0" mnemonicParsing="false" onAction="#exit" stylesheets="@css/menu.css" text="Esci" textFill="#457d8a">
+               <padding>
+                  <Insets bottom="5.0" left="40.0" right="40.0" top="5.0" />
+               </padding>
+               <font>
+                  <Font name="Calibri Light" size="18.0" />
+               </font>
+            </Button>
+         </children>
+      </VBox>
+      <ToggleButton fx:id="toggleSocket" layoutX="399.0" layoutY="14.0" mnemonicParsing="false" stylesheets="@css/menu.css" text="Socket">
+         <cursor>
+            <Cursor fx:constant="DEFAULT" />
+         </cursor>
+      </ToggleButton>
+      <ToggleButton fx:id="toggleRMI" layoutX="350.0" layoutY="14.0" mnemonicParsing="false" stylesheets="@css/menu.css" text="RMI">
+         <cursor>
+            <Cursor fx:constant="DEFAULT" />
+         </cursor>
+      </ToggleButton>
+   </children>
+</AnchorPane>
