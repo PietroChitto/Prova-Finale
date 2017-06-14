@@ -2,7 +2,6 @@ package Client.GUI;
 
 import Client.InterfacciaClient;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -12,11 +11,13 @@ import javafx.scene.effect.Shadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.TextAlignment;
-import partita.componentiDelTabellone.Familiare;
 import partita.eccezioniPartita.*;
 import server.rmiServer.InterfaciaRemotaRMI;
 
@@ -54,7 +55,12 @@ public class ControllerGioco implements InterfacciaClient{
 
 
     public void inizializza(HashMap<Integer, String> giocatori, ArrayList<String> carte, int mioId, int[] risorse, ArrayList<String> scomuniche){
-
+        if(giocatori.size()==0){
+            System.out.println("MappaVuota");
+        }
+        for (int i=0; i<giocatori.size();i++){
+            System.out.println(giocatori.get(i));
+        }
         this.giocatori=giocatori;
         this.mioId=mioId;
         settaLabelGiocatori(this.giocatori);

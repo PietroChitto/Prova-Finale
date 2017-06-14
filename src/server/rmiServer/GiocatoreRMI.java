@@ -167,6 +167,13 @@ public class GiocatoreRMI extends GiocatoreRemoto{
     //-----------------------------------------------------------------------------------------------------------------------------------------
     @Override
     public void iniziaPartita(int mioId, ArrayList<String> carte, ArrayList<String> giocatori, int[] risorse, ArrayList<String> scomuniche) throws RemoteException {
+        if(giocatori.size()==0){
+            System.out.println("lista giocatori vuota");
+        }
+        for (String s: giocatori){
+            System.out.println("lista giocatori non vuota");
+            System.out.println("(RMI)"+s);
+        }
         controllerClient.iniziaPartita(mioId, carte, giocatori, risorse, scomuniche);
     }
 

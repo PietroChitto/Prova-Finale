@@ -2,7 +2,6 @@ package Client;
 
 import Client.GUI.ControllerGioco;
 import javafx.application.Platform;
-import partita.Partita;
 import partita.eccezioniPartita.*;
 import server.ServerInterface;
 import server.rmiServer.InterfaciaRemotaRMI;
@@ -56,7 +55,7 @@ public class ClientRMI extends UnicastRemoteObject implements InterfacciaClient,
         System.out.println("sono "+nickname+" con id "+ id+" e sono RMI");
         HashMap<Integer,String> mappaGiocatori=new HashMap<>();
         System.out.println("creo mappa");
-        for(int i = 0; i< Partita.N_GIOCATORI; i++){
+        for(int i = 0; i< giocatori.size(); i++){
             mappaGiocatori.put(i,giocatori.get(i));
         }
         System.out.println("inizializzo partita");

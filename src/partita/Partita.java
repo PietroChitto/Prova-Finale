@@ -1,8 +1,11 @@
 package partita;
 
-import partita.carteDaGioco.*;
-import partita.carteDaGioco.effetti.effettiCarte.EffettoAumentaForza;
-import partita.componentiDelTabellone.*;
+import partita.carteDaGioco.CartaImpresa;
+import partita.carteDaGioco.CartaScomunica;
+import partita.componentiDelTabellone.Familiare;
+import partita.componentiDelTabellone.Giocatore;
+import partita.componentiDelTabellone.Torre;
+import partita.componentiDelTabellone.Vaticano;
 import partita.eccezioniPartita.DadiNonTiratiException;
 import partita.eccezioniPartita.ForzaInsufficienteException;
 import partita.eccezioniPartita.TurnoException;
@@ -76,6 +79,10 @@ public class Partita {
     }
 
     public void iniziaPartita() throws RemoteException {
+        System.out.println("Partita a "+N_GIOCATORI+" giocatori");
+        for (GiocatoreRemoto g: giocatori){
+            System.out.println(g.getUsername());
+        }
         System.out.println("Partita Iniziata");
         creaGiocatoriGioco();
         ordineTurnoIniziale();
