@@ -17,6 +17,7 @@ public abstract class GiocatoreRemoto extends UnicastRemoteObject implements Int
     private transient Giocatore giocatore;
     private String username;
     private transient Partita partita;
+    private MosseGiocatore mosseGiocatore;
 
     public GiocatoreRemoto() throws RemoteException {
         super();
@@ -44,6 +45,14 @@ public abstract class GiocatoreRemoto extends UnicastRemoteObject implements Int
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public void setMosse(MosseGiocatore mosse){
+        this.mosseGiocatore=mosse;
+    }
+
+    public MosseGiocatore getMosse() {
+        return mosseGiocatore;
     }
 
     //metodi della partita

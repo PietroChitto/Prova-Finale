@@ -16,14 +16,14 @@ import java.util.ArrayList;
  */
 public class CreatoreMazzi {
 
-   private Connection c;
+    private Connection c;
     private Statement s;
     private ResultSet rs;
 
     public CreatoreMazzi() throws SQLException, ClassNotFoundException {
 
         Class.forName("com.mysql.jdbc.Driver");
-        c= DriverManager.getConnection("jdbc:mysql://localhost:3306/carte", "root", "ilfatato1");
+        c= DriverManager.getConnection("jdbc:mysql://localhost:3306/carte", "root", "Ilfatato1");
         s = c.createStatement();
 
     }
@@ -209,7 +209,6 @@ public class CreatoreMazzi {
                 String nome=rs.getString("nome");
                 String tipoEffetto=rs.getString("tipoEffetto");
                 String codiceEffetto=rs.getString("codice effetto");
-                System.out.print(nome+" ");
                 Effetto eff=creaEffetto(tipoEffetto);
                 CartaScomunica carta=new CartaScomunica(eff, per, codiceEffetto, nome);
 
@@ -387,17 +386,14 @@ public class CreatoreMazzi {
             return effetto;
         }
         else if(codice.startsWith("DIMINUISCIFORZA")){
-            System.out.println("scomunica diminuisci forza");
             effetto=new EffettoDiminuisciForza();
             return effetto;
         }
         else if(codice.startsWith("DIMINUISIINCREMENTO")){
-            System.out.println("scomunica diminuisci incremento");
             effetto=new EffettoDiminuisciIncremento();
             return effetto;
         }
         else if(codice.startsWith("DIMINUISCIPUNTIVITTORIA")){
-            System.out.println("scomunica diminuisci vittoria");
             effetto=new EffettoDiminuisciPuntiVittoria();
             return effetto;
         }

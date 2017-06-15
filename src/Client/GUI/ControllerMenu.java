@@ -74,7 +74,7 @@ public class ControllerMenu {
                 MainClient.stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
                     @Override
                     public void handle(WindowEvent event) {
-                        //chiudi tutto
+                        System.exit(0);
                     }
                 });
             });

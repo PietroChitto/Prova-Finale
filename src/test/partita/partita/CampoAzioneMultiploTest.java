@@ -1,9 +1,11 @@
-package partita.componentiDelTabellone;
+package test.partita.partita;
 
 import org.junit.Test;
+import partita.componentiDelTabellone.CampoAzioneMultiplo;
+import partita.componentiDelTabellone.Familiare;
 import partita.eccezioniPartita.ForzaInsufficienteException;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by Pietro on 22/05/2017.

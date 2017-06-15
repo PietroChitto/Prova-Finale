@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Pietro on 16/05/2017.
@@ -24,6 +25,5 @@ import java.util.ArrayList;
       void scegliPergamena() throws RemoteException;
       void scegliScomunica() throws RemoteException;
       void giocatoreScomunicato(int id, int periodo) throws RemoteException;
-    //public void tiraIDadi() throws RemoteException;
-      //public void scegliScomunica(boolean appoggiaChiesa) throws RemoteException;
+      void finePartita(HashMap<String,Integer> classifica) throws RemoteException;
 }

@@ -1,7 +1,5 @@
 package server.rmiServer;
 
-import partita.eccezioniPartita.*;
-
 import java.io.IOException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -12,17 +10,17 @@ import java.rmi.RemoteException;
 public interface InterfaciaRemotaRMI extends Remote{
 
 
-    void selezionaFamiliare(String colore, int idGiocatore) throws RemoteException, TurnoException, DadiNonTiratiException;
-    void deselezionaFamiliare() throws RemoteException, TurnoException;
-    void spostaFamiliarePiano(int numeroTorre, int numeroPiano) throws IOException, FamiliareNonSelezionatoExcepion, TurnoException, ForzaInsufficienteException, ZonaOccupataExcepion, RisorseInsufficientiException, TorreOccupataException;
-    void spostaFamiliareMercato(int zonaMercato) throws RemoteException, TurnoException, ForzaInsufficienteException, ZonaOccupataExcepion;
-    void spostaFamiliarePalazzoDelConsiglio() throws RemoteException, ForzaInsufficienteException, TurnoException, ZonaOccupataExcepion;
-    void spostaFamiliareZonaProduzione(int zona) throws RemoteException, ForzaInsufficienteException, TurnoException, ZonaOccupataExcepion;
-    void spostaFamiliareZonaRaccolto(int zona) throws RemoteException, TurnoException, ForzaInsufficienteException, ZonaOccupataExcepion;
-    void tiraIDadi() throws IOException;
+    void selezionaFamiliare(String colore, int idGiocatore) throws RemoteException;
+    void deselezionaFamiliare() throws RemoteException;
+    void spostaFamiliarePiano(int numeroTorre, int numeroPiano) throws IOException;
+    void spostaFamiliareMercato(int zonaMercato) throws RemoteException;
+    void spostaFamiliarePalazzoDelConsiglio() throws RemoteException;
+    void spostaFamiliareZonaProduzione(int zona) throws RemoteException;
+    void spostaFamiliareZonaRaccolto(int zona) throws RemoteException;
+    void tiraIDadi() throws RemoteException;
     void sceltaScomunica(boolean appoggiaChiesa) throws RemoteException;
-    void aumentaForzaFamiliare(String coloreDado, int id) throws RemoteException, TurnoException, DadiNonTiratiException;
-    void saltaMossa(int id) throws RemoteException, TurnoException, DadiNonTiratiException;
+    void aumentaForzaFamiliare(String coloreDado, int id) throws RemoteException;
+    void saltaMossa(int id) throws RemoteException;
     void sceltaPergamena(int scelta) throws RemoteException;
 
 }

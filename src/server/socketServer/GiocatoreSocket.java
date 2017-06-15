@@ -18,11 +18,12 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Pietro on 16/05/2017.
  */
- class GiocatoreSocket extends GiocatoreRemoto implements Runnable, ServerInterface{
+ public class GiocatoreSocket extends GiocatoreRemoto implements Runnable, ServerInterface{
 
     private Socket socket;
     private ObjectOutputStream out;
@@ -35,8 +36,10 @@ import java.util.ArrayList;
     public GiocatoreSocket(Socket socket) throws RemoteException {
         super();
         this.socket=socket;
-      mosseGiocatore=new MosseGiocatore(this);
+        mosseGiocatore=new MosseGiocatore(this);
+        super.setMosse(mosseGiocatore);
     }
+
 
     @Override
     public void run() {
@@ -113,16 +116,28 @@ import java.util.ArrayList;
             out.writeObject("Familiare non selezionato");
             out.flush();
         } catch (ForzaInsufficienteException e) {
+            //se la torre era occupata il giocatore aveva speso 3 monete, siccome la mossa non è andata a buon fine le restituisco
+            if(getPartita().getCampoDaGioco().getTabellone().getTorre(numeroTorre).isOccupata())
+                getGiocatore().setMonete(getGiocatore().getMonete()+3);
+
             out.writeObject("MESSAGGIO");
             out.flush();
             out.writeObject("Forza del familiare insufficiente");
             out.flush();
         } catch (ZonaOccupataExcepion zonaOccupataExcepion) {
+            //se la torre era occupata il giocatore aveva speso 3 monete, siccome la mossa non è andata a buon fine le restituisco
+            if(getPartita().getCampoDaGioco().getTabellone().getTorre(numeroTorre).isOccupata())
+                getGiocatore().setMonete(getGiocatore().getMonete()+3);
+
             out.writeObject("MESSAGGIO");
             out.flush();
             out.writeObject("La zona è già occupata");
             out.flush();
         } catch (RisorseInsufficientiException e) {
+            //se la torre era occupata il giocatore aveva speso 3 monete, siccome la mossa non è andata a buon fine le restituisco
+            if(getPartita().getCampoDaGioco().getTabellone().getTorre(numeroTorre).isOccupata())
+                getGiocatore().setMonete(getGiocatore().getMonete()+3);
+
             out.writeObject("MESSAGGIO");
             out.flush();
             out.writeObject("Risorse insufficienti");
@@ -137,6 +152,8 @@ import java.util.ArrayList;
             out.flush();
             out.writeObject("Nonè il tuo turno");
             out.flush();
+        } catch (RemoteException e) {
+            e.printStackTrace();
         }
     }
 
@@ -182,6 +199,25 @@ import java.util.ArrayList;
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
+        } catch (DadiNonTiratiException e) {
+            try {
+                out.writeObject("MESSAGGIO");
+                out.flush();
+                out.writeObject("Zona già occupata");
+                out.flush();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+
+        } catch (FamiliareNonSelezionatoExcepion familiareNonSelezionatoExcepion) {
+            try {
+                out.writeObject("MESSAGGIO");
+                out.flush();
+                out.writeObject("Familiare non selezionato");
+                out.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -217,6 +253,17 @@ import java.util.ArrayList;
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
+        } catch (FamiliareNonSelezionatoExcepion familiareNonSelezionatoExcepion) {
+            try {
+                out.writeObject("MESSAGGIO");
+                out.flush();
+                out.writeObject("Familiare non selezionato");
+                out.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (DadiNonTiratiException e) {
+            e.printStackTrace();
         }
     }
 
@@ -252,23 +299,25 @@ import java.util.ArrayList;
     //-----------------------------------------------------------------------------------------------------------------------------------------
     @Override
     public void iniziaPartita(int mioId, ArrayList<String> carte, ArrayList<String> giocatori, int[] risorse, ArrayList<String> scomuniche) {
-        try {
-            out.writeObject("INIZIOPARTITA");
-            out.flush();
-            out.writeInt(mioId);
-            out.flush();
-            System.out.println("messaggio inviato: "+mioId);
-            out.writeObject(carte);
-            out.flush();
-            out.writeObject(giocatori);
-            out.flush();
-            out.writeObject(risorse);
-            out.flush();
-            out.writeObject(scomuniche);
-            out.flush();
-            System.out.println("situazione iniziale inviata");
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(out!=null) {
+            try {
+                out.writeObject("INIZIOPARTITA");
+                out.flush();
+                out.writeInt(mioId);
+                out.flush();
+                System.out.println("messaggio inviato: " + mioId);
+                out.writeObject(carte);
+                out.flush();
+                out.writeObject(giocatori);
+                out.flush();
+                out.writeObject(risorse);
+                out.flush();
+                out.writeObject(scomuniche);
+                out.flush();
+                System.out.println("situazione iniziale inviata");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
     }
@@ -276,17 +325,19 @@ import java.util.ArrayList;
     @Override
     public void spostatoFamiliarePiano(int numeroTorre, int numeroPiano, String coloreDado, int idGiocatore) throws RemoteException {
         try {
-            out.writeObject("SPOSTATOFAMILIAREPIANO");
-            out.flush();
-            out.writeObject(numeroTorre);
-            out.flush();
-            out.writeObject(numeroPiano);
-            out.flush();
-            out.writeObject(coloreDado);
-            out.flush();
-            System.out.println("id familiare spostato (socket): "+idGiocatore);
-            out.writeObject(idGiocatore);
-            out.flush();
+            if(out!=null) {
+                out.writeObject("SPOSTATOFAMILIAREPIANO");
+                out.flush();
+                out.writeObject(numeroTorre);
+                out.flush();
+                out.writeObject(numeroPiano);
+                out.flush();
+                out.writeObject(coloreDado);
+                out.flush();
+                System.out.println("id familiare spostato (socket): " + idGiocatore);
+                out.writeObject(idGiocatore);
+                out.flush();
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -295,26 +346,29 @@ import java.util.ArrayList;
 
     @Override
     public void dadiTirati(int ar, int ne, int bi) throws IOException {
-
-        out.writeObject("DADITIRATI");
-        out.flush();
-        out.writeObject(ar);
-        out.flush();
-        out.writeObject(ne);
-        out.flush();
-        out.writeObject(bi);
-        out.flush();
+        if(out!=null) {
+            out.writeObject("DADITIRATI");
+            out.flush();
+            out.writeObject(ar);
+            out.flush();
+            out.writeObject(ne);
+            out.flush();
+            out.writeObject(bi);
+            out.flush();
+        }
     }
 
     @Override
     public void messaggio(String s) throws RemoteException {
-        try {
-            out.writeObject("MESSAGGIO");
-            out.flush();
-            out.writeObject(s);
-            out.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(out!=null) {
+            try {
+                out.writeObject("MESSAGGIO");
+                out.flush();
+                out.writeObject(s);
+                out.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -425,14 +479,16 @@ import java.util.ArrayList;
 
     @Override
     public void avvisoInizioTurno(ArrayList<String> nomiCarte) {
-        try {
-            out.writeObject("AVVISOINIZIOTURNO");
-            out.flush();
-            out.writeObject(nomiCarte);
-            out.flush();
-            System.out.println("(Socket) mando inizio turno");
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(out!=null) {
+            try {
+                out.writeObject("AVVISOINIZIOTURNO");
+                out.flush();
+                out.writeObject(nomiCarte);
+                out.flush();
+                System.out.println("(Socket) mando inizio turno");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -458,15 +514,31 @@ import java.util.ArrayList;
 
     @Override
     public void giocatoreScomunicato(int idGiocatore, int periodo) throws RemoteException {
-        try {
-            out.writeObject("GIOCATORESCOMUNICATO");
-            out.flush();
-            out.writeObject(idGiocatore);
-            out.flush();
-            out.writeObject(periodo);
-            out.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(out!=null) {
+            try {
+                out.writeObject("GIOCATORESCOMUNICATO");
+                out.flush();
+                out.writeObject(idGiocatore);
+                out.flush();
+                out.writeObject(periodo);
+                out.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void finePartita(HashMap<String,Integer> classifica) throws RemoteException {
+        if(out!=null) {
+            try {
+                out.writeObject("FINEPARTITA");
+                out.flush();
+                out.writeObject(classifica);
+                out.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -524,6 +596,11 @@ import java.util.ArrayList;
                             out.flush();
                             out.writeObject("La zona è già occupata");
                             out.flush();
+                        } catch (FamiliareNonSelezionatoExcepion familiareNonSelezionatoExcepion) {
+                            out.writeObject("MESSAGGIO");
+                            out.flush();
+                            out.writeObject("familiare non selezioinato");
+                            out.flush();
                         }
                     }
                     else if(comando.startsWith("SPOSTAPALAZZOCONSIGLIO")){
@@ -539,6 +616,11 @@ import java.util.ArrayList;
                             out.writeObject("MESSAGGIO");
                             out.flush();
                             out.writeObject("La zona è già occupata");
+                            out.flush();
+                        } catch (FamiliareNonSelezionatoExcepion familiareNonSelezionatoExcepion) {
+                            out.writeObject("MESSAGGIO");
+                            out.flush();
+                            out.writeObject("Familiare non selezionato");
                             out.flush();
                         }
                     }

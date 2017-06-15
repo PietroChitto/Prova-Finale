@@ -1,6 +1,8 @@
 package partita;
 
-import partita.carteDaGioco.*;
+import partita.carteDaGioco.CartaScomunica;
+import partita.carteDaGioco.CartaSviluppo;
+import partita.carteDaGioco.CreatoreMazzi;
 import partita.componentiDelTabellone.Giocatore;
 import partita.componentiDelTabellone.Tabellone;
 
@@ -55,6 +57,7 @@ public class CampoDaGioco {
             mazzoTerritorio = creatoreMazzi.primoPeriodoTerreni();
             mazzoTerritorio.addAll(creatoreMazzi.secondoPeriodoTerreni());
             mazzoTerritorio.addAll(creatoreMazzi.terzoPeriodoTerreni());
+            System.out.println("il mazzo territorio contiene "+mazzoTerritorio.size());
         } catch (SQLException e) {
             System.out.println("errori SQL");
             e.printStackTrace();

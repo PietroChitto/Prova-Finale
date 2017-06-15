@@ -4,18 +4,15 @@ import partita.carteDaGioco.*;
 import partita.componentiDelTabellone.Familiare;
 import partita.componentiDelTabellone.Giocatore;
 import partita.eccezioniPartita.*;
-import server.rmiServer.InterfaciaRemotaRMI;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * Created by Pietro on 23/05/2017.
  */
 
-public class MosseGiocatore implements InterfaciaRemotaRMI {
+public class MosseGiocatore{
     Familiare familiareSelezionato;
     GiocatoreRemoto giocatore;
 
@@ -23,7 +20,10 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
             this.giocatore=giocatore;
     }
 
-    @Override
+    public Familiare getFamiliareSelezionato(){
+        return familiareSelezionato;
+    }
+
     public void selezionaFamiliare(String colore, int idGiocatore) throws RemoteException, TurnoException, DadiNonTiratiException {
         System.out.println("seleziona familiare "+idGiocatore+"-"+giocatore.getGiocatore().getId());
         giocatore.getPartita().mioTurno(giocatore.getGiocatore());
@@ -39,15 +39,14 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
 
     }
 
-    @Override
+
     public void deselezionaFamiliare() throws RemoteException, TurnoException {
         giocatore.getPartita().mioTurno(giocatore.getGiocatore());
         familiareSelezionato=null;
+        System.out.println("familiare deselezionato");
     }
 
 
-    //manca l'attivazione degli effetti delle carte
-    @Override
     public void spostaFamiliarePiano(int numeroTorre, int numeroPiano) throws RemoteException, FamiliareNonSelezionatoExcepion, TurnoException, ForzaInsufficienteException, ZonaOccupataExcepion, RisorseInsufficientiException, TorreOccupataException {
         //stampa di prova
         System.out.println("piano Ricevuto: " +numeroPiano);
@@ -57,6 +56,7 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
         System.out.println("mio turno ok");
         //controllo se ho selezionato un familiare, se non va a buon fine lancia un eccezione
         if(familiareSelezionato==null){
+            System.out.println("familiare non selezionato");
             throw new FamiliareNonSelezionatoExcepion();
         }
         System.out.println("familiare selezionato ok");
@@ -65,12 +65,11 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
         if(!(familiareSelezionato.getColoreDado().equals("neutro")))
             giocatore.getPartita().getCampoDaGioco().getTabellone().getTorre(numeroTorre).controllaFamiliare(giocatore.getGiocatore().getId());
 
-        System.out.println("torre "+numeroTorre+" occupata "+giocatore.getPartita().getCampoDaGioco().getTabellone().getTorre(numeroTorre).isOccupata());
         //devo controllare se la torre è occupata da un altro giocatore per pagare le monete
-         if(giocatore.getPartita().getCampoDaGioco().getTabellone().getTorre(numeroTorre).isOccupata()){
+        if(giocatore.getPartita().getCampoDaGioco().getTabellone().getTorre(numeroTorre).isOccupata()){
             System.out.println("la torre è occupata, paga monete");
-             giocatore.getGiocatore().setMonete(giocatore.getGiocatore().getMonete()-3);
-         }
+            giocatore.getGiocatore().setMonete(giocatore.getGiocatore().getMonete()-3);
+        }
 
         //devo attivare gli effetti delle carte personaggio per eventuali aumenti di forza
         attivaEffettiPersonaggi(numeroTorre);
@@ -78,11 +77,15 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
         //attivo le scomuniche per eventuali diminuzioni di forza
         attivaScomuniche(numeroTorre,"");
 
-        //prendo la carta dalla torre, se non va a buon fine lancia un' eccezione RisorseInsufficienti
-        prendiCarta(numeroTorre,numeroPiano);
+        //controllo se ho risorse sufficienti per prendere la carta, se non va a buon fine manda una RisInsException
+        controlloRisorseCarta(numeroTorre,numeroPiano);
+
 
         //metto il familiare nel piano, se è già occupato lancia un eccezione ZonaOccupata
         giocatore.getPartita().getCampoDaGioco().getTabellone().getTorre(numeroTorre).getPiano(numeroPiano).getCampoAzione().setFamiliare(familiareSelezionato);
+
+        //prendo la carta dalla torre
+        prendiCarta(numeroTorre,numeroPiano);
 
         //avviso i giocatori della mossa
         for (GiocatoreRemoto g: giocatore.getPartita().getGiocatori()){
@@ -124,10 +127,16 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
 
     }
 
-    @Override
-    public void spostaFamiliareMercato(int zonaMercato) throws RemoteException, TurnoException, ForzaInsufficienteException, ZonaOccupataExcepion {
+
+    public void spostaFamiliareMercato(int zonaMercato) throws RemoteException, TurnoException, ForzaInsufficienteException, ZonaOccupataExcepion, DadiNonTiratiException, FamiliareNonSelezionatoExcepion {
         //controllo se è il mio turno
         giocatore.getPartita().mioTurno(giocatore.getGiocatore());
+        giocatore.getPartita().dadiTirati();
+
+        if(familiareSelezionato==null){
+            System.out.println("familiare non selezionato");
+            throw new FamiliareNonSelezionatoExcepion();
+        }
 
         giocatore.risorseIncrementate(giocatore.getGiocatore().getPietra(), giocatore.getGiocatore().getLegna(), giocatore.getGiocatore().getServitori(),giocatore.getGiocatore().getMonete(), giocatore.getGiocatore().getPuntiMilitari(), giocatore.getGiocatore().getPuntiFede(), giocatore.getGiocatore().getPuntiVittoria());
 
@@ -159,10 +168,15 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
         giocatore.getPartita().passaMossa(giocatore);
     }
 
-    @Override
-    public void spostaFamiliarePalazzoDelConsiglio() throws RemoteException, ForzaInsufficienteException, TurnoException, ZonaOccupataExcepion {
+
+    public void spostaFamiliarePalazzoDelConsiglio() throws RemoteException, ForzaInsufficienteException, TurnoException, ZonaOccupataExcepion, DadiNonTiratiException, FamiliareNonSelezionatoExcepion {
         //controllo turno, se non è il mio turno manda una TurnoException
         giocatore.getPartita().mioTurno(giocatore.getGiocatore());
+        giocatore.getPartita().dadiTirati();
+        if(familiareSelezionato==null){
+            System.out.println("familiare non selezionato");
+            throw new FamiliareNonSelezionatoExcepion();
+        }
 
         //metto il familiare nel palazzo del consiglio, se non ho almeno forza 1 manda una ForzaInsufficienteException
         giocatore.getPartita().getCampoDaGioco().getTabellone().getPalazzoDelConsiglio().arrivaGiocatore(familiareSelezionato);
@@ -187,9 +201,14 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
 
     }
 
-    @Override
-    public void spostaFamiliareZonaProduzione(int zona) throws RemoteException, ForzaInsufficienteException, TurnoException, ZonaOccupataExcepion {
+
+    public void spostaFamiliareZonaProduzione(int zona) throws RemoteException, ForzaInsufficienteException, TurnoException, ZonaOccupataExcepion, DadiNonTiratiException, FamiliareNonSelezionatoExcepion {
         giocatore.getPartita().mioTurno(giocatore.getGiocatore());
+        giocatore.getPartita().dadiTirati();
+        if(familiareSelezionato==null){
+            System.out.println("familiare non selezionato");
+            throw new FamiliareNonSelezionatoExcepion();
+        }
 
         //devo attivare gli effetti delle carte personaggio per eventuali aumenti di forza
         attivaEffettiPersonaggi(4);
@@ -216,9 +235,14 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
         giocatore.getPartita().passaMossa(giocatore);
     }
 
-    @Override
-    public void spostaFamiliareZonaRaccolto(int zona) throws RemoteException, TurnoException, ForzaInsufficienteException, ZonaOccupataExcepion {
+
+    public void spostaFamiliareZonaRaccolto(int zona) throws RemoteException, TurnoException, ForzaInsufficienteException, ZonaOccupataExcepion, FamiliareNonSelezionatoExcepion, DadiNonTiratiException {
         giocatore.getPartita().mioTurno(giocatore.getGiocatore());
+        giocatore.getPartita().dadiTirati();
+        if(familiareSelezionato==null){
+            System.out.println("familiare non selezionato");
+            throw new FamiliareNonSelezionatoExcepion();
+        }
 
         //devo attivare gli effetti delle carte personaggio per eventuali aumenti di forza
         attivaEffettiPersonaggi(5);
@@ -244,7 +268,7 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
         giocatore.getPartita().passaMossa(giocatore);
     }
 
-    @Override
+
     public void tiraIDadi() throws IOException {
         giocatore.getPartita().setValoreDadoArancio((int) ((Math.random() * 100) % 6) + 1);
         giocatore.getPartita().setValoreDadoNero((int) ((Math.random() * 100) % 6) + 1);
@@ -265,7 +289,7 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
             giocatore.getPartita().setDadiTirati(true);
     }
 
-    @Override
+
     public synchronized void sceltaScomunica(boolean appoggiaChiesa) throws RemoteException {
         if (appoggiaChiesa) {
             giocatore.getGiocatore().setPuntiVittoria(giocatore.getGiocatore().getPuntiVittoria()+giocatore.getGiocatore().getPuntiFede());
@@ -281,7 +305,7 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
 
     }
 
-    @Override
+
     public void aumentaForzaFamiliare(String coloreDado, int id) throws RemoteException, TurnoException, DadiNonTiratiException {
         giocatore.getPartita().mioTurno(giocatore.getGiocatore());
         giocatore.getPartita().dadiTirati();
@@ -297,13 +321,14 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
         }
     }
 
-    @Override
+
     public void saltaMossa(int id) throws TurnoException, DadiNonTiratiException {
         giocatore.getPartita().mioTurno(giocatore.getGiocatore());
         giocatore.getPartita().dadiTirati();
         try {
             giocatore.getPartita().passaMossa(giocatore);
             giocatore.mossaSaltata(id);
+            familiareSelezionato=null;
         } catch (ZonaOccupataExcepion zonaOccupataExcepion) {
             zonaOccupataExcepion.printStackTrace();
         } catch (ForzaInsufficienteException e) {
@@ -313,7 +338,7 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
         }
     }
 
-    @Override
+
     public synchronized void sceltaPergamena(int scelta) throws RemoteException {
         Giocatore giocatoreGioco=giocatore.getGiocatore();
         switch (scelta){
@@ -333,6 +358,28 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
         giocatore.risorseIncrementate(giocatoreGioco.getPietra(),giocatoreGioco.getLegna(),giocatoreGioco.getServitori(),giocatoreGioco.getMonete(),giocatoreGioco.getPuntiMilitari(),giocatoreGioco.getPuntiFede(),giocatoreGioco.getPuntiVittoria());
     }
 
+    private void controlloRisorseCarta(int numeroTorre, int numeroPiano) throws RisorseInsufficientiException {
+        if(numeroTorre!=0){
+            switch (numeroTorre){
+                case 1:CartaPersonaggio carta;
+                    carta=(CartaPersonaggio) giocatore.getPartita().getCampoDaGioco().getTabellone().getTorre(numeroTorre).getPiano(numeroPiano).getCartaSviluppo();
+                    if(carta!=null)
+                    carta.confrontaCosto(giocatore.getGiocatore());
+                    break;
+                case 2:CartaEdificio carta1;
+                        carta1=(CartaEdificio)giocatore.getPartita().getCampoDaGioco().getTabellone().getTorre(numeroTorre).getPiano(numeroPiano).getCartaSviluppo();
+                        if(carta1!=null)
+                        carta1.confrontaCosto(giocatore.getGiocatore());
+                        break;
+                case 3:CartaImpresa carta2;
+                    carta2=(CartaImpresa)giocatore.getPartita().getCampoDaGioco().getTabellone().getTorre(numeroTorre).getPiano(numeroPiano).getCartaSviluppo();
+                    if(carta2!=null)
+                    carta2.confrontaCosto(giocatore.getGiocatore());
+                    break;
+            }
+
+        }
+    }
     /**
      * prende la carta che c'è nel piano x della torre y, la aggiunge nella lista del giocatore e la rimuove dal piano
      * se il giocatore non ha risorse a sufficienza viene propagata l'eccezione
@@ -349,8 +396,8 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
             cartaTerritorio.attivaEffettoRapido(familiareSelezionato);
         }
         if(numeroTorre==2) {
-            CartaEdificio cartaEdificio = null;
-            int[] arrayCosti = new int[7];
+            CartaEdificio cartaEdificio;
+            int[] arrayCosti;
             cartaEdificio=(CartaEdificio)giocatore.getPartita().getCampoDaGioco().getTabellone().getTorre(numeroTorre).getPiano(numeroPiano).getCartaSviluppo();
             System.out.println(cartaEdificio.getNome());
             cartaEdificio.confrontaCosto(giocatore.getGiocatore());
@@ -361,8 +408,8 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
             cartaEdificio.attivaEffettoRapido(familiareSelezionato);
         }
         if(numeroTorre==3) {
-            CartaImpresa cartaImpresa = null;
-            int[] arrayCosti = new int[7];
+            CartaImpresa cartaImpresa;
+            int[] arrayCosti;
             cartaImpresa=(CartaImpresa) giocatore.getPartita().getCampoDaGioco().getTabellone().getTorre(numeroTorre).getPiano(numeroPiano).getCartaSviluppo();
             System.out.println(cartaImpresa.getNome());
             cartaImpresa.confrontaCosto(giocatore.getGiocatore());
@@ -374,8 +421,8 @@ public class MosseGiocatore implements InterfaciaRemotaRMI {
         }
 
         if(numeroTorre==1) {
-            CartaPersonaggio cartaPersonaggio = null;
-            int[] arrayCosti = new int[7];
+            CartaPersonaggio cartaPersonaggio;
+            int[] arrayCosti;
             cartaPersonaggio=(CartaPersonaggio) giocatore.getPartita().getCampoDaGioco().getTabellone().getTorre(numeroTorre).getPiano(numeroPiano).getCartaSviluppo();
             System.out.println(cartaPersonaggio.getNome());
             cartaPersonaggio.confrontaCosto(giocatore.getGiocatore());

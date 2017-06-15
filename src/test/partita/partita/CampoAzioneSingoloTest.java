@@ -1,7 +1,8 @@
-package partita.componentiDelTabellone;
+package test.partita.partita;
 
 import org.junit.Test;
-import partita.eccezioniPartita.ForzaInsufficienteException;
+import partita.componentiDelTabellone.CampoAzioneSingolo;
+import partita.componentiDelTabellone.Familiare;
 import partita.eccezioniPartita.ZonaOccupataExcepion;
 
 import static org.junit.Assert.*;
@@ -54,7 +55,6 @@ public class CampoAzioneSingoloTest {
         CampoAzioneSingolo cas=new CampoAzioneSingolo(3,false,"");
         cas.setFamiliare(f);
         assertEquals(cas.getFamiliare(),f);
-        //assertTrue(cas.isOccupato());
         cas.svuotaCampoAzione();
         assertFalse(cas.isOccupato());
         assertEquals(null,cas.getFamiliare());

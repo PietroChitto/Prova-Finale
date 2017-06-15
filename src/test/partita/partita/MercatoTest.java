@@ -1,9 +1,12 @@
-package partita.componentiDelTabellone;
+package test.partita.partita;
 
 import org.junit.Test;
 import partita.carteDaGioco.CostoCarta;
+import partita.componentiDelTabellone.Familiare;
+import partita.componentiDelTabellone.Giocatore;
+import partita.componentiDelTabellone.Mercato;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by Pietro on 22/05/2017.

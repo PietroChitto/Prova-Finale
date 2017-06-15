@@ -14,7 +14,7 @@ import server.GiocatoreRemoto;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 
 /**
  * Created by Pietro on 16/05/2017.
@@ -60,10 +60,11 @@ public class Partita {
         giocatoreCorrente=ordineTurno.get(0);
     }
 
-    public void addGiocatore(GiocatoreRemoto giocatoreRemoto){
-        giocatori.add(giocatoreRemoto);
-        //setta risorse giocatore
-        setRisorse(giocatoreRemoto);
+    public void addGiocatore(GiocatoreRemoto giocatoreRemoto) {
+        if (giocatori.size()<N_GIOCATORI){
+            giocatori.add(giocatoreRemoto);
+            setRisorse(giocatoreRemoto);
+        }
     }
 
     private void setRisorse(GiocatoreRemoto giocatoreRemoto) {
@@ -92,6 +93,7 @@ public class Partita {
         turno=1;
         numeroMosseTurno=0;
         getCampoDaGioco().mettiCarteNelleTorri();
+        System.out.println("Inizio il primo turno, il mazzo territorio ha: "+campoDaGioco.getMazzoTerritorio().size());
         nomiCarte=getCampoDaGioco().getNomiCarteTorri();
         nomiScomuniche=getCampoDaGioco().getCarteScomunica();
         //avvisa i client che la partita è iniziata e possono fare le mosse
@@ -212,8 +214,10 @@ public class Partita {
         dadiTirati=false;
         ordineTurno=getCampoDaGioco().getTabellone().getPalazzoDelConsiglio().calcoaTurnoSuccessivo(ordineTurno);
         getCampoDaGioco().getTabellone().getPalazzoDelConsiglio().stampaOrdineTurno(ordineTurno);
-        getCampoDaGioco().mettiCarteNelleTorri();
-        nomiCarte=getCampoDaGioco().getNomiCarteTorri();
+        if(periodo!=3 && turno!=2) {
+            getCampoDaGioco().mettiCarteNelleTorri();
+            nomiCarte = getCampoDaGioco().getNomiCarteTorri();
+        }
         ripristinaDisponibilitàFamiliari();
         turno++;
         if(turno==3){
@@ -252,12 +256,23 @@ public class Partita {
     }
 
     private void finePartita() {
-        /*classifica=*/calcolaClassifica();
+        calcolaClassifica();
+        HashMap<String, Integer> classifica=new HashMap<>();
+        for(GiocatoreRemoto g: giocatori){
+            classifica.put(g.getUsername(),g.getGiocatore().getPuntiVittoria());
+        }
         for (GiocatoreRemoto g: giocatori){
-            //g.finePartita(classifica);
+            try {
+                g.finePartita(classifica);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
         }
     }
 
+    /**
+     * ordina la lista giocatori in ordine di punti vittoria
+     */
     private void calcolaClassifica(){
         Giocatore g;
         for (GiocatoreRemoto giocatoreRemoto: giocatori){
@@ -272,11 +287,11 @@ public class Partita {
 
         GiocatoreRemoto classifica[];
 
-        classifica= (GiocatoreRemoto[]) giocatori.toArray();
+//        classifica= (GiocatoreRemoto[]) giocatori.toArray();
 
         GiocatoreRemoto tmp;
 
-        for (int i=0;i<giocatori.size();i++){
+        /*for (int i=0;i<giocatori.size();i++){
             for (int j=0;j<(giocatori.size()-1)-i;j++){
                 if (classifica[j].getGiocatore().getPuntiVittoria()<classifica[j+1].getGiocatore().getPuntiVittoria()){
                     tmp=classifica[j];
@@ -287,7 +302,7 @@ public class Partita {
         }
 
         giocatori.clear();
-        giocatori.addAll(Arrays.asList(classifica));
+        giocatori.addAll(Arrays.asList(classifica));*/
     }
 
     private void attivaScomuniche(Giocatore g) {
@@ -376,6 +391,7 @@ public class Partita {
             else{
                 for(GiocatoreRemoto g: giocatori){
                     try {
+                        if(g!=null)
                         g.giocatoreScomunicato(giocatori.get(i).getGiocatore().getId(), giocatori.get(i).getPartita().getPeriodo());
                     } catch (RemoteException e) {
                         e.printStackTrace();

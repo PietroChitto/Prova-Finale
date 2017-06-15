@@ -1,10 +1,9 @@
-package partita.componentiDelTabellone;
+package test.partita.partita;
 
 import org.junit.Test;
+import partita.componentiDelTabellone.Giocatore;
 
 import java.util.ArrayList;
-
-import static org.junit.Assert.*;
 
 /**
  * Created by Pietro on 05/06/2017.

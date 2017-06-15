@@ -225,6 +225,17 @@ public class ClientSocket implements InterfacciaClient, InterfaciaRemotaRMI{
         });
     }
 
+    @Override
+    public void finePartita(HashMap<String,Integer> classifica) throws RemoteException {
+        Platform.runLater(()->{
+            try {
+                controllerGioco.finePartita(classifica);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
     //----------------------------------------------------------------------------------------------------------------------------------
 
     @Override
@@ -393,6 +404,7 @@ public class ClientSocket implements InterfacciaClient, InterfaciaRemotaRMI{
         private String messaggio;
         private ArrayList<String> nomiCarte;
         private boolean run=true;
+        private HashMap<String,Integer> classifica;
 
 
         @Override
@@ -496,6 +508,10 @@ public class ClientSocket implements InterfacciaClient, InterfaciaRemotaRMI{
                         System.out.println("(Socket) ricevo inizio turno");
                         nomiCarte=(ArrayList<String>) in.readObject();
                         avvisoInizioTurno(nomiCarte);
+                    }
+                    else if(comando.startsWith("FINEPARTITA")){
+                        classifica=(HashMap<String,Integer>) in.readObject();
+                        finePartita(classifica);
                     }
 
 

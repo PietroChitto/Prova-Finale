@@ -8,6 +8,7 @@ import server.MosseGiocatore;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Pietro on 16/05/2017.
@@ -16,9 +17,10 @@ public class GiocatoreRMI extends GiocatoreRemoto{
     private InterfacciaClient controllerClient;
     private transient MosseGiocatore mosseGiocatore;
 
-    GiocatoreRMI () throws RemoteException {
+    public GiocatoreRMI() throws RemoteException {
         super();
         mosseGiocatore=new MosseGiocatore(this);
+        super.setMosse(mosseGiocatore);
     }
 
     void setControllerClientRMI(InterfacciaClient controllerClientRMI){
@@ -41,6 +43,7 @@ public class GiocatoreRMI extends GiocatoreRemoto{
     public void deselezionaFamiliare() throws RemoteException {
         try {
             mosseGiocatore.deselezionaFamiliare();
+            if(controllerClient!=null)
             controllerClient.messaggio("Familiare deselezionato");
         } catch (TurnoException e) {
             controllerClient.messaggio("");
@@ -49,21 +52,37 @@ public class GiocatoreRMI extends GiocatoreRemoto{
 
     @Override
     public void spostaFamiliarePiano(int numeroTorre, int numeroPiano) throws RemoteException {
-        try {
-            mosseGiocatore.spostaFamiliarePiano(numeroTorre, numeroPiano);
-        } catch (FamiliareNonSelezionatoExcepion familiareNonSelezionatoExcepion) {
-            controllerClient.messaggio("familiare non selezionato");
-        } catch (TurnoException e) {
-            controllerClient.messaggio("non è il tuoturno");
-        } catch (ForzaInsufficienteException e) {
-            controllerClient.messaggio("Il familiare non ha forza sufficiente");
-        } catch (ZonaOccupataExcepion zonaOccupataExcepion) {
-            controllerClient.messaggio("la zona è già occupata");
-        } catch (RisorseInsufficientiException e) {
-            controllerClient.messaggio("non hai risorse sufficienti per prendere la carta");
-        } catch (TorreOccupataException e) {
-            controllerClient.messaggio("Hai già piazzato un familiare sulla torre");
-        }
+            try {
+                mosseGiocatore.spostaFamiliarePiano(numeroTorre, numeroPiano);
+            } catch (FamiliareNonSelezionatoExcepion familiareNonSelezionatoExcepion) {
+                if(controllerClient!=null)
+                controllerClient.messaggio("familiare non selezionato");
+            } catch (TurnoException e) {
+                if(controllerClient!=null)
+                controllerClient.messaggio("non è il tuoturno");
+            } catch (ForzaInsufficienteException e) {
+                //se la torre era occupata il giocatore aveva speso 3 monete, siccome la mossa non è andata a buon fine le restituisco
+                if(getPartita().getCampoDaGioco().getTabellone().getTorre(numeroTorre).isOccupata())
+                    getGiocatore().setMonete(getGiocatore().getMonete()+3);
+                if(controllerClient!=null)
+                controllerClient.messaggio("Il familiare non ha forza sufficiente");
+            } catch (ZonaOccupataExcepion zonaOccupataExcepion) {
+                //se la torre era occupata il giocatore aveva speso 3 monete, siccome la mossa non è andata a buon fine le restituisco
+                if(getPartita().getCampoDaGioco().getTabellone().getTorre(numeroTorre).isOccupata())
+                    getGiocatore().setMonete(getGiocatore().getMonete()+3);
+                if(controllerClient!=null)
+                controllerClient.messaggio("la zona è già occupata");
+            } catch (RisorseInsufficientiException e) {
+                //se la torre era occupata il giocatore aveva speso 3 monete, siccome la mossa non è andata a buon fine le restituisco
+                if(getPartita().getCampoDaGioco().getTabellone().getTorre(numeroTorre).isOccupata())
+                    getGiocatore().setMonete(getGiocatore().getMonete()+3);
+                if(controllerClient!=null)
+                controllerClient.messaggio("non hai risorse sufficienti per prendere la carta");
+            } catch (TorreOccupataException e) {
+                if(controllerClient!=null)
+                controllerClient.messaggio("Hai già piazzato un familiare sulla torre");
+            }
+
     }
 
     @Override
@@ -76,6 +95,10 @@ public class GiocatoreRMI extends GiocatoreRemoto{
             controllerClient.messaggio("Forza Insufficiente");
         } catch (ZonaOccupataExcepion zonaOccupataExcepion) {
             controllerClient.messaggio("La zona è già occupata");
+        } catch (DadiNonTiratiException e) {
+            controllerClient.messaggio("Tira i dadi");
+        } catch (FamiliareNonSelezionatoExcepion familiareNonSelezionatoExcepion) {
+            controllerClient.messaggio("familiare non selezionato");
         }
     }
 
@@ -89,6 +112,10 @@ public class GiocatoreRMI extends GiocatoreRemoto{
             controllerClient.messaggio("Non è il tuo turno");
         } catch (ZonaOccupataExcepion zonaOccupataExcepion) {
             controllerClient.messaggio("");
+        } catch (DadiNonTiratiException e) {
+            controllerClient.messaggio("tira i dadi");
+        } catch (FamiliareNonSelezionatoExcepion familiareNonSelezionatoExcepion) {
+            controllerClient.messaggio("familiare non selezionato");
         }
     }
 
@@ -101,7 +128,11 @@ public class GiocatoreRMI extends GiocatoreRemoto{
         } catch (TurnoException e) {
             controllerClient.messaggio("Non è il tuo turno");
         } catch (ZonaOccupataExcepion zonaOccupataExcepion) {
-            zonaOccupataExcepion.printStackTrace();
+            controllerClient.messaggio("La zona è già occupata");
+        } catch (DadiNonTiratiException e) {
+            controllerClient.messaggio("Tira i dadi");
+        } catch (FamiliareNonSelezionatoExcepion familiareNonSelezionatoExcepion) {
+            controllerClient.messaggio("familiare non selezionato");
         }
     }
 
@@ -115,6 +146,10 @@ public class GiocatoreRMI extends GiocatoreRemoto{
             controllerClient.messaggio("forza Insufficiente");
         } catch (ZonaOccupataExcepion zonaOccupataExcepion) {
             controllerClient.messaggio("Zona già Occupata");
+        } catch (FamiliareNonSelezionatoExcepion familiareNonSelezionatoExcepion) {
+            controllerClient.messaggio("familiare non selezionato");
+        } catch (DadiNonTiratiException e) {
+            controllerClient.messaggio("Tira i dadi");
         }
     }
 
@@ -170,17 +205,20 @@ public class GiocatoreRMI extends GiocatoreRemoto{
             System.out.println("lista giocatori non vuota");
             System.out.println("(RMI)"+s);
         }
+        if(controllerClient!=null)
         controllerClient.iniziaPartita(mioId, carte, giocatori, risorse, scomuniche);
     }
 
     @Override
     public void spostatoFamiliarePiano(int numeroTorre, int numeroPiano, String coloreDado, int idGiocatore) throws RemoteException {
+        if(controllerClient!=null)
         controllerClient.spostatoFamiliarePiano(numeroTorre,numeroPiano,coloreDado,idGiocatore);
     }
 
     @Override
     public void dadiTirati(int ar, int ne, int bi) throws RemoteException {
         try {
+            if(controllerClient!=null)
             controllerClient.dadiTirati(ar, ne, bi);
         } catch (IOException e) {
             e.printStackTrace();
@@ -189,6 +227,7 @@ public class GiocatoreRMI extends GiocatoreRemoto{
 
     @Override
     public void messaggio(String s) throws RemoteException {
+        if(controllerClient!=null)
         controllerClient.messaggio(s);
     }
 
@@ -199,6 +238,7 @@ public class GiocatoreRMI extends GiocatoreRemoto{
 
     @Override
     public void risorseIncrementate(int pietra, int legna, int servitori, int monete, int puntiMilitari, int puntiFede, int puntiVittoria) throws RemoteException {
+        if(controllerClient!=null)
         controllerClient.risorseIncrementate(pietra, legna, servitori, monete, puntiMilitari, puntiFede, puntiVittoria);
     }
 
@@ -233,10 +273,12 @@ public class GiocatoreRMI extends GiocatoreRemoto{
 
     @Override
     public void avvisoInizioTurno(ArrayList<String> nomiCarte) {
-        try {
-            controllerClient.avvisoInizioTurno(nomiCarte);
-        } catch (RemoteException e) {
-            e.printStackTrace();
+        if(controllerClient!=null) {
+            try {
+                controllerClient.avvisoInizioTurno(nomiCarte);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -252,6 +294,13 @@ public class GiocatoreRMI extends GiocatoreRemoto{
 
     @Override
     public void giocatoreScomunicato(int id, int periodo) throws RemoteException {
+        if(controllerClient!=null)
         controllerClient.giocatoreScomunicato(id, periodo);
+    }
+
+    @Override
+    public void finePartita(HashMap<String,Integer> classifica) throws RemoteException {
+        if(controllerClient!=null)
+        controllerClient.finePartita(classifica);
     }
 }

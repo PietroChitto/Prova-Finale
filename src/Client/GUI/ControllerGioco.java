@@ -18,7 +18,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.TextAlignment;
-import partita.eccezioniPartita.*;
 import server.rmiServer.InterfaciaRemotaRMI;
 
 import java.io.IOException;
@@ -172,20 +171,6 @@ public class ControllerGioco implements InterfacciaClient{
         try {
             clientGenerico.spostaFamiliarePiano(torre, piano);
             System.out.println("messaggio sposta familiare piano mandato");
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        } catch (FamiliareNonSelezionatoExcepion familiareNonSelezionatoExcepion) {
-            familiareNonSelezionatoExcepion.printStackTrace();
-        } catch (TurnoException e) {
-            e.printStackTrace();
-        } catch (ForzaInsufficienteException e) {
-            e.printStackTrace();
-        } catch (ZonaOccupataExcepion zonaOccupataExcepion) {
-            zonaOccupataExcepion.printStackTrace();
-        } catch (RisorseInsufficientiException e) {
-            e.printStackTrace();
-        } catch (TorreOccupataException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -240,8 +225,6 @@ public class ControllerGioco implements InterfacciaClient{
                 clientGenerico.tiraIDadi();
             } catch (RemoteException e) {
                 e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
             }
         });
         paneDadoBianco.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
@@ -249,16 +232,12 @@ public class ControllerGioco implements InterfacciaClient{
                 clientGenerico.tiraIDadi();
             } catch (RemoteException e) {
                 e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
             }
         });
         paneDadoArancio.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             try {
                 clientGenerico.tiraIDadi();
             } catch (RemoteException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
                 e.printStackTrace();
             }
         });
@@ -312,8 +291,6 @@ public class ControllerGioco implements InterfacciaClient{
                 clientGenerico.deselezionaFamiliare();
             } catch (RemoteException e) {
                 e.printStackTrace();
-            } catch (TurnoException e) {
-                e.printStackTrace();
             }
         } else {
             for (FamiliareGrafico f : familiari) {
@@ -326,10 +303,6 @@ public class ControllerGioco implements InterfacciaClient{
                 System.out.println("colore dado familiare "+tempFam.getNomeColoreDado());
                 clientGenerico.selezionaFamiliare(tempFam.getNomeColoreDado(), mioId);
             } catch (RemoteException e) {
-                e.printStackTrace();
-            } catch (TurnoException e) {
-                e.printStackTrace();
-            } catch (DadiNonTiratiException e) {
                 e.printStackTrace();
             }
 
@@ -432,10 +405,6 @@ public class ControllerGioco implements InterfacciaClient{
 
         } catch (RemoteException e) {
             e.printStackTrace();
-        } catch (TurnoException e) {
-            e.printStackTrace();
-        } catch (DadiNonTiratiException e) {
-            e.printStackTrace();
         }
 
     }
@@ -457,12 +426,6 @@ public class ControllerGioco implements InterfacciaClient{
             }
         } catch (RemoteException e) {
             e.printStackTrace();
-        } catch (ForzaInsufficienteException e) {
-            e.printStackTrace();
-        } catch (TurnoException e) {
-            e.printStackTrace();
-        } catch (ZonaOccupataExcepion zonaOccupataExcepion) {
-            zonaOccupataExcepion.printStackTrace();
         }
     }
 
@@ -492,12 +455,6 @@ public class ControllerGioco implements InterfacciaClient{
             clientGenerico.spostaFamiliarePalazzoDelConsiglio();
         } catch (RemoteException e) {
             e.printStackTrace();
-        } catch (ForzaInsufficienteException e) {
-            e.printStackTrace();
-        } catch (TurnoException e) {
-            e.printStackTrace();
-        } catch (ZonaOccupataExcepion zonaOccupataExcepion) {
-            zonaOccupataExcepion.printStackTrace();
         }
     }
 
@@ -511,12 +468,6 @@ public class ControllerGioco implements InterfacciaClient{
             }
         } catch (RemoteException e) {
             e.printStackTrace();
-        } catch (ForzaInsufficienteException e) {
-            e.printStackTrace();
-        } catch (TurnoException e) {
-            e.printStackTrace();
-        } catch (ZonaOccupataExcepion zonaOccupataExcepion) {
-            zonaOccupataExcepion.printStackTrace();
         }
     }
 
@@ -530,12 +481,6 @@ public class ControllerGioco implements InterfacciaClient{
             }
         } catch (RemoteException e) {
             e.printStackTrace();
-        } catch (ForzaInsufficienteException e) {
-            e.printStackTrace();
-        } catch (TurnoException e) {
-            e.printStackTrace();
-        } catch (ZonaOccupataExcepion zonaOccupataExcepion) {
-            zonaOccupataExcepion.printStackTrace();
         }
     }
 
@@ -543,10 +488,6 @@ public class ControllerGioco implements InterfacciaClient{
         try {
             clientGenerico.saltaMossa(mioId);
         } catch (RemoteException e) {
-            e.printStackTrace();
-        } catch (TurnoException e) {
-            e.printStackTrace();
-        } catch (DadiNonTiratiException e) {
             e.printStackTrace();
         }
     }
@@ -1077,6 +1018,11 @@ public class ControllerGioco implements InterfacciaClient{
         }
 
 
+    }
+
+    @Override
+    public void finePartita(HashMap<String,Integer> classifica) throws RemoteException {
+        //stampa classifica
     }
 
 
