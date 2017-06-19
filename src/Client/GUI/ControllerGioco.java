@@ -3,6 +3,9 @@ package Client.GUI;
 import Client.InterfacciaClient;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -11,14 +14,14 @@ import javafx.scene.effect.Shadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.TextAlignment;
-import server.rmiServer.InterfaciaRemotaRMI;
+import javafx.stage.Stage;
+import server.rmiServer.InterfaciaServer;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
@@ -28,17 +31,15 @@ import java.util.Optional;
 
 public class ControllerGioco implements InterfacciaClient{
 
-    private InterfaciaRemotaRMI clientGenerico;
+    private InterfaciaServer clientGenerico;
     private ArrayList<ImageView> immaginiCarte;
     //i primi 4 sono della prima torre ecc
     private ArrayList<Pane> paneCampiAzioneTorri;
     private ImageView[] immaginiDadoNero;
     private ImageView[] immaginiDadoBianco;
     private ImageView[] immaginiDadoArancio;
-    private HashMap<Integer,String> giocatori;
     private int mioId;
     private ArrayList<FamiliareGrafico> familiari;
-    private boolean mioTurno;
     private int contaCarteT;
     private int contaCarteP;
     private int contaCarteE;
@@ -47,7 +48,7 @@ public class ControllerGioco implements InterfacciaClient{
     private int contaFamZonaProd;
     private int contaFamZonaRac;
 
-    public void setClientGenerico(InterfaciaRemotaRMI clientGenerico){
+    public void setClientGenerico(InterfaciaServer clientGenerico){
         this.clientGenerico=clientGenerico;
     }
 
@@ -60,9 +61,8 @@ public class ControllerGioco implements InterfacciaClient{
         for (int i=0; i<giocatori.size();i++){
             System.out.println(giocatori.get(i));
         }
-        this.giocatori=giocatori;
         this.mioId=mioId;
-        settaLabelGiocatori(this.giocatori);
+        settaLabelGiocatori(giocatori);
         mettiCarteNelleTorri(carte);
         //settaSfondo();
         creaFamiliari(mioColore(mioId));
@@ -78,28 +78,6 @@ public class ControllerGioco implements InterfacciaClient{
         contaFamZonaProd=0;
         contaFamZonaRac=0;
         //buttonForzaArancio.setStyle("-fx-shape: inherit");
-    }
-
-    private void settaSfondo() {
-        Image image;
-        switch (mioId){
-            case 0: image=new Image("Client/GUI/img/planciaBlu.jpg");
-                imgSfondoClassifica.setImage(image);
-                anchorDestro.setStyle("-fx-background-color: #5f6493");
-                break;
-            case 1: image=new Image("Client/GUI/img/planciaGialla.jpg");
-                imgSfondoClassifica.setImage(image);
-                anchorDestro.setStyle("-fx-background-color: #c6a349");
-                break;
-            case 2: image=new Image("Client/GUI/img/planciaRossa.jpg");
-                imgSfondoClassifica.setImage(image);
-                anchorDestro.setStyle("-fx-background-color: #903b42");
-                break;
-            case 3: image=new Image("Client/GUI/img/planciaVerde.jpg");
-                imgSfondoClassifica.setImage(image);
-                anchorDestro.setStyle("-fx-background-color: #6aa259");
-                break;
-        }
     }
 
     private void mettiScomuniche(ArrayList<String> scomuniche) {
@@ -160,9 +138,7 @@ public class ControllerGioco implements InterfacciaClient{
     }
 
     private void creaEventoCampiAzioneTorre(Pane tempPane, int torre, int piano) {
-        tempPane.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            eventoCampiAzioneTorre(torre, piano);
-        });
+        tempPane.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> eventoCampiAzioneTorre(torre, piano));
     }
 
     private void eventoCampiAzioneTorre(int torre, int piano){
@@ -321,7 +297,7 @@ public class ControllerGioco implements InterfacciaClient{
         labelGiocatore4.setText(nome);
     }
 
-    public void mettiCarteNelleTorri(ArrayList<String> nomiCarte){
+    private void mettiCarteNelleTorri(ArrayList<String> nomiCarte){
         immaginiCarte =new ArrayList<>();
         Image tempImg;
         ImageView tempImageView;
@@ -378,7 +354,7 @@ public class ControllerGioco implements InterfacciaClient{
         settaEventiCarta(immaginiCarte);
     }
 
-    public void settaEventiCarta(ArrayList<ImageView> carte){
+    private void settaEventiCarta(ArrayList<ImageView> carte){
 
         for (ImageView iv: carte){
 
@@ -471,6 +447,15 @@ public class ControllerGioco implements InterfacciaClient{
         }
     }
 
+    public void esci(){
+        try {
+            clientGenerico.esci(mioId);
+            System.exit(0);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void eventoZonaProduzione(){
         try {
             if(paneCasZonaProd.getChildren().size()==0){
@@ -539,9 +524,6 @@ public class ControllerGioco implements InterfacciaClient{
     private GridPane gridPalazzoDelConsiglio;
 
     @FXML
-    private Pane paneCarta;
-
-    @FXML
     private Pane paneDadoArancio;
 
     @FXML
@@ -599,15 +581,6 @@ public class ControllerGioco implements InterfacciaClient{
     private Button buttonForzaNeutro;
 
     @FXML
-    private Label labelPuntiMilitari;
-
-    @FXML
-    private Label labelPuntiFede;
-
-    @FXML
-    private Label labelPuntiVittoria;
-
-    @FXML
     private GridPane gridPlancia;
 
     @FXML
@@ -638,12 +611,6 @@ public class ControllerGioco implements InterfacciaClient{
     private GridPane gridScomunica;
 
     @FXML
-    private ImageView imgSfondoClassifica;
-
-    @FXML
-    private AnchorPane anchorDestro;
-
-    @FXML
     private VBox vBoxScomunica1;
 
     @FXML
@@ -651,6 +618,32 @@ public class ControllerGioco implements InterfacciaClient{
 
     @FXML
     private VBox vBoxScomunica3;
+
+    @FXML
+    private Label labelPuntiVG0;
+    @FXML
+    private Label labelPuntiFG0;
+    @FXML
+    private Label labelPuntiMG0;
+    @FXML
+    private Label labelPuntiVG1;
+    @FXML
+    private Label labelPuntiFG1;
+    @FXML
+    private Label labelPuntiMG1;
+    @FXML
+    private Label labelPuntiVG2;
+    @FXML
+    private Label labelPuntiFG2;
+    @FXML
+    private Label labelPuntiMG2;
+    @FXML
+    private Label labelPuntiVG3;
+    @FXML
+    private Label labelPuntiFG3;
+    @FXML
+    private Label labelPuntiMG3;
+
 
 
     @Override
@@ -666,6 +659,7 @@ public class ControllerGioco implements InterfacciaClient{
         FamiliareGrafico tempFam2;
         if(idGiocatore==mioId) {
             tempFam2=prendiFamiliare(coloreDado);
+            assert tempFam2 != null;
             tempFam=new FamiliareGrafico(10,tempFam2.getColore(),tempFam2.getColoreDado());
 
         }
@@ -834,9 +828,11 @@ public class ControllerGioco implements InterfacciaClient{
         labelLegna.setText(legna+"");
         labelServitori.setText(servitori+"");
         labelMonete.setText(monete+"");
-        labelPuntiMilitari.setText(puntiMilitari+"");
-        labelPuntiFede.setText(puntiFede+"");
-        labelPuntiVittoria.setText(puntiVittoria+"");
+        ArrayList<Integer> punteggi=new ArrayList<>();
+        punteggi.add(puntiVittoria);
+        punteggi.add(puntiFede);
+        punteggi.add(puntiMilitari);
+        puntiGiocatore(mioId,punteggi);
     }
 
     @Override
@@ -845,6 +841,7 @@ public class ControllerGioco implements InterfacciaClient{
         FamiliareGrafico tempFam2;
         if(id==mioId) {
             tempFam2=prendiFamiliare(coloreDado);
+            assert tempFam2 != null;
             tempFam=new FamiliareGrafico(10,tempFam2.getColore(),tempFam2.getColoreDado());
 
         }
@@ -852,19 +849,27 @@ public class ControllerGioco implements InterfacciaClient{
             tempFam=creaFamiliare(coloreDado, id);
         }
         switch (zonaMercato){
-            case 0: tempFam.setLayoutX(campoAzioneMercato0.getWidth()/2);
+            case 0:
+                assert tempFam != null;
+                tempFam.setLayoutX(campoAzioneMercato0.getWidth()/2);
                     tempFam.setLayoutY(campoAzioneMercato0.getHeight()/2);
                     campoAzioneMercato0.getChildren().add(tempFam);
                     break;
-            case 1: tempFam.setLayoutX(campoAzioneMercato1.getWidth()/2);
+            case 1:
+                assert tempFam != null;
+                tempFam.setLayoutX(campoAzioneMercato1.getWidth()/2);
                     tempFam.setLayoutY(campoAzioneMercato1.getHeight()/2);
                     campoAzioneMercato1.getChildren().add(tempFam);
                     break;
-            case 2: tempFam.setLayoutX(campoAzioneMercato2.getWidth()/2);
+            case 2:
+                assert tempFam != null;
+                tempFam.setLayoutX(campoAzioneMercato2.getWidth()/2);
                     tempFam.setLayoutY(campoAzioneMercato2.getHeight()/2);
                     campoAzioneMercato2.getChildren().add(tempFam);
                     break;
-            case 3:tempFam.setLayoutX(campoAzioneMercato3.getWidth()/2);
+            case 3:
+                assert tempFam != null;
+                tempFam.setLayoutX(campoAzioneMercato3.getWidth()/2);
                     tempFam.setLayoutY(campoAzioneMercato3.getHeight()/2);
                     campoAzioneMercato3.getChildren().add(tempFam);
                     break;
@@ -877,6 +882,7 @@ public class ControllerGioco implements InterfacciaClient{
         FamiliareGrafico tempFam2;
         if(id==mioId) {
             tempFam2=prendiFamiliare(coloreDado);
+            assert tempFam2 != null;
             tempFam=new FamiliareGrafico(10,tempFam2.getColore(),tempFam2.getColoreDado());
 
         }
@@ -894,6 +900,7 @@ public class ControllerGioco implements InterfacciaClient{
         FamiliareGrafico tempFam2;
         if(id==mioId) {
             tempFam2=prendiFamiliare(coloreDado);
+            assert tempFam2 != null;
             tempFam=new FamiliareGrafico(10,tempFam2.getColore(),tempFam2.getColoreDado());
 
         }
@@ -902,6 +909,7 @@ public class ControllerGioco implements InterfacciaClient{
         }
 
         if(zona==0){
+            assert tempFam != null;
             tempFam.setLayoutX(paneCasZonaProd.getWidth()/2);
             tempFam.setLayoutY(paneCasZonaProd.getHeight()/2);
             paneCasZonaProd.getChildren().add(tempFam);
@@ -920,6 +928,7 @@ public class ControllerGioco implements InterfacciaClient{
         FamiliareGrafico tempFam2;
         if(id==mioId) {
             tempFam2=prendiFamiliare(coloreDado);
+            assert tempFam2 != null;
             tempFam=new FamiliareGrafico(10,tempFam2.getColore(),tempFam2.getColoreDado());
 
         }
@@ -928,6 +937,7 @@ public class ControllerGioco implements InterfacciaClient{
         }
 
         if(zona==0){
+            assert tempFam != null;
             tempFam.setLayoutX(paneCasZonaRaccolto.getWidth()/2);
             tempFam.setLayoutY(paneCasZonaRaccolto.getHeight()/2);
             paneCasZonaRaccolto.getChildren().add(tempFam);
@@ -1021,8 +1031,60 @@ public class ControllerGioco implements InterfacciaClient{
     }
 
     @Override
-    public void finePartita(HashMap<String,Integer> classifica) throws RemoteException {
-        //stampa classifica
+    public void finePartita(ArrayList<Integer> classificaId,ArrayList<String> username, ArrayList<Integer> punti) throws RemoteException {
+        if(classificaId!=null){
+            Stage primaryStage=new Stage();
+            System.out.println("fine partita");
+            if(mioId==classificaId.get(0)){
+                //carico il messaggio hai vinto
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("Client/GUI/You Win.fxml"));
+                Parent root;
+                try {
+                    root = fxmlLoader.load();
+                    primaryStage.setTitle("Lorenzo il magnifico");
+                    primaryStage.setScene(new Scene(root));
+                    primaryStage.show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            else {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("Client/GUI/You Lose.fxml"));
+                try {
+                    Parent root = fxmlLoader.load();
+                    primaryStage.setTitle("Lorenzo il magnifico");
+                    primaryStage.setScene(new Scene(root));
+                    primaryStage.show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        else {
+            labelMessaggiServer.setText("Un giocatore ha abbandonato");
+        }
+    }
+
+    @Override
+    public void puntiGiocatore(int id, ArrayList<Integer> punteggi) throws RemoteException {
+        switch (id){
+            case 0: labelPuntiVG0.setText(String.valueOf(punteggi.get(0)));
+                    labelPuntiFG0.setText(String.valueOf(punteggi.get(1)));
+                    labelPuntiMG0.setText(String.valueOf(punteggi.get(2)));
+                    break;
+            case 1: labelPuntiVG1.setText(String.valueOf(punteggi.get(0)));
+                    labelPuntiFG1.setText(String.valueOf(punteggi.get(1)));
+                    labelPuntiMG1.setText(String.valueOf(punteggi.get(2)));
+                    break;
+            case 2: labelPuntiVG2.setText(String.valueOf(punteggi.get(0)));
+                    labelPuntiFG2.setText(String.valueOf(punteggi.get(1)));
+                    labelPuntiMG2.setText(String.valueOf(punteggi.get(2)));
+                    break;
+            case 3: labelPuntiVG3.setText(String.valueOf(punteggi.get(0)));
+                    labelPuntiFG3.setText(String.valueOf(punteggi.get(1)));
+                    labelPuntiMG3.setText(String.valueOf(punteggi.get(2)));
+                    break;
+        }
     }
 
 

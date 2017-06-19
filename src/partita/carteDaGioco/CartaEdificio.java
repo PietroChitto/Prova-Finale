@@ -3,7 +3,6 @@ package partita.carteDaGioco;
 import partita.carteDaGioco.effetti.Effetto;
 import partita.componentiDelTabellone.Familiare;
 import partita.componentiDelTabellone.Giocatore;
-import partita.componentiDelTabellone.Tabellone;
 import partita.eccezioniPartita.ForzaInsufficienteException;
 import partita.eccezioniPartita.RisorseInsufficientiException;
 
@@ -68,8 +67,10 @@ public class CartaEdificio extends CartaSviluppo {
         if(!(costo.getCostoLegna()<=g.getLegna() && costo.getCostoMonete()<=g.getMonete()
                 && costo.getCostoPietra()<=g.getPietra() && costo.getCostoServitori()<=g.getServitori()
                 && costo.getCostoPuntiMilitari()<=g.getPuntiMilitari()) ) {
+            System.out.println("risorse insufficienti");
             throw new RisorseInsufficientiException();
         }
+        else{System.out.println("risorse sufficienti");}
 
     }
 

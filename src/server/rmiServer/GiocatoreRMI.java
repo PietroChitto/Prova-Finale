@@ -8,19 +8,17 @@ import server.MosseGiocatore;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by Pietro on 16/05/2017.
  */
 public class GiocatoreRMI extends GiocatoreRemoto{
     private InterfacciaClient controllerClient;
-    private transient MosseGiocatore mosseGiocatore;
+    //private transient MosseGiocatore mosseGiocatore;
 
     public GiocatoreRMI() throws RemoteException {
         super();
-        mosseGiocatore=new MosseGiocatore(this);
-        super.setMosse(mosseGiocatore);
+        super.setMosse(new MosseGiocatore(this));
     }
 
     void setControllerClientRMI(InterfacciaClient controllerClientRMI){
@@ -30,7 +28,7 @@ public class GiocatoreRMI extends GiocatoreRemoto{
     @Override
     public void selezionaFamiliare(String colore, int idGiocatore) throws RemoteException {
         try {
-            mosseGiocatore.selezionaFamiliare(colore,idGiocatore);
+            getMosse().selezionaFamiliare(colore,idGiocatore);
             controllerClient.messaggio("Familiare selezionato");
         } catch (TurnoException e) {
             controllerClient.messaggio("Non è il tuo turno");
@@ -42,7 +40,7 @@ public class GiocatoreRMI extends GiocatoreRemoto{
     @Override
     public void deselezionaFamiliare() throws RemoteException {
         try {
-            mosseGiocatore.deselezionaFamiliare();
+            getMosse().deselezionaFamiliare();
             if(controllerClient!=null)
             controllerClient.messaggio("Familiare deselezionato");
         } catch (TurnoException e) {
@@ -53,7 +51,7 @@ public class GiocatoreRMI extends GiocatoreRemoto{
     @Override
     public void spostaFamiliarePiano(int numeroTorre, int numeroPiano) throws RemoteException {
             try {
-                mosseGiocatore.spostaFamiliarePiano(numeroTorre, numeroPiano);
+                getMosse().spostaFamiliarePiano(numeroTorre, numeroPiano);
             } catch (FamiliareNonSelezionatoExcepion familiareNonSelezionatoExcepion) {
                 if(controllerClient!=null)
                 controllerClient.messaggio("familiare non selezionato");
@@ -62,8 +60,6 @@ public class GiocatoreRMI extends GiocatoreRemoto{
                 controllerClient.messaggio("non è il tuoturno");
             } catch (ForzaInsufficienteException e) {
                 //se la torre era occupata il giocatore aveva speso 3 monete, siccome la mossa non è andata a buon fine le restituisco
-                if(getPartita().getCampoDaGioco().getTabellone().getTorre(numeroTorre).isOccupata())
-                    getGiocatore().setMonete(getGiocatore().getMonete()+3);
                 if(controllerClient!=null)
                 controllerClient.messaggio("Il familiare non ha forza sufficiente");
             } catch (ZonaOccupataExcepion zonaOccupataExcepion) {
@@ -73,9 +69,6 @@ public class GiocatoreRMI extends GiocatoreRemoto{
                 if(controllerClient!=null)
                 controllerClient.messaggio("la zona è già occupata");
             } catch (RisorseInsufficientiException e) {
-                //se la torre era occupata il giocatore aveva speso 3 monete, siccome la mossa non è andata a buon fine le restituisco
-                if(getPartita().getCampoDaGioco().getTabellone().getTorre(numeroTorre).isOccupata())
-                    getGiocatore().setMonete(getGiocatore().getMonete()+3);
                 if(controllerClient!=null)
                 controllerClient.messaggio("non hai risorse sufficienti per prendere la carta");
             } catch (TorreOccupataException e) {
@@ -88,7 +81,7 @@ public class GiocatoreRMI extends GiocatoreRemoto{
     @Override
     public void spostaFamiliareMercato(int zonaMercato) throws RemoteException {
         try {
-            mosseGiocatore.spostaFamiliareMercato(zonaMercato);
+            getMosse().spostaFamiliareMercato(zonaMercato);
         } catch (TurnoException e) {
             controllerClient.messaggio("Non è il tuo turno");
         } catch (ForzaInsufficienteException e) {
@@ -105,7 +98,7 @@ public class GiocatoreRMI extends GiocatoreRemoto{
     @Override
     public void spostaFamiliarePalazzoDelConsiglio() throws RemoteException {
         try {
-            mosseGiocatore.spostaFamiliarePalazzoDelConsiglio();
+            getMosse().spostaFamiliarePalazzoDelConsiglio();
         } catch (ForzaInsufficienteException e) {
             controllerClient.messaggio("Forza Insufficiente");
         } catch (TurnoException e) {
@@ -122,7 +115,7 @@ public class GiocatoreRMI extends GiocatoreRemoto{
     @Override
     public void spostaFamiliareZonaProduzione(int zona) throws RemoteException {
         try {
-            mosseGiocatore.spostaFamiliareZonaProduzione(zona);
+            getMosse().spostaFamiliareZonaProduzione(zona);
         } catch (ForzaInsufficienteException e) {
             controllerClient.messaggio("forza Insufficiente");
         } catch (TurnoException e) {
@@ -139,7 +132,7 @@ public class GiocatoreRMI extends GiocatoreRemoto{
     @Override
     public void spostaFamiliareZonaRaccolto(int zona) throws RemoteException {
         try {
-            mosseGiocatore.spostaFamiliareZonaRaccolto(zona);
+            getMosse().spostaFamiliareZonaRaccolto(zona);
         } catch (TurnoException e) {
             controllerClient.messaggio("Non è il tuo turno");
         } catch (ForzaInsufficienteException e) {
@@ -157,7 +150,7 @@ public class GiocatoreRMI extends GiocatoreRemoto{
     public void tiraIDadi() throws RemoteException {
         if(getGiocatore().getId()==getPartita().getOrdineTurno().get(0).getId())
             try {
-                mosseGiocatore.tiraIDadi();
+                getMosse().tiraIDadi();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -165,13 +158,13 @@ public class GiocatoreRMI extends GiocatoreRemoto{
 
     @Override
     public synchronized void sceltaScomunica(boolean appoggiaChiesa) throws RemoteException {
-        mosseGiocatore.sceltaScomunica(appoggiaChiesa);
+        getMosse().sceltaScomunica(appoggiaChiesa);
     }
 
     @Override
     public void aumentaForzaFamiliare(String coloreDado, int id) throws RemoteException {
         try {
-            mosseGiocatore.aumentaForzaFamiliare(coloreDado, id);
+            getMosse().aumentaForzaFamiliare(coloreDado, id);
         } catch (TurnoException e) {
             controllerClient.messaggio("Non è il tuo turno");
         } catch (DadiNonTiratiException e) {
@@ -182,7 +175,7 @@ public class GiocatoreRMI extends GiocatoreRemoto{
     @Override
     public void saltaMossa(int id) throws RemoteException {
         try {
-            mosseGiocatore.saltaMossa(id);
+            getMosse().saltaMossa(id);
         } catch (TurnoException e) {
             controllerClient.messaggio("non è il tuo turno");
         } catch (DadiNonTiratiException e) {
@@ -192,7 +185,15 @@ public class GiocatoreRMI extends GiocatoreRemoto{
 
     @Override
     public void sceltaPergamena(int scelta) throws RemoteException {
-        mosseGiocatore.sceltaPergamena(scelta);
+        getMosse().sceltaPergamena(scelta);
+    }
+
+    @Override
+    public void esci(int mioId) throws RemoteException {
+        if(getMosse()!=null)
+            getMosse().esci(mioId);
+        else
+            System.out.println("mosseGiocatore=null");
     }
 
     //-----------------------------------------------------------------------------------------------------------------------------------------
@@ -299,8 +300,14 @@ public class GiocatoreRMI extends GiocatoreRemoto{
     }
 
     @Override
-    public void finePartita(HashMap<String,Integer> classifica) throws RemoteException {
+    public void finePartita(ArrayList<Integer> classificaId, ArrayList<String> username, ArrayList<Integer> punti) throws RemoteException {
         if(controllerClient!=null)
-        controllerClient.finePartita(classifica);
+        controllerClient.finePartita(classificaId,username,punti);
+    }
+
+    @Override
+    public void puntiGiocatore(int id, ArrayList<Integer> punteggi) throws RemoteException {
+        if(controllerClient!=null)
+            controllerClient.puntiGiocatore(id,punteggi);
     }
 }

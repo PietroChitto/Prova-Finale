@@ -1,19 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.shape.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.scene.effect.*?>
-<?import java.lang.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.effect.Reflection?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.*?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="666.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.GUI.ControllerGioco">
    <children>
        <ImageView fitHeight="666.0" fitWidth="591.0" layoutY="1.0" pickOnBounds="true">
@@ -216,6 +209,7 @@
                         <ImageView fx:id="imageCarta" fitHeight="270.0" fitWidth="220.0" layoutX="12.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" />
                      </children>
                   </Pane>
+                  <Button fx:id="btnEsci" layoutX="250.0" mnemonicParsing="false" onAction="#esci" stylesheets="@css/buttonCss.css" text="X" />
                </children>
                <effect>
                   <Reflection fraction="0.23" topOpacity="0.19" />
@@ -301,19 +295,19 @@
                         <Image url="@img/Immagini%20Risorse/Monete.png" />
                      </image>
                   </ImageView>
-                  <Label fx:id="labelPietra" textFill="#f8f6f6" GridPane.rowIndex="1">
+                  <Label fx:id="labelPietra" GridPane.rowIndex="1">
                      <font>
                         <Font name="Ebrima Bold" size="18.0" />
                      </font></Label>
-                  <Label fx:id="labelLegna" textFill="#f8f6f6" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <Label fx:id="labelLegna" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <font>
                         <Font name="Ebrima Bold" size="18.0" />
                      </font></Label>
-                  <Label fx:id="labelServitori" textFill="#f8f6f6" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                  <Label fx:id="labelServitori" GridPane.columnIndex="2" GridPane.rowIndex="1">
                      <font>
                         <Font name="Ebrima Bold" size="18.0" />
                      </font></Label>
-                  <Label fx:id="labelMonete" textFill="#f8f6f6" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                  <Label fx:id="labelMonete" GridPane.columnIndex="3" GridPane.rowIndex="1">
                      <font>
                         <Font name="Ebrima Bold" size="18.0" />
                      </font></Label>
@@ -326,7 +320,7 @@
                         <Image url="@img/arco.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="59.0" fitWidth="63.0" layoutX="328.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="59.0" fitWidth="63.0" layoutX="333.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@img/imgPuntiMilitari.png" />
                      </image>
@@ -350,15 +344,15 @@
                      <font>
                         <Font name="Ebrima Bold" size="12.0" />
                      </font></Label>
-                  <Label fx:id="labelGiocatore2" alignment="CENTER" layoutX="54.0" layoutY="119.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="50.0" textAlignment="CENTER" textFill="WHITE">
+                  <Label fx:id="labelGiocatore2" alignment="CENTER" layoutX="54.0" layoutY="127.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="50.0" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font name="Ebrima Bold" size="12.0" />
                      </font></Label>
-                  <Label fx:id="labelGiocatore3" alignment="CENTER" layoutX="54.0" layoutY="151.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="50.0" textAlignment="CENTER" textFill="WHITE">
+                  <Label fx:id="labelGiocatore3" alignment="CENTER" layoutX="54.0" layoutY="158.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="50.0" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font name="Ebrima Bold" size="12.0" />
                      </font></Label>
-                  <Label fx:id="labelGiocatore4" alignment="CENTER" layoutX="54.0" layoutY="187.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="50.0" textAlignment="CENTER" textFill="WHITE">
+                  <Label fx:id="labelGiocatore4" alignment="CENTER" layoutX="54.0" layoutY="183.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="50.0" textAlignment="CENTER" textFill="WHITE">
                      <font>
                         <Font name="Ebrima Bold" size="12.0" />
                      </font></Label>
@@ -367,11 +361,11 @@
                         <Font name="Ebrima Bold" size="20.0" />
                      </font>
                   </Label>
-                  <GridPane alignment="CENTER" hgap="45.0" layoutX="164.0" layoutY="94.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="114.0" prefWidth="220.0">
+                  <GridPane alignment="CENTER" hgap="45.0" layoutX="164.0" layoutY="94.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="114.0" prefWidth="212.0">
                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="10.0" prefWidth="46.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="69.0" minWidth="10.0" prefWidth="36.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="60.0" minWidth="10.0" prefWidth="60.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="80.0" minWidth="10.0" prefWidth="41.0" />
+                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="69.0" minWidth="10.0" prefWidth="36.0" />
+                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="60.0" minWidth="10.0" prefWidth="47.0" />
                     </columnConstraints>
                     <rowConstraints>
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -380,18 +374,54 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label fx:id="labelPuntiFede" GridPane.columnIndex="1" />
-                        <Label fx:id="labelPuntiMilitari" GridPane.columnIndex="2" />
-                        <Label fx:id="labelPuntiVittoria" prefHeight="17.0" prefWidth="56.0" />
-                        <Label text="Label" GridPane.rowIndex="1" />
-                        <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Label text="Label" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                        <Label text="Label" GridPane.rowIndex="2" />
-                        <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <Label text="Label" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                        <Label text="Label" GridPane.rowIndex="3" />
-                        <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <Label text="Label" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                        <Label fx:id="labelPuntiFG0" textFill="#fffbfb" GridPane.columnIndex="1">
+                           <font>
+                              <Font size="13.0" />
+                           </font></Label>
+                        <Label fx:id="labelPuntiMG0" textFill="#fffbfb" GridPane.columnIndex="2">
+                           <font>
+                              <Font size="13.0" />
+                           </font></Label>
+                        <Label fx:id="labelPuntiVG0" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="28.0" prefWidth="0.0" textAlignment="CENTER" textFill="#fffbfb" GridPane.halignment="CENTER">
+                           <font>
+                              <Font size="13.0" />
+                           </font></Label>
+                        <Label fx:id="labelPuntiVG1" textFill="#fffbfb" GridPane.rowIndex="1">
+                           <font>
+                              <Font size="13.0" />
+                           </font></Label>
+                        <Label fx:id="labelPuntiFG1" textFill="#fffbfb" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <font>
+                              <Font size="13.0" />
+                           </font></Label>
+                        <Label fx:id="labelPuntiMG1" textFill="#fffbfb" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                           <font>
+                              <Font size="13.0" />
+                           </font></Label>
+                        <Label fx:id="labelPuntiVG2" textFill="#fffbfb" GridPane.rowIndex="2">
+                           <font>
+                              <Font size="13.0" />
+                           </font></Label>
+                        <Label fx:id="labelPuntiFG2" textFill="#fffbfb" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                           <font>
+                              <Font size="13.0" />
+                           </font></Label>
+                        <Label fx:id="labelPuntiMG2" textFill="#fffbfb" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                           <font>
+                              <Font size="13.0" />
+                           </font></Label>
+                        <Label fx:id="labelPuntiVG3" textFill="#fffbfb" GridPane.rowIndex="3">
+                           <font>
+                              <Font size="13.0" />
+                           </font></Label>
+                        <Label fx:id="labelPuntiFG3" textFill="#fffbfb" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                           <font>
+                              <Font size="13.0" />
+                           </font></Label>
+                        <Label fx:id="labelPuntiMG3" textFill="#fffbfb" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                           <font>
+                              <Font size="13.0" />
+                           </font></Label>
                      </children>
                   </GridPane>
                </children>

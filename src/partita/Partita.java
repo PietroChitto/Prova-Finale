@@ -14,7 +14,7 @@ import server.GiocatoreRemoto;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 
 /**
  * Created by Pietro on 16/05/2017.
@@ -35,6 +35,7 @@ public class Partita {
     private ArrayList<String> nomiCarte;
     private ArrayList<String> nomiScomuniche;
     private boolean dadiTirati;
+    private boolean partitaInCorso;
 
     /**
      *
@@ -81,6 +82,7 @@ public class Partita {
     }
 
     public void iniziaPartita() throws RemoteException {
+        partitaInCorso=true;
         System.out.println("Partita a "+N_GIOCATORI+" giocatori");
         for (GiocatoreRemoto g: giocatori){
             System.out.println(g.getUsername());
@@ -241,8 +243,10 @@ public class Partita {
     }
 
     private void avvisoInizioTurno() throws RemoteException {
-        for(GiocatoreRemoto g: giocatori){
-            g.avvisoInizioTurno(nomiCarte);
+        if(partitaInCorso) {
+            for (GiocatoreRemoto g : giocatori) {
+                g.avvisoInizioTurno(nomiCarte);
+            }
         }
     }
 
@@ -250,20 +254,27 @@ public class Partita {
 
         finePeriodo();
         periodo ++;
+        System.out.println("fine periodo");
         if (periodo==4){
             finePartita();
         }
     }
 
     private void finePartita() {
+        System.out.println("fine partita");
+        partitaInCorso=false;
         calcolaClassifica();
-        HashMap<String, Integer> classifica=new HashMap<>();
+        ArrayList<Integer> classificaId=new ArrayList<>();
+        ArrayList<String> classificaUsername=new ArrayList<>();
+        ArrayList<Integer> classificaPunti=new ArrayList<>();
         for(GiocatoreRemoto g: giocatori){
-            classifica.put(g.getUsername(),g.getGiocatore().getPuntiVittoria());
+            classificaId.add(g.getGiocatore().getId());
+            classificaUsername.add(g.getUsername());
+            classificaPunti.add(g.getGiocatore().getPuntiVittoria());
         }
         for (GiocatoreRemoto g: giocatori){
             try {
-                g.finePartita(classifica);
+                g.finePartita(classificaId,classificaUsername,classificaPunti);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -285,13 +296,15 @@ public class Partita {
             attivaScomuniche(g);
         }
 
-        GiocatoreRemoto classifica[];
+        GiocatoreRemoto[] classifica=new GiocatoreRemoto[giocatori.size()];
 
-//        classifica= (GiocatoreRemoto[]) giocatori.toArray();
+        for (int i=0; i<giocatori.size();i++){
+            classifica[i]=giocatori.get(i);
+        }
 
         GiocatoreRemoto tmp;
 
-        /*for (int i=0;i<giocatori.size();i++){
+        for (int i=0;i<giocatori.size();i++){
             for (int j=0;j<(giocatori.size()-1)-i;j++){
                 if (classifica[j].getGiocatore().getPuntiVittoria()<classifica[j+1].getGiocatore().getPuntiVittoria()){
                     tmp=classifica[j];
@@ -302,7 +315,7 @@ public class Partita {
         }
 
         giocatori.clear();
-        giocatori.addAll(Arrays.asList(classifica));*/
+        giocatori.addAll(Arrays.asList(classifica));
     }
 
     private void attivaScomuniche(Giocatore g) {
@@ -328,7 +341,7 @@ public class Partita {
     }
 
     private void puntiPersonaggi(Giocatore g) {
-        switch (g.getCarteTerritorio().size()){
+        switch (g.getCartePersonaggio().size()){
             case 1: g.setPuntiVittoria(g.getPuntiVittoria()+1);
                 break;
             case 2: g.setPuntiVittoria(g.getPuntiVittoria()+3);

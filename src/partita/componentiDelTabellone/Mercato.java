@@ -37,9 +37,6 @@ public class Mercato {
 
     }
 
-    public boolean controlloCampoAzioneOccupato(int campoAzione){
-        return !campiAzione[campoAzione].isOccupato();
-    }
     public void arrivaGiocatore(Familiare f, int campoAzione ) throws ZonaOccupataExcepion, ForzaInsufficienteException {
             campiAzione[campoAzione].setFamiliare(f);
             campiAzione[campoAzione].setOccupato(true);

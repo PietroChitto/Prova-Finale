@@ -1,4 +1,4 @@
-package server;
+package test.partita.server;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -7,6 +7,7 @@ import partita.componentiDelTabellone.CampoAzioneSingolo;
 import partita.componentiDelTabellone.Familiare;
 import partita.componentiDelTabellone.Giocatore;
 import partita.eccezioniPartita.*;
+import server.GiocatoreRemoto;
 import server.rmiServer.GiocatoreRMI;
 import server.socketServer.GiocatoreSocket;
 

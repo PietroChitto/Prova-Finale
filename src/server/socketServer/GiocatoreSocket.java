@@ -9,7 +9,7 @@ import server.GiocatoreRemoto;
 import server.MosseGiocatore;
 import server.Server;
 import server.ServerInterface;
-import server.rmiServer.InterfaciaRemotaRMI;
+import server.rmiServer.InterfaciaServer;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -18,7 +18,6 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by Pietro on 16/05/2017.
@@ -29,15 +28,13 @@ import java.util.HashMap;
     private ObjectOutputStream out;
     private ObjectInputStream in;
     private String nickName;
-    private MosseGiocatore mosseGiocatore;
     private int numeroGiocatori;
 
 
     public GiocatoreSocket(Socket socket) throws RemoteException {
         super();
         this.socket=socket;
-        mosseGiocatore=new MosseGiocatore(this);
-        super.setMosse(mosseGiocatore);
+        super.setMosse(new MosseGiocatore(this));
     }
 
 
@@ -74,7 +71,7 @@ import java.util.HashMap;
 
 
    @Override
-   public synchronized InterfaciaRemotaRMI partecipaAPartita(String username, InterfacciaClient controller, int numeroGiocatori) throws RemoteException {
+   public synchronized InterfaciaServer partecipaAPartita(String username, InterfacciaClient controller, int numeroGiocatori) throws RemoteException {
       Server.giocatori.get(numeroGiocatori).add(this);
       this.setUsername(nickName);
       System.out.println("dentro metodo sk "+Server.giocatori.size()+" connessi");
@@ -109,35 +106,23 @@ import java.util.HashMap;
     @Override
     public void spostaFamiliarePiano(int numeroTorre, int numeroPiano) throws IOException {
         try {
-            mosseGiocatore.spostaFamiliarePiano(numeroTorre,numeroPiano);
+            getMosse().spostaFamiliarePiano(numeroTorre,numeroPiano);
         } catch (FamiliareNonSelezionatoExcepion familiareNonSelezionatoExcepion) {
             out.writeObject("MESSAGGIO");
             out.flush();
             out.writeObject("Familiare non selezionato");
             out.flush();
         } catch (ForzaInsufficienteException e) {
-            //se la torre era occupata il giocatore aveva speso 3 monete, siccome la mossa non è andata a buon fine le restituisco
-            if(getPartita().getCampoDaGioco().getTabellone().getTorre(numeroTorre).isOccupata())
-                getGiocatore().setMonete(getGiocatore().getMonete()+3);
-
             out.writeObject("MESSAGGIO");
             out.flush();
             out.writeObject("Forza del familiare insufficiente");
             out.flush();
         } catch (ZonaOccupataExcepion zonaOccupataExcepion) {
-            //se la torre era occupata il giocatore aveva speso 3 monete, siccome la mossa non è andata a buon fine le restituisco
-            if(getPartita().getCampoDaGioco().getTabellone().getTorre(numeroTorre).isOccupata())
-                getGiocatore().setMonete(getGiocatore().getMonete()+3);
-
             out.writeObject("MESSAGGIO");
             out.flush();
             out.writeObject("La zona è già occupata");
             out.flush();
         } catch (RisorseInsufficientiException e) {
-            //se la torre era occupata il giocatore aveva speso 3 monete, siccome la mossa non è andata a buon fine le restituisco
-            if(getPartita().getCampoDaGioco().getTabellone().getTorre(numeroTorre).isOccupata())
-                getGiocatore().setMonete(getGiocatore().getMonete()+3);
-
             out.writeObject("MESSAGGIO");
             out.flush();
             out.writeObject("Risorse insufficienti");
@@ -170,7 +155,7 @@ import java.util.HashMap;
     @Override
     public void spostaFamiliareZonaProduzione(int zona) throws RemoteException {
         try {
-            mosseGiocatore.spostaFamiliareZonaProduzione(zona);
+            getMosse().spostaFamiliareZonaProduzione(zona);
         } catch (ForzaInsufficienteException e) {
             try {
                 out.writeObject("MESSAGGIO");
@@ -224,7 +209,7 @@ import java.util.HashMap;
     @Override
     public void spostaFamiliareZonaRaccolto(int zona) throws RemoteException {
         try {
-            mosseGiocatore.spostaFamiliareZonaRaccolto(zona);
+            getMosse().spostaFamiliareZonaRaccolto(zona);
         } catch (ForzaInsufficienteException e) {
             try {
                 out.writeObject("MESSAGGIO");
@@ -270,7 +255,7 @@ import java.util.HashMap;
     @Override
     public void tiraIDadi() throws RemoteException {
         try {
-            mosseGiocatore.tiraIDadi();
+            getMosse().tiraIDadi();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -278,7 +263,7 @@ import java.util.HashMap;
 
     @Override
     public void sceltaScomunica(boolean appoggiaChiesa) throws RemoteException {
-        mosseGiocatore.sceltaScomunica(appoggiaChiesa);
+        getMosse().sceltaScomunica(appoggiaChiesa);
     }
 
     @Override
@@ -293,7 +278,12 @@ import java.util.HashMap;
 
     @Override
     public void sceltaPergamena(int scelta) throws RemoteException {
-        mosseGiocatore.sceltaPergamena(scelta);
+        getMosse().sceltaPergamena(scelta);
+    }
+
+    @Override
+    public void esci(int mioId) throws RemoteException {
+        getMosse().esci(mioId);
     }
 
     //-----------------------------------------------------------------------------------------------------------------------------------------
@@ -529,16 +519,34 @@ import java.util.HashMap;
     }
 
     @Override
-    public void finePartita(HashMap<String,Integer> classifica) throws RemoteException {
-        if(out!=null) {
+    public void finePartita(ArrayList<Integer> classificaId,ArrayList<String> username, ArrayList<Integer> punti) throws RemoteException {
+        if(out!=null && !socket.isClosed()) {
             try {
                 out.writeObject("FINEPARTITA");
                 out.flush();
-                out.writeObject(classifica);
+                out.writeObject(classificaId);
+                out.flush();
+                out.writeObject(username);
+                out.flush();
+                out.writeObject(punti);
                 out.flush();
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    @Override
+    public void puntiGiocatore(int idGiocatore, ArrayList<Integer> punteggi) throws RemoteException {
+        try{
+            out.writeObject("PUNTIGIOCATORE");
+            out.flush();
+            out.writeObject(idGiocatore);
+            out.flush();
+            out.writeObject(punteggi);
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -570,11 +578,11 @@ import java.util.HashMap;
                     else if(comando.startsWith("SELEZIONA")){
                         coloreDado=(String) in.readObject();
                         id=(int) in.readObject();
-                        mosseGiocatore.selezionaFamiliare(coloreDado, id);
+                        getMosse().selezionaFamiliare(coloreDado, id);
                         System.out.println("familiare selezionato: ");
                     }
                     else if(comando.startsWith("DESELEZIONA")){
-                        mosseGiocatore.deselezionaFamiliare();
+                        getMosse().deselezionaFamiliare();
                     }
                     else if(comando.startsWith("SPOSTAFAMILIAREPIANO")){
                         numeroTorre=(int) in.readObject();
@@ -585,7 +593,7 @@ import java.util.HashMap;
                     else if (comando.startsWith("SPOSTAFAMILIAREMERCATO")){
                         zonaMercato=(int) in.readObject();
                         try {
-                            mosseGiocatore.spostaFamiliareMercato(zonaMercato);
+                            getMosse().spostaFamiliareMercato(zonaMercato);
                         } catch (ForzaInsufficienteException e) {
                             out.writeObject("MESSAGGIO");
                             out.flush();
@@ -606,7 +614,7 @@ import java.util.HashMap;
                     else if(comando.startsWith("SPOSTAPALAZZOCONSIGLIO")){
 
                         try {
-                            mosseGiocatore.spostaFamiliarePalazzoDelConsiglio();
+                            getMosse().spostaFamiliarePalazzoDelConsiglio();
                         } catch (ForzaInsufficienteException e) {
                             out.writeObject("MESSAGGIO");
                             out.flush();
@@ -627,11 +635,11 @@ import java.util.HashMap;
                     else if(comando.startsWith("AUMENTAFORZAFAMILIARE")){
                         coloreDado=(String) in.readObject();
                         id=(int) in.readObject();
-                            mosseGiocatore.aumentaForzaFamiliare(coloreDado,id);
+                        getMosse().aumentaForzaFamiliare(coloreDado,id);
                     }
                     else if(comando.startsWith("SALTAMOSSA")){
                         id=(int) in.readObject();
-                        mosseGiocatore.saltaMossa(id);
+                        getMosse().saltaMossa(id);
                         out.writeObject("MESSAGGIO");
                         out.flush();
                         out.writeObject("Mossa Saltata");
@@ -651,6 +659,11 @@ import java.util.HashMap;
                     else if(comando.startsWith("SCELTAPERGAMENA")){
                         scelta=(int) in.readObject();
                         sceltaPergamena(scelta);
+                    }
+                    else if(comando.startsWith("ESCI")){
+                        id=(int) in.readObject();
+                        esci(id);
+                        run=false;
                     }
                 } catch (SocketException e){
                     try {
@@ -689,6 +702,14 @@ import java.util.HashMap;
 
 
             }
+
+            try {
+                out.close();
+                in.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
 
         }
 

@@ -1,7 +1,7 @@
 package server;
 
 import Client.InterfacciaClient;
-import server.rmiServer.InterfaciaRemotaRMI;
+import server.rmiServer.InterfaciaServer;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -12,7 +12,7 @@ import java.rmi.RemoteException;
 public interface ServerInterface extends Remote {
 
     //public void login(String username) throws RemoteException;
-    InterfaciaRemotaRMI partecipaAPartita(String username, InterfacciaClient controllerClientRMI, int numeroGiocatori) throws RemoteException;
+    InterfaciaServer partecipaAPartita(String username, InterfacciaClient controllerClientRMI, int numeroGiocatori) throws RemoteException;
 
 
     /*

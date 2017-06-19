@@ -2,7 +2,7 @@ package server;
 
 import Client.InterfacciaClient;
 import partita.Partita;
-import server.rmiServer.InterfaciaRemotaRMI;
+import server.rmiServer.InterfaciaServer;
 import server.rmiServer.RMIServer;
 import server.socketServer.SocketServer;
 
@@ -59,7 +59,7 @@ public class Server implements ServerInterface {
     }
 
     @Override
-    public InterfaciaRemotaRMI partecipaAPartita(String username, InterfacciaClient controller, int numeroGiocatori) throws RemoteException {
+    public InterfaciaServer partecipaAPartita(String username, InterfacciaClient controller, int numeroGiocatori) throws RemoteException {
         return null;
     }
 /*

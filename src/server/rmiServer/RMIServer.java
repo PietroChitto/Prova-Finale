@@ -13,7 +13,6 @@ import java.rmi.ServerException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.Set;
 
 /**
  * Created by Pietro on 16/05/2017.
@@ -34,7 +33,7 @@ public class RMIServer extends UnicastRemoteObject implements ServerInterface{
             Registry registry = LocateRegistry.createRegistry(port);
             System.out.println("RegistryCreato");
             try {
-                registry.bind("InterfaciaRemotaRMI", this);
+                registry.bind("InterfaciaServer", this);
             } catch (AlreadyBoundException e) {
                 e.printStackTrace();
             }
@@ -44,7 +43,7 @@ public class RMIServer extends UnicastRemoteObject implements ServerInterface{
     }
 
     @Override
-    public InterfaciaRemotaRMI partecipaAPartita(String username, InterfacciaClient controller, int numeroGiocatori) throws RemoteException {
+    public InterfaciaServer partecipaAPartita(String username, InterfacciaClient controller, int numeroGiocatori) throws RemoteException {
         GiocatoreRMI giocatore=new GiocatoreRMI();
         giocatore.setUsername(username);
         giocatore.setControllerClientRMI(controller);
@@ -74,7 +73,7 @@ public class RMIServer extends UnicastRemoteObject implements ServerInterface{
 
     }
 
-    public static void stampaListaGiocatori(int numeroGiocatori) {
+    private static void stampaListaGiocatori(int numeroGiocatori) {
         for (GiocatoreRemoto g: Server.giocatori.get(numeroGiocatori)){
             System.out.println(g.getUsername());
         }

@@ -7,7 +7,7 @@ import java.rmi.RemoteException;
 /**
  * Created by Pietro on 16/05/2017.
  */
-public interface InterfaciaRemotaRMI extends Remote{
+public interface InterfaciaServer extends Remote{
 
 
     void selezionaFamiliare(String colore, int idGiocatore) throws RemoteException;
@@ -22,7 +22,7 @@ public interface InterfaciaRemotaRMI extends Remote{
     void aumentaForzaFamiliare(String coloreDado, int id) throws RemoteException;
     void saltaMossa(int id) throws RemoteException;
     void sceltaPergamena(int scelta) throws RemoteException;
-
+    void esci(int mioId) throws RemoteException;
 }
 
 

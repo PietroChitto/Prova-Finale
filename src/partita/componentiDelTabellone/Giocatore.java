@@ -1,23 +1,16 @@
 package partita.componentiDelTabellone;
 
 import partita.carteDaGioco.*;
-import partita.carteDaGioco.*;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-/**
- * Created by william on 10/05/2017.
- */
+
 public class Giocatore {
-    private String nome;
     private int id;
     private Familiare[] familiari;
-    private int turno; //ordine di gioco giocatore
     private int legna; //risorsa
     private int pietra; //risorsa
     private int monete; //risorsa
     private int servitori; //risorsa
-    private int pergamene; //risorsa
     private int puntiVittoria; //punti
     private int puntiFede; //punti
     private int puntiMilitari; //punti
@@ -35,17 +28,16 @@ public class Giocatore {
         this.pietra = 2;
         this.servitori = 3;
         this.monete = 0;
-        this.pergamene = 0;
         this.puntiFede = 0;
         this.puntiMilitari = 0;
         this.puntiVittoria = 0;
         this.familiari = new Familiare[4];
         creaFamiliari();
-        scomuniche = new ArrayList<CartaScomunica>();
-        carteTerritorio = new ArrayList<CartaTerritorio>();
-        carteEdificio = new ArrayList<CartaEdificio>();
-        cartePersonaggio = new ArrayList<CartaPersonaggio>();
-        carteImpresa = new ArrayList<CartaImpresa>();
+        scomuniche = new ArrayList<>();
+        carteTerritorio = new ArrayList<>();
+        carteEdificio = new ArrayList<>();
+        cartePersonaggio = new ArrayList<>();
+        carteImpresa = new ArrayList<>();
     }
 
     private void creaFamiliari() {
@@ -111,10 +103,6 @@ public class Giocatore {
         return servitori;
     }
 
-    public int getTurno() {
-        return turno;
-    }
-
     public void setLegna(int legna) {
         this.legna = legna;
     }
@@ -143,16 +131,8 @@ public class Giocatore {
         this.servitori = servitori;
     }
 
-    public void setTurno(int turno) {
-        this.turno = turno;
-    }
-
-    public void aggiungiScomunica(CartaScomunica carta){
+    void aggiungiScomunica(CartaScomunica carta){
         scomuniche.add(carta);
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
     }
 
     public void aggiungiTerritorio(CartaTerritorio carta){
@@ -197,22 +177,6 @@ public class Giocatore {
         puntiMilitari += -incrementi[4];
         puntiFede += -incrementi[5];
         puntiVittoria += -incrementi[6];
-    }
-
-    public void scambiaPergamena(int scelta){
-        switch (scelta){
-            case 1: pietra += 1;
-                    legna += 1;
-                    break;
-            case 2: servitori+=2;
-                    break;
-            case 3: monete += 2;
-                    break;
-            case 4: puntiMilitari += 2;
-                    break;
-            case 5: puntiFede += 1;
-                    break;
-        }
     }
 
 

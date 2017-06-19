@@ -2,7 +2,6 @@ package partita;
 
 import partita.carteDaGioco.CartaScomunica;
 import partita.carteDaGioco.CartaSviluppo;
-import partita.carteDaGioco.CreatoreMazzi;
 import partita.componentiDelTabellone.Giocatore;
 import partita.componentiDelTabellone.Tabellone;
 
@@ -58,6 +57,9 @@ public class CampoDaGioco {
             mazzoTerritorio.addAll(creatoreMazzi.secondoPeriodoTerreni());
             mazzoTerritorio.addAll(creatoreMazzi.terzoPeriodoTerreni());
             System.out.println("il mazzo territorio contiene "+mazzoTerritorio.size());
+            for (CartaSviluppo c: mazzoTerritorio){
+                System.out.println(c.getNome());
+            }
         } catch (SQLException e) {
             System.out.println("errori SQL");
             e.printStackTrace();
@@ -70,6 +72,9 @@ public class CampoDaGioco {
             mazzoEdificio = creatoreMazzi.primoPeriodoEdificio();
             mazzoEdificio.addAll(creatoreMazzi.secondoPeriodoEdificio());
             mazzoEdificio.addAll(creatoreMazzi.terzoPeriodoEdificio());
+            for (CartaSviluppo c: mazzoEdificio){
+                System.out.println(c.getNome());
+            }
         } catch (SQLException e) {
             System.out.println("errori SQL");
             e.printStackTrace();
@@ -82,6 +87,9 @@ public class CampoDaGioco {
             mazzoPersonaggi = creatoreMazzi.primoPeriodoPersonaggio();
             mazzoPersonaggi.addAll(creatoreMazzi.secondoPeriodoPersonaggio());
             mazzoPersonaggi.addAll(creatoreMazzi.terzoPeriodoPersonaggio());
+            for (CartaSviluppo c: mazzoPersonaggi){
+                System.out.println(c.getNome());
+            }
         } catch (SQLException e) {
             System.out.println("errori SQL");
             e.printStackTrace();
@@ -94,6 +102,9 @@ public class CampoDaGioco {
             mazzoImprese = creatoreMazzi.primoPeriodoImpresa();
             mazzoImprese.addAll(creatoreMazzi.secondoPeriodoImpresa());
             mazzoImprese.addAll(creatoreMazzi.terzoPeriodoImpresa());
+            for (CartaSviluppo c: mazzoImprese){
+                System.out.println(c.getNome());
+            }
         } catch (SQLException e) {
             System.out.println("errori SQL");
             e.printStackTrace();

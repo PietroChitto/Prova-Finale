@@ -27,6 +27,15 @@ public class CampoAzioneMultiploTest {
         assertEquals(cam.getFamiliari().size(), 1);
     }
 
+    @Test(expected = ForzaInsufficienteException.class)
+    public void aggiungiFamiliare1() throws Exception{
+        CampoAzioneMultiplo cam= new CampoAzioneMultiplo(5);
+        Familiare f=new Familiare(false, 0, 3, "nero", true, null);
+        cam.aggiungiFamiliare(f);
+        assertEquals(cam.getFamiliari().size(), 1);
+    }
+
+
     @Test
     public void svuotaCampoAzione() throws Exception {
         CampoAzioneMultiplo cam= new CampoAzioneMultiplo(1);
@@ -36,9 +45,9 @@ public class CampoAzioneMultiploTest {
         cam.aggiungiFamiliare(f1);
         Familiare f2=new Familiare(false, 0, 3, "nero", true, null);
         cam.aggiungiFamiliare(f2);
-        assertEquals(cam.getFamiliari().size(), 3);
+        assertEquals(3,cam.getFamiliari().size());
         cam.svuotaCampoAzione();
-        assertEquals(cam.getFamiliari().size(),0);
+        assertEquals(0,cam.getFamiliari().size());
     }
 
 }

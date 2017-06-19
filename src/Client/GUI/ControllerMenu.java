@@ -15,14 +15,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.WindowEvent;
-import server.rmiServer.InterfaciaRemotaRMI;
+import server.rmiServer.InterfaciaServer;
 
 import java.io.IOException;
 import java.rmi.NotBoundException;
 
 public class ControllerMenu {
 
-    private InterfaciaRemotaRMI client;
+    private InterfaciaServer client;
 
     public void initialize(){
         ToggleGroup toggleGroup=new ToggleGroup();

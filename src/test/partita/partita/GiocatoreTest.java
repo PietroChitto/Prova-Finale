@@ -58,8 +58,6 @@ public class GiocatoreTest {
         assertEquals(2,g.getPuntiVittoria());
     }
 
-    @Test
-    public void scambiaPergamena() throws Exception {
-    }
+
 
 }

@@ -1,7 +1,5 @@
 package Client;
 
-import Client.GUI.ControllerGioco;
-import Client.GUI.ControllerLogin;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -26,15 +24,11 @@ public class MainClient extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         stage=primaryStage;
-        //FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("GUI/SchermataDiGioco.fxml"));
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("GUI/menu.fxml"));
         Parent root = fxmlLoader.load();
         primaryStage.setTitle("Lorenzo il magnifico");
-        //ControllerGioco controller= (ControllerGioco)fxmlLoader.getController();
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
-
-       //controller.inizializza(null,null,0);
 
     }
 

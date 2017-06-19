@@ -1,6 +1,7 @@
-package partita.carteDaGioco;
+package partita;
 
 
+import partita.carteDaGioco.*;
 import partita.carteDaGioco.effetti.Effetto;
 import partita.carteDaGioco.effetti.effettiCarte.*;
 import partita.carteDaGioco.effettiScomunica.EffettoDiminuisciForza;

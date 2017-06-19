@@ -3,7 +3,7 @@ package Client;
 import Client.GUI.ControllerGioco;
 import javafx.application.Platform;
 import server.ServerInterface;
-import server.rmiServer.InterfaciaRemotaRMI;
+import server.rmiServer.InterfaciaServer;
 
 import java.io.IOException;
 import java.rmi.NotBoundException;
@@ -17,11 +17,11 @@ import java.util.HashMap;
 /**
  * Created by Pietro on 16/05/2017.
  */
-public class ClientRMI extends UnicastRemoteObject implements InterfacciaClient, InterfaciaRemotaRMI {
+public class ClientRMI extends UnicastRemoteObject implements InterfacciaClient, InterfaciaServer {
     private String nickname;
     private int id;
     private boolean partitaIncorso;
-    private InterfaciaRemotaRMI metodiPartita;
+    private InterfaciaServer metodiPartita;
     private ControllerGioco controllerGioco;
 
     public ClientRMI(String text, ControllerGioco controllerGioco, int numeroGiocatori) throws RemoteException, NotBoundException {
@@ -31,7 +31,7 @@ public class ClientRMI extends UnicastRemoteObject implements InterfacciaClient,
         partitaIncorso=false;
         Registry registry = LocateRegistry.getRegistry(8008);
         System.out.println("Registry caricato");
-        ServerInterface inizio = (ServerInterface) registry.lookup("InterfaciaRemotaRMI");
+        ServerInterface inizio = (ServerInterface) registry.lookup("InterfaciaServer");
         System.out.println("Oggetto scaricato");
         metodiPartita= inizio.partecipaAPartita(nickname, this, numeroGiocatori);
     }
@@ -209,10 +209,21 @@ public class ClientRMI extends UnicastRemoteObject implements InterfacciaClient,
     }
 
     @Override
-    public void finePartita(HashMap<String,Integer> classifica) throws RemoteException {
+    public void finePartita(ArrayList<Integer> classificaId,ArrayList<String> username, ArrayList<Integer> punti) throws RemoteException {
         Platform.runLater(()->{
             try {
-                controllerGioco.finePartita(classifica);
+                controllerGioco.finePartita(classificaId,username,punti);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @Override
+    public void puntiGiocatore(int id, ArrayList<Integer> punteggi) throws RemoteException {
+        Platform.runLater(()->{
+            try {
+                controllerGioco.puntiGiocatore(id,punteggi);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -319,5 +330,10 @@ public class ClientRMI extends UnicastRemoteObject implements InterfacciaClient,
     @Override
     public void sceltaPergamena(int scelta) throws RemoteException {
         metodiPartita.sceltaPergamena(scelta);
+    }
+
+    @Override
+    public void esci(int mioId) throws RemoteException {
+        metodiPartita.esci(mioId);
     }
 }

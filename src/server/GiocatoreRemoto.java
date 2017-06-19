@@ -3,7 +3,7 @@ package server;
 import Client.InterfacciaClient;
 import partita.Partita;
 import partita.componentiDelTabellone.Giocatore;
-import server.rmiServer.InterfaciaRemotaRMI;
+import server.rmiServer.InterfaciaServer;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -11,7 +11,7 @@ import java.rmi.server.UnicastRemoteObject;
 /**
  * Created by Pietro on 16/05/2017.
  */
-public abstract class GiocatoreRemoto extends UnicastRemoteObject implements InterfaciaRemotaRMI, InterfacciaClient{
+public abstract class GiocatoreRemoto extends UnicastRemoteObject implements InterfaciaServer, InterfacciaClient{
 
 
     private transient Giocatore giocatore;

@@ -3,7 +3,7 @@ package server.socketServer;
 import Client.InterfacciaClient;
 import server.NetworkException;
 import server.ServerInterface;
-import server.rmiServer.InterfaciaRemotaRMI;
+import server.rmiServer.InterfaciaServer;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -34,7 +34,7 @@ public class SocketServer implements ServerInterface{
     }
 
     @Override
-    public InterfaciaRemotaRMI partecipaAPartita(String username, InterfacciaClient controller, int numeroGiocatori) throws RemoteException {
+    public InterfaciaServer partecipaAPartita(String username, InterfacciaClient controller, int numeroGiocatori) throws RemoteException {
         return null;
     }
 

@@ -2,8 +2,9 @@ package Client;
 
 import Client.GUI.ControllerGioco;
 import javafx.application.Platform;
-import server.rmiServer.InterfaciaRemotaRMI;
+import server.rmiServer.InterfaciaServer;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -17,7 +18,7 @@ import java.util.Scanner;
 /**
  * Created by Pietro on 16/05/2017.
  */
-public class ClientSocket implements InterfacciaClient, InterfaciaRemotaRMI{
+public class ClientSocket implements InterfacciaClient, InterfaciaServer {
     private Socket socket;
     private String nickName;
     private Scanner stdin;
@@ -226,10 +227,21 @@ public class ClientSocket implements InterfacciaClient, InterfaciaRemotaRMI{
     }
 
     @Override
-    public void finePartita(HashMap<String,Integer> classifica) throws RemoteException {
+    public void finePartita(ArrayList<Integer> classificaId,ArrayList<String> username, ArrayList<Integer> punti) throws RemoteException {
         Platform.runLater(()->{
             try {
-                controllerGioco.finePartita(classifica);
+                controllerGioco.finePartita(classificaId,username,punti);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @Override
+    public void puntiGiocatore(int idGiocatore, ArrayList<Integer> punteggi) throws RemoteException {
+        Platform.runLater(()->{
+            try {
+                controllerGioco.puntiGiocatore(idGiocatore, punteggi);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -385,6 +397,18 @@ public class ClientSocket implements InterfacciaClient, InterfaciaRemotaRMI{
         }
     }
 
+    @Override
+    public void esci(int mioId){
+        try {
+            out.writeObject("ESCI");
+            out.flush();
+            out.writeObject(mioId);
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     class ClientHandler implements Runnable{
         private String comando;
         private int idGiocatore;
@@ -404,7 +428,9 @@ public class ClientSocket implements InterfacciaClient, InterfaciaRemotaRMI{
         private String messaggio;
         private ArrayList<String> nomiCarte;
         private boolean run=true;
-        private HashMap<String,Integer> classifica;
+        private ArrayList<Integer> classificaId;
+        private ArrayList<String> classificaUsername;
+        private ArrayList<Integer> classificaPunti;
 
 
         @Override
@@ -413,7 +439,17 @@ public class ClientSocket implements InterfacciaClient, InterfaciaRemotaRMI{
 
             while (run){
                 try {
-                    comando=(String) in.readObject();
+                    if(in!=null)
+                        try {
+                            comando=(String) in.readObject();
+                        }
+                        catch (EOFException e){
+                            run=false;
+                        }
+
+                    else{
+                        run=false;
+                    }
 
 
                     if(comando.equals("INIZIOPARTITA")){
@@ -510,8 +546,15 @@ public class ClientSocket implements InterfacciaClient, InterfaciaRemotaRMI{
                         avvisoInizioTurno(nomiCarte);
                     }
                     else if(comando.startsWith("FINEPARTITA")){
-                        classifica=(HashMap<String,Integer>) in.readObject();
-                        finePartita(classifica);
+                        classificaId=(ArrayList<Integer>) in.readObject();
+                        classificaUsername=(ArrayList<String>) in.readObject();
+                        classificaPunti=(ArrayList<Integer>) in.readObject();
+                        finePartita(classificaId,classificaUsername,classificaPunti);
+                    }
+                    else if (comando.startsWith("PUNTIGIOCATORE")){
+                        idGiocatore=(int) in.readObject();
+                        classificaPunti=(ArrayList<Integer>) in.readObject();
+                        puntiGiocatore(idGiocatore,classificaPunti);
                     }
 
 

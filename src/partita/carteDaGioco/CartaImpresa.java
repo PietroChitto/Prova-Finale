@@ -67,8 +67,34 @@ public class CartaImpresa extends CartaSviluppo {
     public void confrontaCosto(Giocatore g) throws RisorseInsufficientiException {
         if(!(costoCarta1.getCostoLegna()<=g.getLegna() && costoCarta1.getCostoMonete()<=g.getMonete()
                 && costoCarta1.getCostoServitori()<=g.getServitori()
-                && costoCarta1.getCostoPuntiMilitari()<=g.getPuntiMilitari()) )
+                && costoCarta1.getCostoPuntiMilitari()<=g.getPuntiMilitari() && costoCarta1.getCostoPietra()<=g.getPietra()) ) {
+            /*System.out.println("confronta costo impresa");
+            System.out.println("costo pietra "+costoCarta1.getCostoPietra());
+            System.out.println("costo legna "+costoCarta1.getCostoLegna());
+            System.out.println("costo Servi "+costoCarta1.getCostoServitori());
+            System.out.println("costo Monete "+costoCarta1.getCostoMonete());
+            System.out.println("costo Militari "+costoCarta1.getCostoPuntiMilitari());
+            System.out.println("pietra giocatore "+g.getPietra());
+            System.out.println("legna giocatore "+g.getLegna());
+            System.out.println("servi giocatore "+g.getServitori());
+            System.out.println("monete giocatore "+g.getMonete());
+            System.out.println("militari giocatore "+g.getPuntiMilitari());*/
+            System.out.println("risorse insufficienti");
             throw new RisorseInsufficientiException();
+        }
+        else{
+            /*System.out.println("costo pietra "+costoCarta1.getCostoPietra());
+            System.out.println("costo legna "+costoCarta1.getCostoLegna());
+            System.out.println("costo Servi "+costoCarta1.getCostoServitori());
+            System.out.println("costo Monete "+costoCarta1.getCostoMonete());
+            System.out.println("costo Militari "+costoCarta1.getCostoPuntiMilitari());
+            System.out.println("pietra giocatore"+g.getPietra());
+            System.out.println("legna giocatore"+g.getLegna());
+            System.out.println("servi giocatore"+g.getServitori());
+            System.out.println("monete giocatore"+g.getMonete());
+            System.out.println("militari giocatore"+g.getPuntiMilitari());*/
+            System.out.println("risorse sufficienti");
+        }
 
     }
 
