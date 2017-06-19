@@ -306,7 +306,7 @@ public class ClientRMI extends UnicastRemoteObject implements InterfacciaClient,
 
     @Override
     public void sceltaScomunica(boolean appoggiaChiesa) throws RemoteException {
-
+        metodiPartita.sceltaScomunica(appoggiaChiesa);
     }
 
     @Override

@@ -57,9 +57,9 @@ public class CampoDaGioco {
             mazzoTerritorio.addAll(creatoreMazzi.secondoPeriodoTerreni());
             mazzoTerritorio.addAll(creatoreMazzi.terzoPeriodoTerreni());
             System.out.println("il mazzo territorio contiene "+mazzoTerritorio.size());
-            for (CartaSviluppo c: mazzoTerritorio){
+            /*for (CartaSviluppo c: mazzoTerritorio){
                 System.out.println(c.getNome());
-            }
+            }*/
         } catch (SQLException e) {
             System.out.println("errori SQL");
             e.printStackTrace();
@@ -72,9 +72,9 @@ public class CampoDaGioco {
             mazzoEdificio = creatoreMazzi.primoPeriodoEdificio();
             mazzoEdificio.addAll(creatoreMazzi.secondoPeriodoEdificio());
             mazzoEdificio.addAll(creatoreMazzi.terzoPeriodoEdificio());
-            for (CartaSviluppo c: mazzoEdificio){
+            /*for (CartaSviluppo c: mazzoEdificio){
                 System.out.println(c.getNome());
-            }
+            }*/
         } catch (SQLException e) {
             System.out.println("errori SQL");
             e.printStackTrace();
@@ -87,9 +87,9 @@ public class CampoDaGioco {
             mazzoPersonaggi = creatoreMazzi.primoPeriodoPersonaggio();
             mazzoPersonaggi.addAll(creatoreMazzi.secondoPeriodoPersonaggio());
             mazzoPersonaggi.addAll(creatoreMazzi.terzoPeriodoPersonaggio());
-            for (CartaSviluppo c: mazzoPersonaggi){
+            /*for (CartaSviluppo c: mazzoPersonaggi){
                 System.out.println(c.getNome());
-            }
+            }*/
         } catch (SQLException e) {
             System.out.println("errori SQL");
             e.printStackTrace();
@@ -102,9 +102,9 @@ public class CampoDaGioco {
             mazzoImprese = creatoreMazzi.primoPeriodoImpresa();
             mazzoImprese.addAll(creatoreMazzi.secondoPeriodoImpresa());
             mazzoImprese.addAll(creatoreMazzi.terzoPeriodoImpresa());
-            for (CartaSviluppo c: mazzoImprese){
+            /*for (CartaSviluppo c: mazzoImprese){
                 System.out.println(c.getNome());
-            }
+            }*/
         } catch (SQLException e) {
             System.out.println("errori SQL");
             e.printStackTrace();
@@ -139,24 +139,26 @@ public class CampoDaGioco {
     }*/
 
     public void mettiCarteNelleTorri() {
+        System.out.println("Nelle torri ci sono");
         for(int i=0; i<4; i++){
             tabellone.getTorre(0).getPiano(i).setCartaSviluppo(mazzoTerritorio.get(0));
-            //System.out.println("torre 0, piano "+i+" : "+ tabellone.getTorre(0).getPiano(i).getCartaSviluppo().getNome()+ " periodo " +tabellone.getTorre(0).getPiano(i).getCartaSviluppo().getPeriodo());
+            System.out.println("torre 0, piano "+i+" : "+ tabellone.getTorre(0).getPiano(i).getCartaSviluppo().getNome()+ " periodo " +tabellone.getTorre(0).getPiano(i).getCartaSviluppo().getPeriodo());
             mazzoTerritorio.remove(0);
 
             tabellone.getTorre(1).getPiano(i).setCartaSviluppo(mazzoPersonaggi.get(0));
-            //System.out.println("torre 1, piano "+i+" : "+ tabellone.getTorre(1).getPiano(i).getCartaSviluppo().getNome()+ " periodo " +tabellone.getTorre(1).getPiano(i).getCartaSviluppo().getPeriodo());
+            System.out.println("torre 1, piano "+i+" : "+ tabellone.getTorre(1).getPiano(i).getCartaSviluppo().getNome()+ " periodo " +tabellone.getTorre(1).getPiano(i).getCartaSviluppo().getPeriodo());
             mazzoPersonaggi.remove(0);
 
             tabellone.getTorre(2).getPiano(i).setCartaSviluppo(mazzoEdificio.get(0));
-            //System.out.println("torre 2, piano "+i+" : "+ tabellone.getTorre(2).getPiano(i).getCartaSviluppo().getNome()+ " periodo " +tabellone.getTorre(2).getPiano(i).getCartaSviluppo().getPeriodo());
+            System.out.println("torre 2, piano "+i+" : "+ tabellone.getTorre(2).getPiano(i).getCartaSviluppo().getNome()+ " periodo " +tabellone.getTorre(2).getPiano(i).getCartaSviluppo().getPeriodo());
             mazzoEdificio.remove(0);
 
             tabellone.getTorre(3).getPiano(i).setCartaSviluppo(mazzoImprese.get(0));
-            //System.out.println("torre 3, piano "+i+" : "+ tabellone.getTorre(3).getPiano(i).getCartaSviluppo().getNome()+ " periodo " +tabellone.getTorre(3).getPiano(i).getCartaSviluppo().getPeriodo());
+            System.out.println("torre 3, piano "+i+" : "+ tabellone.getTorre(3).getPiano(i).getCartaSviluppo().getNome()+ " periodo " +tabellone.getTorre(3).getPiano(i).getCartaSviluppo().getPeriodo());
             mazzoImprese.remove(0);
         }
 
+        System.out.println("il mazzo territorio contiene "+mazzoTerritorio.size());
     }
 
     public ArrayList<String> getNomiCarteTorri(){

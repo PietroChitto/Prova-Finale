@@ -7,6 +7,7 @@ import partita.eccezioniPartita.*;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 /**
  * Created by Pietro on 23/05/2017.
@@ -196,9 +197,14 @@ public class MosseGiocatore{
         //metto il familiare nel piano, se è già occupato lancia un eccezione ZonaOccupata
         giocatore.getPartita().getCampoDaGioco().getTabellone().getTorre(numeroTorre).getPiano(numeroPiano).getCampoAzione().setFamiliare(familiareSelezionato);
 
-        //avviso i giocatori della mossa
+        //avviso i giocatori della mossa e dell'incremento dei punti
+        ArrayList<Integer> punti=new ArrayList<>();
+        punti.add(giocatore.getGiocatore().getPuntiVittoria());
+        punti.add(giocatore.getGiocatore().getPuntiFede());
+        punti.add(giocatore.getGiocatore().getPuntiMilitari());
         for (GiocatoreRemoto g: giocatore.getPartita().getGiocatori()){
             g.spostatoFamiliarePiano(numeroTorre,numeroPiano,familiareSelezionato.getColoreDado(), familiareSelezionato.getIdGiocatore());
+            g.puntiGiocatore(giocatore.getGiocatore().getId(),punti);
         }
 
         //avviso il giocatore dell'incremento delle risorse
@@ -262,9 +268,14 @@ public class MosseGiocatore{
             giocatore.scegliPergamena();
         }
 
-        //avviso i giocatori della mossa
+        //avviso i giocatori della mossa e dell'incremento punti
+        ArrayList<Integer> punti=new ArrayList<>();
+        punti.add(giocatore.getGiocatore().getPuntiVittoria());
+        punti.add(giocatore.getGiocatore().getPuntiFede());
+        punti.add(giocatore.getGiocatore().getPuntiMilitari());
         for (GiocatoreRemoto g: giocatore.getPartita().getGiocatori()){
             g.spostatoFamiliareMercato(zonaMercato, familiareSelezionato.getColoreDado(), familiareSelezionato.getGiocatore().getId());
+            g.puntiGiocatore(giocatore.getGiocatore().getId(), punti);
         }
 
         //avviso il giocatore dell'incremento delle risorse
@@ -291,9 +302,14 @@ public class MosseGiocatore{
         //metto il familiare nel palazzo del consiglio, se non ho almeno forza 1 manda una ForzaInsufficienteException
         giocatore.getPartita().getCampoDaGioco().getTabellone().getPalazzoDelConsiglio().arrivaGiocatore(familiareSelezionato);
 
-        //avviso i giocatori della mossa
+        //avviso i giocatori della mossa e dellìincremento dei punti
+        ArrayList<Integer> punti=new ArrayList<>();
+        punti.add(giocatore.getGiocatore().getPuntiVittoria());
+        punti.add(giocatore.getGiocatore().getPuntiFede());
+        punti.add(giocatore.getGiocatore().getPuntiMilitari());
         for (GiocatoreRemoto g: giocatore.getPartita().getGiocatori()){
             g.spostatoFamiliarePalazzoDelConsiglio(familiareSelezionato.getColoreDado(), familiareSelezionato.getGiocatore().getId());
+            g.puntiGiocatore(giocatore.getGiocatore().getId(),punti);
         }
 
         //faccio scegliere al giocatore il privilegio del consiglio
@@ -329,9 +345,14 @@ public class MosseGiocatore{
         //metto il familiare nella zona produzionee attivo gli effetti
         giocatore.getPartita().getCampoDaGioco().getTabellone().getZonaProduzione().arrivaGiocatore(familiareSelezionato);
 
-        //avviso i giocatori della mossa
+        //avviso i giocatori della mossa e dell'icremento dei punti
+        ArrayList<Integer> punti=new ArrayList<>();
+        punti.add(giocatore.getGiocatore().getPuntiVittoria());
+        punti.add(giocatore.getGiocatore().getPuntiFede());
+        punti.add(giocatore.getGiocatore().getPuntiMilitari());
         for (GiocatoreRemoto g: giocatore.getPartita().getGiocatori()){
             g.spostatoFamiliareZonaProduzione(familiareSelezionato.getColoreDado(), familiareSelezionato.getGiocatore().getId(), zona);
+            g.puntiGiocatore(giocatore.getGiocatore().getId(),punti);
         }
 
         //avviso il giocatore dell'incremento delle risorse
@@ -362,9 +383,14 @@ public class MosseGiocatore{
 
         giocatore.getPartita().getCampoDaGioco().getTabellone().getZonaRaccolto().arrivaGiocatore(familiareSelezionato);
 
-        //avviso i giocatori della mossa
+        //avviso i giocatori della mossa e dei punti
+        ArrayList<Integer> punti=new ArrayList<>();
+        punti.add(giocatore.getGiocatore().getPuntiVittoria());
+        punti.add(giocatore.getGiocatore().getPuntiFede());
+        punti.add(giocatore.getGiocatore().getPuntiMilitari());
         for (GiocatoreRemoto g: giocatore.getPartita().getGiocatori()){
             g.spostatoFamiliareZonaRaccolto(familiareSelezionato.getColoreDado(), familiareSelezionato.getGiocatore().getId(), zona);
+            g.puntiGiocatore(giocatore.getGiocatore().getId(),punti);
         }
 
         //avviso il giocatore dell'incremento delle risorse
@@ -402,6 +428,7 @@ public class MosseGiocatore{
 
     public synchronized void sceltaScomunica(boolean appoggiaChiesa) throws RemoteException {
         if (appoggiaChiesa) {
+            System.out.println("Il giocatore ha appoggiato la chiesa");
             giocatore.getGiocatore().setPuntiVittoria(giocatore.getGiocatore().getPuntiVittoria()+giocatore.getGiocatore().getPuntiFede());
             giocatore.getGiocatore().setPuntiFede(0);
         } else {
@@ -409,9 +436,16 @@ public class MosseGiocatore{
             for(GiocatoreRemoto g: giocatore.getPartita().getGiocatori()){
                 g.giocatoreScomunicato(giocatore.getGiocatore().getId(), giocatore.getPartita().getPeriodo()-1);
             }
+            System.out.println("Il giocatore non ha appoggiato la chiesa");
         }
-        //avviso il giocatore dell'incremento delle risorse
-        giocatore.risorseIncrementate(giocatore.getGiocatore().getPietra(), giocatore.getGiocatore().getLegna(), giocatore.getGiocatore().getServitori(),giocatore.getGiocatore().getMonete(), giocatore.getGiocatore().getPuntiMilitari(), giocatore.getGiocatore().getPuntiFede(), giocatore.getGiocatore().getPuntiVittoria());
+        //avviso i giocatori dell'incremento dei punti
+        ArrayList<Integer> punti=new ArrayList<>();
+        punti.add(giocatore.getGiocatore().getPuntiVittoria());
+        punti.add(giocatore.getGiocatore().getPuntiFede());
+        punti.add(giocatore.getGiocatore().getPuntiMilitari());
+        for (GiocatoreRemoto g: giocatore.getPartita().getGiocatori()){
+            g.puntiGiocatore(giocatore.getGiocatore().getId(),punti);
+        }
 
     }
 

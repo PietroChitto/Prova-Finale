@@ -216,7 +216,9 @@ public class Partita {
         dadiTirati=false;
         ordineTurno=getCampoDaGioco().getTabellone().getPalazzoDelConsiglio().calcoaTurnoSuccessivo(ordineTurno);
         getCampoDaGioco().getTabellone().getPalazzoDelConsiglio().stampaOrdineTurno(ordineTurno);
-        if(periodo!=3 && turno!=2) {
+        System.out.println("Sono in passa turno");
+        if(!(periodo==3 && turno==2)) {
+            System.out.println("Sono nell'if di passa turno");
             getCampoDaGioco().mettiCarteNelleTorri();
             nomiCarte = getCampoDaGioco().getNomiCarteTorri();
         }
