@@ -1,6 +1,7 @@
 package server.rmiServer;
 
 import Client.InterfacciaClient;
+import partita.componentiDelTabellone.Familiare;
 import partita.eccezioniPartita.*;
 import server.GiocatoreRemoto;
 import server.MosseGiocatore;
@@ -75,6 +76,24 @@ public class GiocatoreRMI extends GiocatoreRemoto{
                 if(controllerClient!=null)
                 controllerClient.messaggio("Hai già piazzato un familiare sulla torre");
             }
+            finally {
+                if(getMosse().getFamiliareSelezionato()!=null) {
+                    //per eventuali decrementi di forza ripristino la forza del familiare al valore del dado
+                    Familiare f = getMosse().getFamiliareSelezionato();
+                    if (f.getColoreDado() == "nero") {
+                        f.setForza(getPartita().getValoreDadoNero());
+                    }
+                    else if(f.getColoreDado()=="bianco"){
+                        f.setForza(getPartita().getValoreDadoBianco());
+                    }
+                    else if (f.getColoreDado()=="arancio"){
+                        f.setForza(getPartita().getValoreDadoArancio());
+                    }
+                    else if(f.getColoreDado()=="neutro"){
+                        f.setForza(0);
+                    }
+                }
+            }
 
     }
 
@@ -127,6 +146,24 @@ public class GiocatoreRMI extends GiocatoreRemoto{
         } catch (FamiliareNonSelezionatoExcepion familiareNonSelezionatoExcepion) {
             controllerClient.messaggio("familiare non selezionato");
         }
+        finally {
+            if(getMosse().getFamiliareSelezionato()!=null) {
+                //per eventuali decrementi di forza ripristino la forza del familiare al valore del dado
+                Familiare f = getMosse().getFamiliareSelezionato();
+                if (f.getColoreDado() == "nero") {
+                    f.setForza(getPartita().getValoreDadoNero());
+                }
+                else if(f.getColoreDado()=="bianco"){
+                    f.setForza(getPartita().getValoreDadoBianco());
+                }
+                else if (f.getColoreDado()=="arancio"){
+                    f.setForza(getPartita().getValoreDadoArancio());
+                }
+                else if(f.getColoreDado()=="neutro"){
+                    f.setForza(0);
+                }
+            }
+        }
     }
 
     @Override
@@ -143,6 +180,24 @@ public class GiocatoreRMI extends GiocatoreRemoto{
             controllerClient.messaggio("familiare non selezionato");
         } catch (DadiNonTiratiException e) {
             controllerClient.messaggio("Tira i dadi");
+        }
+        finally {
+            if(getMosse().getFamiliareSelezionato()!=null) {
+                //per eventuali decrementi di forza ripristino la forza del familiare al valore del dado
+                Familiare f = getMosse().getFamiliareSelezionato();
+                if (f.getColoreDado() == "nero") {
+                    f.setForza(getPartita().getValoreDadoNero());
+                }
+                else if(f.getColoreDado()=="bianco"){
+                    f.setForza(getPartita().getValoreDadoBianco());
+                }
+                else if (f.getColoreDado()=="arancio"){
+                    f.setForza(getPartita().getValoreDadoArancio());
+                }
+                else if(f.getColoreDado()=="neutro"){
+                    f.setForza(0);
+                }
+            }
         }
     }
 

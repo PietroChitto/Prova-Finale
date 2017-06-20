@@ -3,6 +3,7 @@ package server.socketServer;
 import Client.InterfacciaClient;
 import Client.Messaggio;
 import partita.Partita;
+import partita.componentiDelTabellone.Familiare;
 import partita.componentiDelTabellone.Giocatore;
 import partita.eccezioniPartita.*;
 import server.GiocatoreRemoto;
@@ -140,6 +141,24 @@ import java.util.ArrayList;
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+        finally {
+            if(getMosse().getFamiliareSelezionato()!=null) {
+                //per eventuali decrementi di forza ripristino la forza del familiare al valore del dado
+                Familiare f = getMosse().getFamiliareSelezionato();
+                if (f.getColoreDado() == "nero") {
+                    f.setForza(getPartita().getValoreDadoNero());
+                }
+                else if(f.getColoreDado()=="bianco"){
+                    f.setForza(getPartita().getValoreDadoBianco());
+                }
+                else if (f.getColoreDado()=="arancio"){
+                    f.setForza(getPartita().getValoreDadoArancio());
+                }
+                else if(f.getColoreDado()=="neutro"){
+                    f.setForza(0);
+                }
+            }
+        }
     }
 
     @Override
@@ -204,6 +223,24 @@ import java.util.ArrayList;
                 e.printStackTrace();
             }
         }
+        finally {
+            if(getMosse().getFamiliareSelezionato()!=null) {
+                //per eventuali decrementi di forza ripristino la forza del familiare al valore del dado
+                Familiare f = getMosse().getFamiliareSelezionato();
+                if (f.getColoreDado() == "nero") {
+                    f.setForza(getPartita().getValoreDadoNero());
+                }
+                else if(f.getColoreDado()=="bianco"){
+                    f.setForza(getPartita().getValoreDadoBianco());
+                }
+                else if (f.getColoreDado()=="arancio"){
+                    f.setForza(getPartita().getValoreDadoArancio());
+                }
+                else if(f.getColoreDado()=="neutro"){
+                    f.setForza(0);
+                }
+            }
+        }
     }
 
     @Override
@@ -249,6 +286,24 @@ import java.util.ArrayList;
             }
         } catch (DadiNonTiratiException e) {
             e.printStackTrace();
+        }
+        finally {
+            if(getMosse().getFamiliareSelezionato()!=null) {
+                //per eventuali decrementi di forza ripristino la forza del familiare al valore del dado
+                Familiare f = getMosse().getFamiliareSelezionato();
+                if (f.getColoreDado() == "nero") {
+                    f.setForza(getPartita().getValoreDadoNero());
+                }
+                else if(f.getColoreDado()=="bianco"){
+                    f.setForza(getPartita().getValoreDadoBianco());
+                }
+                else if (f.getColoreDado()=="arancio"){
+                    f.setForza(getPartita().getValoreDadoArancio());
+                }
+                else if(f.getColoreDado()=="neutro"){
+                    f.setForza(0);
+                }
+            }
         }
     }
 
