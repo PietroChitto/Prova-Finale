@@ -21,33 +21,7 @@ public class CampoAzioneSingoloTest {
         cas.setFamiliare(f1);
     }
 
-    @Test
-    public void getFamiliare() throws Exception {
-    }
 
-    @Test
-    public void isHaEffetto() throws Exception {
-    }
-
-    @Test
-    public void isOccupato() throws Exception {
-    }
-
-    @Test
-    public void getCosto() throws Exception {
-    }
-
-    @Test
-    public void getEffetto() throws Exception {
-    }
-
-    @Test
-    public void setOccupato() throws Exception {
-    }
-
-    @Test
-    public void setCosto() throws Exception {
-    }
 
     @Test
     public void svuotaCampoAzione() throws Exception {

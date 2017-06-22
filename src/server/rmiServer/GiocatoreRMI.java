@@ -28,13 +28,15 @@ public class GiocatoreRMI extends GiocatoreRemoto{
 
     @Override
     public void selezionaFamiliare(String colore, int idGiocatore) throws RemoteException {
-        try {
-            getMosse().selezionaFamiliare(colore,idGiocatore);
-            controllerClient.messaggio("Familiare selezionato");
-        } catch (TurnoException e) {
-            controllerClient.messaggio("Non è il tuo turno");
-        } catch (DadiNonTiratiException e) {
-            controllerClient.messaggio("Tira prima i dadi");
+        if (controllerClient != null) {
+            try {
+                getMosse().selezionaFamiliare(colore, idGiocatore);
+                controllerClient.messaggio("Familiare selezionato");
+            } catch (TurnoException e) {
+                controllerClient.messaggio("Non è il tuo turno");
+            } catch (DadiNonTiratiException e) {
+                controllerClient.messaggio("Tira prima i dadi");
+            }
         }
     }
 
@@ -99,18 +101,20 @@ public class GiocatoreRMI extends GiocatoreRemoto{
 
     @Override
     public void spostaFamiliareMercato(int zonaMercato) throws RemoteException {
-        try {
-            getMosse().spostaFamiliareMercato(zonaMercato);
-        } catch (TurnoException e) {
-            controllerClient.messaggio("Non è il tuo turno");
-        } catch (ForzaInsufficienteException e) {
-            controllerClient.messaggio("Forza Insufficiente");
-        } catch (ZonaOccupataExcepion zonaOccupataExcepion) {
-            controllerClient.messaggio("La zona è già occupata");
-        } catch (DadiNonTiratiException e) {
-            controllerClient.messaggio("Tira i dadi");
-        } catch (FamiliareNonSelezionatoExcepion familiareNonSelezionatoExcepion) {
-            controllerClient.messaggio("familiare non selezionato");
+        if(controllerClient!=null) {
+            try {
+                getMosse().spostaFamiliareMercato(zonaMercato);
+            } catch (TurnoException e) {
+                controllerClient.messaggio("Non è il tuo turno");
+            } catch (ForzaInsufficienteException e) {
+                controllerClient.messaggio("Forza Insufficiente");
+            } catch (ZonaOccupataExcepion zonaOccupataExcepion) {
+                controllerClient.messaggio("La zona è già occupata");
+            } catch (DadiNonTiratiException e) {
+                controllerClient.messaggio("Tira i dadi");
+            } catch (FamiliareNonSelezionatoExcepion familiareNonSelezionatoExcepion) {
+                controllerClient.messaggio("familiare non selezionato");
+            }
         }
     }
 
@@ -300,6 +304,7 @@ public class GiocatoreRMI extends GiocatoreRemoto{
 
     @Override
     public void spostatoFamiliareMercato(int zonaMercato, String coloreDado, int id) throws RemoteException {
+        if(controllerClient!=null)
         controllerClient.spostatoFamiliareMercato(zonaMercato,coloreDado,id);
     }
 

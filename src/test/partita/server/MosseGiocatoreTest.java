@@ -13,7 +13,7 @@ import server.socketServer.GiocatoreSocket;
 
 import java.net.Socket;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 /**
  * Created by Pietro on 15/06/2017.
@@ -151,39 +151,23 @@ public class MosseGiocatoreTest {
 
     @Test
     public void spostaFamiliareMercato() throws Exception {
-
-    }
-
-    @Test
-    public void spostaFamiliarePalazzoDelConsiglio() throws Exception {
-    }
-
-    @Test
-    public void spostaFamiliareZonaProduzione() throws Exception {
-    }
-
-    @Test
-    public void spostaFamiliareZonaRaccolto() throws Exception {
+        giocatore1.tiraIDadi();
+        giocatore1.getMosse().selezionaFamiliare("nero",giocatore1.getGiocatore().getId());
+        assertFalse(giocatore1.getMosse().getFamiliareSelezionato()==null);
+        assertEquals(5,giocatore1.getGiocatore().getMonete());
+        giocatore1.getMosse().spostaFamiliareMercato(0);
+        assertEquals(10,giocatore1.getGiocatore().getMonete());
     }
 
     @Test
     public void tiraIDadi() throws Exception {
-    }
-
-    @Test
-    public void sceltaScomunica() throws Exception {
-    }
-
-    @Test
-    public void aumentaForzaFamiliare() throws Exception {
-    }
-
-    @Test
-    public void saltaMossa() throws Exception {
-    }
-
-    @Test
-    public void sceltaPergamena() throws Exception {
+        giocatore1.getMosse().tiraIDadi();
+        assertTrue(partita.getValoreDadoArancio()<7);
+        assertTrue(partita.getValoreDadoBianco()<7);
+        assertTrue(partita.getValoreDadoNero()<7);
+        assertTrue(partita.getValoreDadoArancio()>0);
+        assertTrue(partita.getValoreDadoBianco()>0);
+        assertTrue(partita.getValoreDadoNero()>0);
     }
 
 }

@@ -25,11 +25,11 @@ public class MercatoTest {
         g.setLegna(2);
         g.setPietra(5);
         Familiare f= new Familiare(false,1,4,"nero", true,g);
-        m.arrivaGiocatore(f,1);
+        m.arrivaGiocatore(f,0);
         assertEquals(11,g.getMonete());
-        m.arrivaGiocatore(f,2);
+        m.arrivaGiocatore(f,1);
         assertEquals(12,g.getServitori());
-        m.arrivaGiocatore(f,3);
+        m.arrivaGiocatore(f,2);
         assertEquals(13,g.getMonete());
         assertEquals(9,g.getPuntiMilitari());
     }

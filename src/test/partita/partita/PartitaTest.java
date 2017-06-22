@@ -138,8 +138,6 @@ public class PartitaTest {
             p.passaMossa(giocatoreSocket);
         }
 
-        assertEquals(16,p.getCampoDaGioco().getMazzoTerritorio().size());
-
         assertEquals(2,p.getPeriodo());
         //per ogni giocatore faccio 8 mosse a periodo
         for(int i=0; i<(p.getGiocatori().size()/2)*8;i++){

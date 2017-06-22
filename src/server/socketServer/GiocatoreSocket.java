@@ -457,17 +457,19 @@ import java.util.ArrayList;
 
     @Override
     public void spostatoFamiliareMercato(int zonaMercato, String coloreDado, int idGiocatore) throws RemoteException {
-        try {
-            out.writeObject("SPOSTATOFAMILIAREMERCATO");
-            out.flush();
-            out.writeObject(zonaMercato);
-            out.flush();
-            out.writeObject(coloreDado);
-            out.flush();
-            out.writeObject(idGiocatore);
-            out.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(out!=null) {
+            try {
+                out.writeObject("SPOSTATOFAMILIAREMERCATO");
+                out.flush();
+                out.writeObject(zonaMercato);
+                out.flush();
+                out.writeObject(coloreDado);
+                out.flush();
+                out.writeObject(idGiocatore);
+                out.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -593,15 +595,17 @@ import java.util.ArrayList;
 
     @Override
     public void puntiGiocatore(int idGiocatore, ArrayList<Integer> punteggi) throws RemoteException {
-        try{
-            out.writeObject("PUNTIGIOCATORE");
-            out.flush();
-            out.writeObject(idGiocatore);
-            out.flush();
-            out.writeObject(punteggi);
-            out.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(out != null) {
+            try {
+                out.writeObject("PUNTIGIOCATORE");
+                out.flush();
+                out.writeObject(idGiocatore);
+                out.flush();
+                out.writeObject(punteggi);
+                out.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

@@ -6,8 +6,6 @@ package partita.carteDaGioco.effetti.effettiCarte;
 import partita.carteDaGioco.CartaScomunica;
 import partita.carteDaGioco.effetti.Effetto;
 import partita.componentiDelTabellone.Familiare;
-import partita.componentiDelTabellone.Giocatore;
-import partita.componentiDelTabellone.Tabellone;
 
 /**
  * Created by Pietro on 18/05/2017.
@@ -28,17 +26,19 @@ public class EffettoIncrementa implements Effetto {
      */
     @Override
     public void attivaEffetto(String s, Familiare f, int codiceZona) {
-        int[] incrementi=new int[7];
-        for (int i=0; i<14; i+=2){
-            incrementi[i/2]=(int) s.charAt(i)-48;
-        }
+        if(s.length()==14) {
+            int[] incrementi = new int[7];
+            for (int i = 0; i < 14; i += 2) {
+                incrementi[i / 2] = (int) s.charAt(i) - 48;
+            }
 
-        f.getGiocatore().incrementaRisorse(incrementi);
-        System.out.println("incrementate le risorse del giocatore "+f.getGiocatore().getId()+" a causa dell'effetto");
+            f.getGiocatore().incrementaRisorse(incrementi);
+            System.out.println("incrementate le risorse del giocatore " + f.getGiocatore().getId() + " a causa dell'effetto");
 
-        //attivo le scomuniche diminuisci incremento
-        for(CartaScomunica c: f.getGiocatore().getScomuniche()){
-            c.attivaEffettoScomunica(f,s,0);
+            //attivo le scomuniche diminuisci incremento
+            for (CartaScomunica c : f.getGiocatore().getScomuniche()) {
+                c.attivaEffettoScomunica(f, s, 0);
+            }
         }
     }
 

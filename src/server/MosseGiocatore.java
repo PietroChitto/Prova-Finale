@@ -190,6 +190,9 @@ public class MosseGiocatore{
         if(giocatore.getPartita().getCampoDaGioco().getTabellone().getTorre(numeroTorre).getPiano(numeroPiano).getCampoAzione().getCosto() > familiareSelezionato.getForza()){
             throw new ForzaInsufficienteException();
         }
+        if(giocatore.getPartita().getCampoDaGioco().getTabellone().getTorre(numeroTorre).getPiano(numeroPiano).getCampoAzione().isOccupato()){
+            throw new ZonaOccupataExcepion();
+        }
 
         //prendo la carta dalla torre, se non va a buon fine lancia un' eccezione RisorseInsufficienti
         prendiCarta(numeroTorre,numeroPiano);

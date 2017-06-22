@@ -13,9 +13,6 @@ import static org.junit.Assert.assertEquals;
  * Created by Pietro on 05/06/2017.
  */
 public class PalazzoDelConsiglioTest {
-    @Test
-    public void arrivaGiocatore() throws Exception {
-    }
 
     @Test
     public void calcoaTurnoSuccessivo() throws Exception {

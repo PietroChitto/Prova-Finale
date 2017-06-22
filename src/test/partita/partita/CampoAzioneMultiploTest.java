@@ -11,13 +11,6 @@ import static org.junit.Assert.assertEquals;
  * Created by Pietro on 22/05/2017.
  */
 public class CampoAzioneMultiploTest {
-    @Test
-    public void getFamiliari() throws Exception {
-    }
-
-    @Test
-    public void getCosto() throws Exception {
-    }
 
     @Test
     public void aggiungiFamiliare() throws ForzaInsufficienteException {
