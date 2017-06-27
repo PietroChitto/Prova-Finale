@@ -60,7 +60,7 @@ public class GiocatoreRMI extends GiocatoreRemoto{
                 controllerClient.messaggio("familiare non selezionato");
             } catch (TurnoException e) {
                 if(controllerClient!=null)
-                controllerClient.messaggio("non è il tuoturno");
+                controllerClient.messaggio("Non è il tuo turno");
             } catch (ForzaInsufficienteException e) {
                 //se la torre era occupata il giocatore aveva speso 3 monete, siccome la mossa non è andata a buon fine le restituisco
                 if(controllerClient!=null)
@@ -73,7 +73,7 @@ public class GiocatoreRMI extends GiocatoreRemoto{
                 controllerClient.messaggio("la zona è già occupata");
             } catch (RisorseInsufficientiException e) {
                 if(controllerClient!=null)
-                controllerClient.messaggio("non hai risorse sufficienti per prendere la carta");
+                controllerClient.messaggio("non hai risorse sufficienti");
             } catch (TorreOccupataException e) {
                 if(controllerClient!=null)
                 controllerClient.messaggio("Hai già piazzato un familiare sulla torre");
