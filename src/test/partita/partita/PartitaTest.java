@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import partita.Partita;
 import partita.componentiDelTabellone.Giocatore;
+import partita.eccezioniPartita.DadiNonTiratiException;
 import partita.eccezioniPartita.TurnoException;
 import server.GiocatoreRemoto;
 import server.rmiServer.GiocatoreRMI;
@@ -73,10 +74,6 @@ public class PartitaTest {
     }
 
     @Test
-    public void getCampoDaGioco() throws Exception {
-    }
-
-    @Test
     public void mioTurno() throws Exception {
         p.iniziaPartita();
         p.mioTurno(giocatoreRMI.getGiocatore());
@@ -86,16 +83,6 @@ public class PartitaTest {
     public void mioTurno2() throws Exception {
         p.iniziaPartita();
         p.mioTurno(giocatoreSocket.getGiocatore());
-    }
-
-    @Test
-    public void getOrdineTurno() throws Exception {
-
-    }
-
-    @Test
-    public void getPeriodo() throws Exception {
-
     }
 
     @Test
@@ -114,10 +101,6 @@ public class PartitaTest {
     public void getValoreDadoNero() throws Exception {
         p.setValoreDadoNero(4);
         assertEquals(4,p.getValoreDadoNero());
-    }
-
-    @Test
-    public void setPeriodo() throws Exception {
     }
 
     /**
@@ -159,22 +142,26 @@ public class PartitaTest {
 
     @Test
     public void setValoreDadoArancio() throws Exception {
+        p.setValoreDadoArancio(2);
+        assertEquals(2,p.getValoreDadoArancio());
     }
 
     @Test
     public void setValoreDadoBianco() throws Exception {
+        p.setValoreDadoBianco(2);
+        assertEquals(2,p.getValoreDadoBianco());
     }
 
     @Test
     public void setValoreDadoNero() throws Exception {
+        p.setValoreDadoNero(2);
+        assertEquals(2,p.getValoreDadoNero());
     }
 
-    @Test
+    @Test(expected = DadiNonTiratiException.class)
     public void setDadiTirati() throws Exception {
-    }
-
-    @Test
-    public void dadiTirati() throws Exception {
+        p.setDadiTirati(false);
+        p.dadiTirati();
     }
 
 }

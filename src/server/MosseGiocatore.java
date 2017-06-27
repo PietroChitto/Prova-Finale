@@ -596,6 +596,7 @@ public class MosseGiocatore{
         }
 
         giocatore.getPartita().getGiocatori().remove(gioc);
+        giocatore.getPartita().N_GIOCATORI=giocatore.getPartita().N_GIOCATORI-1;
 
 
         System.out.println("ci sono: "+giocatore.getPartita().getGiocatori().size()+" giocatori");

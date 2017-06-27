@@ -546,10 +546,14 @@ public class ClientSocket implements InterfacciaClient, InterfaciaServer {
                         avvisoInizioTurno(nomiCarte);
                     }
                     else if(comando.startsWith("FINEPARTITA")){
-                        classificaId=(ArrayList<Integer>) in.readObject();
-                        classificaUsername=(ArrayList<String>) in.readObject();
-                        classificaPunti=(ArrayList<Integer>) in.readObject();
-                        finePartita(classificaId,classificaUsername,classificaPunti);
+                        try {
+                            classificaId = (ArrayList<Integer>) in.readObject();
+                            classificaUsername = (ArrayList<String>) in.readObject();
+                            classificaPunti = (ArrayList<Integer>) in.readObject();
+                            finePartita(classificaId, classificaUsername, classificaPunti);
+                        }catch (EOFException e){
+                            System.out.println("fine partita");
+                        }
                     }
                     else if (comando.startsWith("PUNTIGIOCATORE")){
                         idGiocatore=(int) in.readObject();
