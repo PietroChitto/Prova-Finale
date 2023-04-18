@@ -1,4 +1,4 @@
-package test.partita.partita;
+package test.java.partita;
 
 import org.junit.Test;
 import partita.componentiDelTabellone.CampoAzioneSingolo;
@@ -16,7 +16,7 @@ public class CampoAzioneSingoloTest {
         Familiare f =new Familiare(false,0,5,"nero",true,null);
         CampoAzioneSingolo cas=new CampoAzioneSingolo(3,false,"");
         cas.setFamiliare(f);
-        assertTrue(cas.isOccupato());
+        Assert.assertTrue(cas.isOccupato());
         Familiare f1=new Familiare(false,0,5,"nero",true,null);
         cas.setFamiliare(f1);
     }
@@ -30,7 +30,7 @@ public class CampoAzioneSingoloTest {
         cas.setFamiliare(f);
         assertEquals(cas.getFamiliare(),f);
         cas.svuotaCampoAzione();
-        assertFalse(cas.isOccupato());
+        Assert.assertFalse(cas.isOccupato());
         assertEquals(null,cas.getFamiliare());
 
     }

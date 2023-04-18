@@ -1,4 +1,4 @@
-package Client;
+package com.pietro.lorenzoilmagnifico;
 
 import java.io.Serializable;
 

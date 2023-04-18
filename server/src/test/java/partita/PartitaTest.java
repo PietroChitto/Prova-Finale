@@ -1,4 +1,4 @@
-package test.partita.partita;
+package test.java.partita;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -64,13 +64,13 @@ public class PartitaTest {
     @Test
     public void iniziaPartita() throws Exception {
         p.iniziaPartita();
-        assertFalse(p.getCampoDaGioco()==null);
-        assertTrue(p.getCampoDaGioco().getCarteScomunica().size()==3);
-        assertTrue(p.getCampoDaGioco().getMazzoEdificio().size()==20);
-        assertTrue(p.getCampoDaGioco().getMazzoImprese().size()==20);
-        assertTrue(p.getCampoDaGioco().getMazzoPersonaggi().size()==20);
-        assertTrue(p.getCampoDaGioco().getMazzoTerritorio().size()==20);
-        assertTrue(p.getCampoDaGioco().getTabellone()!=null);
+        Assert.assertFalse(p.getCampoDaGioco()==null);
+        Assert.assertTrue(p.getCampoDaGioco().getCarteScomunica().size()==3);
+        Assert.assertTrue(p.getCampoDaGioco().getMazzoEdificio().size()==20);
+        Assert.assertTrue(p.getCampoDaGioco().getMazzoImprese().size()==20);
+        Assert.assertTrue(p.getCampoDaGioco().getMazzoPersonaggi().size()==20);
+        Assert.assertTrue(p.getCampoDaGioco().getMazzoTerritorio().size()==20);
+        Assert.assertTrue(p.getCampoDaGioco().getTabellone()!=null);
     }
 
     @Test

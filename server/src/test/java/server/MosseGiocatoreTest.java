@@ -1,4 +1,4 @@
-package test.partita.server;
+package test.java.server;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -153,7 +153,7 @@ public class MosseGiocatoreTest {
     public void spostaFamiliareMercato() throws Exception {
         giocatore1.tiraIDadi();
         giocatore1.getMosse().selezionaFamiliare("nero",giocatore1.getGiocatore().getId());
-        assertFalse(giocatore1.getMosse().getFamiliareSelezionato()==null);
+        Assert.assertFalse(giocatore1.getMosse().getFamiliareSelezionato()==null);
         assertEquals(5,giocatore1.getGiocatore().getMonete());
         giocatore1.getMosse().spostaFamiliareMercato(0);
         assertEquals(10,giocatore1.getGiocatore().getMonete());
@@ -162,12 +162,12 @@ public class MosseGiocatoreTest {
     @Test
     public void tiraIDadi() throws Exception {
         giocatore1.getMosse().tiraIDadi();
-        assertTrue(partita.getValoreDadoArancio()<7);
-        assertTrue(partita.getValoreDadoBianco()<7);
-        assertTrue(partita.getValoreDadoNero()<7);
-        assertTrue(partita.getValoreDadoArancio()>0);
-        assertTrue(partita.getValoreDadoBianco()>0);
-        assertTrue(partita.getValoreDadoNero()>0);
+        Assert.assertTrue(partita.getValoreDadoArancio()<7);
+        Assert.assertTrue(partita.getValoreDadoBianco()<7);
+        Assert.assertTrue(partita.getValoreDadoNero()<7);
+        Assert.assertTrue(partita.getValoreDadoArancio()>0);
+        Assert.assertTrue(partita.getValoreDadoBianco()>0);
+        Assert.assertTrue(partita.getValoreDadoNero()>0);
     }
 
 }

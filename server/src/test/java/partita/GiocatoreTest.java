@@ -1,4 +1,4 @@
-package test.partita.partita;
+package test.java.partita;
 
 import org.junit.Test;
 import partita.componentiDelTabellone.Giocatore;

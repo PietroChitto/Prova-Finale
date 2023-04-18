@@ -1,7 +1,6 @@
 package server.socketServer;
 
 import Client.InterfacciaClient;
-import Client.Messaggio;
 import partita.Partita;
 import partita.componentiDelTabellone.Familiare;
 import partita.componentiDelTabellone.Giocatore;

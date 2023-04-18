@@ -1,4 +1,4 @@
-package test.partita.partita;
+package test.java.partita;
 
 import org.junit.Test;
 import partita.componentiDelTabellone.Familiare;
@@ -44,7 +44,7 @@ public class PalazzoDelConsiglioTest {
         assertEquals(g3,nuovoTurno.get(2));
         assertEquals(g1,nuovoTurno.get(3));
 
-        assertEquals(4,nuovoTurno.size());
+        Assert.assertEquals(4,nuovoTurno.size());
 
         for (Giocatore g: nuovoTurno){
             System.out.println(g.getId());
