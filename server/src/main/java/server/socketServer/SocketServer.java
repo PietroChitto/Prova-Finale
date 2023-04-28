@@ -1,9 +1,9 @@
 package server.socketServer;
 
-import Client.InterfacciaClient;
 import server.NetworkException;
 import server.ServerInterface;
 import server.rmiServer.InterfaciaServer;
+import server.InterfacciaClient;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -14,11 +14,9 @@ import java.rmi.RemoteException;
  * Created by Pietro on 16/05/2017.
  */
 public class SocketServer implements ServerInterface{
-
     private ServerSocket serverSocket;
-    public SocketServer(/*ServerInterface controller*/) {
-       // super(/*controller*/);
-
+    public SocketServer() {
+        super();
     }
 
     /*@Override*/

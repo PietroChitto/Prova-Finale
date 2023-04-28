@@ -1,6 +1,6 @@
-package Client.GUI;
+package client.gui;
 
-import Client.MainClient;
+import client.MainClient;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

@@ -1,14 +1,11 @@
 package server.socketServer;
 
-import Client.InterfacciaClient;
+import com.pietro.lorenzoilmagnifico.Messaggio;
 import partita.Partita;
 import partita.componentiDelTabellone.Familiare;
 import partita.componentiDelTabellone.Giocatore;
 import partita.eccezioniPartita.*;
-import server.GiocatoreRemoto;
-import server.MosseGiocatore;
-import server.Server;
-import server.ServerInterface;
+import server.*;
 import server.rmiServer.InterfaciaServer;
 
 import java.io.IOException;
@@ -58,7 +55,7 @@ import java.util.ArrayList;
           }
 
        } catch (IOException e) {
-          e.printStackTrace();
+           e.printStackTrace();
        } catch (ClassNotFoundException e) {
           e.printStackTrace();
        }
@@ -610,7 +607,7 @@ import java.util.ArrayList;
 
     class SocketHandler implements Runnable{
 
-        private Messaggio messaggio;
+//        private Messaggio messaggio;
         boolean run=true;
 
         @Override

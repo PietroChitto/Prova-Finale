@@ -1,15 +1,10 @@
-package Client.GUI;
+package client.gui;
 
-import javafx.event.EventHandler;
-import javafx.scene.effect.Bloom;
 import javafx.scene.effect.Effect;
-import javafx.scene.effect.Shadow;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
-
-import java.awt.event.MouseEvent;
 
 /**
  * Created by Pietro on 26/05/2017.

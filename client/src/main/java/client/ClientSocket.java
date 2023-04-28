@@ -1,8 +1,10 @@
-package Client;
+package client;
 
-import Client.GUI.ControllerGioco;
+import client.gui.ControllerGioco;
 import javafx.application.Platform;
+import server.InterfacciaClient;
 import server.rmiServer.InterfaciaServer;
+//import server.rmiServer.InterfaciaServer;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -38,7 +40,7 @@ public class ClientSocket implements InterfacciaClient, InterfaciaServer {
         }
         System.out.println("Client connesso alla porta 8001 attraverso socket1");
         this.controllerGioco=controllerGioco;
-        this.controllerGioco.setClientGenerico(this);
+//        this.controllerGioco.setClientGenerico(this);
         startClient(nickName,numeroGiocatori);
     }
 
@@ -50,9 +52,9 @@ public class ClientSocket implements InterfacciaClient, InterfaciaServer {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        out.writeObject(new Messaggio("PARTECIPA"));
+//        out.writeObject(new Messaggio("PARTECIPA"));
         out.flush();
-        out.writeObject(new Messaggio(nickName));
+//        out.writeObject(new Messaggio(nickName));
         out.flush();
         out.writeObject(numeroGiocatori);
         out.flush();

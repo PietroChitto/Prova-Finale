@@ -1,6 +1,5 @@
 package server;
 
-import Client.InterfacciaClient;
 import partita.Partita;
 import partita.componentiDelTabellone.Giocatore;
 import server.rmiServer.InterfaciaServer;

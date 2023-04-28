@@ -1,6 +1,5 @@
 package server;
 
-import Client.InterfacciaClient;
 import partita.Partita;
 import server.rmiServer.InterfaciaServer;
 import server.rmiServer.RMIServer;
@@ -20,9 +19,8 @@ public class Server implements ServerInterface {
     //mappa di liste, la chiave è il numero di giocatori della partita, l'oggetto è la lista dei giocatori in attesa per quella partita
     public  static HashMap<Integer,ArrayList<GiocatoreRemoto>> giocatori;
     public static Partita partita;
-    private SocketServer socketServer;
-    private RMIServer rmiServer;
-    private static final Object PLAYERS_MUTEX = new Object();
+    private final SocketServer socketServer;
+    private final RMIServer rmiServer;
 
     public Server() throws NetworkException, RemoteException {
         giocatori = new HashMap<>();
@@ -34,18 +32,17 @@ public class Server implements ServerInterface {
         giocatori.put(4,lista4G);
 
         partita=null;
-        socketServer=new SocketServer(/*this*/);
-        rmiServer = new RMIServer(/*this*/);
+        socketServer=new SocketServer();
+        rmiServer = new RMIServer();
     }
 
      public static void main(String[] args) throws ServerException {
 
-         System.out.print("server lanciati");
+        System.out.print("server lanciato");
         try {
             Server server = new Server();
             server.startServer(SOCKET_PORT, RMI_PORT);
-        } catch (NetworkException e) {
-        } catch (RemoteException e) {
+        } catch (RemoteException | NetworkException e) {
             e.printStackTrace();
         }
      }
@@ -62,21 +59,4 @@ public class Server implements ServerInterface {
     public InterfaciaServer partecipaAPartita(String username, InterfacciaClient controller, int numeroGiocatori) throws RemoteException {
         return null;
     }
-/*
-    @Override
-    public void creaPartita(int code) throws RuntimeException {
-
-    }
-
-    @Override
-    public void login(String id, GiocatoreRemoto giocatoreRemoto) throws RuntimeException {
-        synchronized (PLAYERS_MUTEX) {
-            if (!giocatori.containsKey(id)) {
-                giocatori.put(id, giocatoreRemoto);
-                giocatoreRemoto.setNome(id);
-            } else {
-                System.out.print("Giocatore già presente");
-            }
-        }
-    }*/
 }

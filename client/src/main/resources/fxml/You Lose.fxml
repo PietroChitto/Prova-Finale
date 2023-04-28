@@ -9,7 +9,7 @@
    <children>
       <ImageView fitHeight="271.0" fitWidth="432.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@img/schermataClassifica.jpg" />
+            <Image url="@../image/img/schermataClassifica.jpg" />
          </image>
       </ImageView>
       <Label prefHeight="152.0" prefWidth="250.0" text="You Lose!" textFill="#f50000">

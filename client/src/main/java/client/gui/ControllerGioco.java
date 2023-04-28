@@ -1,6 +1,5 @@
-package Client.GUI;
+package client.gui;
 
-import Client.InterfacciaClient;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,6 +20,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import server.InterfacciaClient;
 import server.rmiServer.InterfaciaServer;
 
 import java.io.IOException;
@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
 
-public class ControllerGioco implements InterfacciaClient{
+public class ControllerGioco implements InterfacciaClient {
 
     private InterfaciaServer clientGenerico;
     private ArrayList<ImageView> immaginiCarte;
@@ -81,17 +81,17 @@ public class ControllerGioco implements InterfacciaClient{
     }
 
     private void mettiScomuniche(ArrayList<String> scomuniche) {
-        Image tempImg = new Image("Client/GUI/img/ImmaginiTessereScomunica/" + scomuniche.get(0) + ".png");
+        Image tempImg = new Image("image/img/ImmaginiTessereScomunica/" + scomuniche.get(0) + ".png");
         imgScomunica1.setImage(tempImg);
         imgScomunica1.setFitWidth(gridScomunica.getWidth()/3);
         imgScomunica1.setFitHeight(gridScomunica.getHeight());
 
-        tempImg = new Image("Client/GUI/img/ImmaginiTessereScomunica/" + scomuniche.get(1) + ".png");
+        tempImg = new Image("image/img/ImmaginiTessereScomunica/" + scomuniche.get(1) + ".png");
         imgScomunica2.setImage(tempImg);
         imgScomunica2.setFitWidth(gridScomunica.getWidth()/3);
         imgScomunica2.setFitHeight(gridScomunica.getHeight());
 
-        tempImg = new Image("Client/GUI/img/ImmaginiTessereScomunica/" + scomuniche.get(2) + ".png");
+        tempImg = new Image("image/img/ImmaginiTessereScomunica/" + scomuniche.get(2) + ".png");
         imgScomunica3.setImage(tempImg);
         imgScomunica3.setFitWidth(gridScomunica.getWidth()/3);
         imgScomunica3.setFitHeight(gridScomunica.getHeight());
@@ -167,19 +167,19 @@ public class ControllerGioco implements InterfacciaClient{
         Image facciaDado;
         for(int i=1; i<7; i++){
             da=new ImageView();
-            facciaDado=new Image("Client/GUI/img/dadi/dadoArancio/a"+i+".png");
+            facciaDado=new Image("image/img/dadi/dadoArancio/a" +i+".png");
             da.setImage(facciaDado);
             da.setFitHeight(30);
             da.setFitWidth(30);
             immaginiDadoArancio[i-1]=da;
             da=new ImageView();
-            facciaDado=new Image("Client/GUI/img/dadi/dadoNero/n"+i+".png");
+            facciaDado=new Image("image/img/dadi/dadoNero/n" +i+".png");
             da.setImage(facciaDado);
             da.setFitHeight(30);
             da.setFitWidth(30);
             immaginiDadoNero[i-1]=da;
             da=new ImageView();
-            facciaDado=new Image("Client/GUI/img/dadi/dadoBianco/b"+i+".png");
+            facciaDado=new Image("image/img/dadi/dadoBianco/b" +i+".png");
             da.setImage(facciaDado);
             da.setFitHeight(30);
             da.setFitWidth(30);
@@ -307,7 +307,7 @@ public class ControllerGioco implements InterfacciaClient{
 
             if(i<4){
                 tempImageView =new ImageView();
-                tempImg = new Image("Client/GUI/img/Carte/Territori/"+nomeCarta+".jpg");
+                tempImg = new Image("image/img/Carte/Territori/" +nomeCarta+".jpg");
                 tempImageView.setImage(tempImg);
                 tempImageView.setFitWidth(gridCarteTorre1.getWidth());
                 tempImageView.setFitHeight(gridCarteTorre1.getHeight()/4);
@@ -318,7 +318,7 @@ public class ControllerGioco implements InterfacciaClient{
             }
             else if(i<8){
                 tempImageView =new ImageView();
-                tempImg = new Image("Client/GUI/img/Carte/Personaggi/"+nomeCarta+".jpg");
+                tempImg = new Image("image/img/Carte/Personaggi/" +nomeCarta+".jpg");
                 tempImageView.setImage(tempImg);
                 tempImageView.setFitWidth(gridCarteTorre1.getWidth());
                 tempImageView.setFitHeight(gridCarteTorre1.getHeight()/4);
@@ -328,7 +328,7 @@ public class ControllerGioco implements InterfacciaClient{
                 gridCarteTorre1.add(tempImageView, 0, j);
             }else if(i<12){
                 tempImageView =new ImageView();
-                tempImg = new Image("Client/GUI/img/Carte/Edifici/"+nomeCarta+".jpg");
+                tempImg = new Image("image/img/Carte/Edifici/" +nomeCarta+".jpg");
                 tempImageView.setImage(tempImg);
                 tempImageView.setFitWidth(gridCarteTorre1.getWidth());
                 tempImageView.setFitHeight(gridCarteTorre1.getHeight()/4);
@@ -338,7 +338,7 @@ public class ControllerGioco implements InterfacciaClient{
                 gridCarteTorre2.add(tempImageView, 0, j);
             }else if(i<16){
                 tempImageView =new ImageView();
-                tempImg = new Image("Client/GUI/img/Carte/Imprese/"+nomeCarta+".jpg");
+                tempImg = new Image("image/img/Carte/Imprese/" +nomeCarta+".jpg");
                 tempImageView.setImage(tempImg);
                 tempImageView.setFitWidth(gridCarteTorre1.getWidth());
                 tempImageView.setFitHeight(gridCarteTorre1.getHeight()/4);

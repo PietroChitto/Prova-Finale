@@ -1,4 +1,4 @@
-package test.java.partita;
+package partita;
 
 import org.junit.Test;
 import partita.componentiDelTabellone.CampoAzioneMultiplo;

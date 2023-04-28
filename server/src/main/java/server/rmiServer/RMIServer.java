@@ -1,9 +1,9 @@
 package server.rmiServer;
 
-import Client.InterfacciaClient;
 import partita.Partita;
 import partita.componentiDelTabellone.Giocatore;
 import server.GiocatoreRemoto;
+import server.InterfacciaClient;
 import server.Server;
 import server.ServerInterface;
 
@@ -19,12 +19,8 @@ import java.rmi.server.UnicastRemoteObject;
  */
 public class RMIServer extends UnicastRemoteObject implements ServerInterface{
 
-
-    public RMIServer(/*ServerInterface controller*/) throws RemoteException {
-
-       /* super(controller);*/
-
-
+    public RMIServer() throws RemoteException {
+        super();
     }
 
     /*@Override*/

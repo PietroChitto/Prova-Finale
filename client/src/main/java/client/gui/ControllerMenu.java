@@ -1,8 +1,8 @@
-package Client.GUI;
+package client.gui;
 
-import Client.ClientRMI;
-import Client.ClientSocket;
-import Client.MainClient;
+import client.ClientRMI;
+import client.ClientSocket;
+import client.MainClient;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -66,7 +66,7 @@ public class ControllerMenu {
 
         }else{
 
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("Client/GUI/SchermataDiGioco.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(ControllerMenu.class.getResource("/fxml/SchermataDiGioco.fxml"));
             Parent root = fxmlLoader.load();
             Platform.runLater(()->{
                 MainClient.stage.setTitle("Lorenzo il magnifico");
@@ -88,7 +88,7 @@ public class ControllerMenu {
 
             }else{
 
-                client=new ClientRMI(txtUsername.getText(), controllerGioco, numeroGiocatori);
+                client = new ClientRMI(txtUsername.getText(), controllerGioco, numeroGiocatori);
 
             }
 

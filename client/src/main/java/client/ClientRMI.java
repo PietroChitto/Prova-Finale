@@ -1,7 +1,8 @@
-package Client;
+package client;
 
-import Client.GUI.ControllerGioco;
+import client.gui.ControllerGioco;
 import javafx.application.Platform;
+import server.InterfacciaClient;
 import server.ServerInterface;
 import server.rmiServer.InterfaciaServer;
 
@@ -231,13 +232,7 @@ public class ClientRMI extends UnicastRemoteObject implements InterfacciaClient,
     }
 
     @Override
-    public void selezionaFamiliare(String colore, int idGiocatore){
-
-        try {
-            metodiPartita.selezionaFamiliare(colore, idGiocatore);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
+    public void selezionaFamiliare(String colore, int idGiocatore) throws RemoteException {
 
     }
 

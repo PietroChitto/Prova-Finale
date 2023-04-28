@@ -1,4 +1,4 @@
-package Client;
+package server;
 
 import java.io.IOException;
 import java.rmi.Remote;

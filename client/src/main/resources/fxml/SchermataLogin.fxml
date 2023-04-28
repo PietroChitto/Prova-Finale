@@ -10,11 +10,11 @@
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="296.0" prefWidth="505.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.GUI.ControllerLogin">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="296.0" prefWidth="505.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.gui.ControllerLogin">
    <children>
       <ImageView fitHeight="296.0" fitWidth="505.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@image/ImageLogin.jpg" />
+            <Image url="@../image/ImageLogin.jpg" />
          </image>
       </ImageView>
       <Button fx:id="txtStartRMI" layoutY="202.0" mnemonicParsing="false" onAction="#login" prefHeight="40.0" prefWidth="163.0" text="Start! (RMI)">
